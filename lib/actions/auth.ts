@@ -1,56 +1,57 @@
 "use server"
 
-import { createServerClient } from "@/lib/supabase/server"
+import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
+import { createClient } from "@/lib/supabase/server"
 
-export async function signUp(formData: FormData) {
-  const supabase = createServerClient()
+export async function login(formData: FormData) {
+  const supabase = await createClient()
 
-  const email = formData.get("email") as string
-  const password = formData.get("password") as string
-  const fullName = formData.get("fullName") as string
-  const role = formData.get("role") as "nutritionist" | "client"
+  // type-casting here for convenience
+  // in practice, you should validate your inputs
+  const data = {
+    email: formData.get("email") as string,
+    password: formData.get("password") as string,
+  }
 
-  const { data, error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-      data: {
-        full_name: fullName,
-        role: role,
-      },
-    },
-  })
+  const { error } = await supabase.auth.signInWithPassword(data)
 
   if (error) {
-    throw new Error(error.message)
+    redirect("/error")
   }
 
-  if (data.user) {
-    redirect("/onboarding")
-  }
-}
-
-export async function signIn(formData: FormData) {
-  const supabase = createServerClient()
-
-  const email = formData.get("email") as string
-  const password = formData.get("password") as string
-
-  const { error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  })
-
-  if (error) {
-    throw new Error(error.message)
-  }
-
+  revalidatePath("/", "layout")
   redirect("/dashboard")
 }
 
-export async function signOut() {
-  const supabase = createServerClient()
+export async function signup(formData: FormData) {
+  const supabase = await createClient()
+
+  // type-casting here for convenience
+  // in practice, you should validate your inputs
+  const data = {
+    email: formData.get("email") as string,
+    password: formData.get("password") as string,
+    options: {
+      data: {
+        full_name: formData.get("full_name") as string,
+      },
+    },
+  }
+
+  const { error } = await supabase.auth.signUp(data)
+
+  if (error) {
+    redirect("/error")
+  }
+
+  revalidatePath("/", "layout")
+  redirect("/onboarding")
+}
+
+export async function signout() {
+  const supabase = await createClient()
   await supabase.auth.signOut()
+  revalidatePath("/", "layout")
   redirect("/")
 }

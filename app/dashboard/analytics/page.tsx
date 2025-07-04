@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { Suspense, useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -21,7 +21,7 @@ import {
   Apple,
 } from "lucide-react"
 
-export default function AnalyticsPage() {
+function AnalyticsContent() {
   const [timeRange, setTimeRange] = useState("30d")
   const [activeTab, setActiveTab] = useState("overview")
 
@@ -395,5 +395,13 @@ export default function AnalyticsPage() {
         </TabsContent>
       </Tabs>
     </div>
+  )
+}
+
+export default function AnalyticsPage() {
+  return (
+    <Suspense fallback={<div className="flex items-center justify-center h-64">Loading analytics...</div>}>
+      <AnalyticsContent />
+    </Suspense>
   )
 }
