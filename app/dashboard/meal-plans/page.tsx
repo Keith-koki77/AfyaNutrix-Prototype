@@ -1,476 +1,199 @@
 "use client"
 
 import { useState } from "react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import {
-  Plus,
-  Search,
-  Filter,
-  MoreHorizontal,
-  Eye,
-  Edit,
-  Copy,
-  Download,
-  ChefHat,
-  Calendar,
-  TrendingUp,
-} from "lucide-react"
-import Link from "next/link"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { Plus, Search, MoreHorizontal, Calendar } from "lucide-react"
 
 export default function MealPlansPage() {
   const [searchTerm, setSearchTerm] = useState("")
-  const [activeTab, setActiveTab] = useState("all")
 
   const mealPlans = [
     {
       id: 1,
-      name: "Diabetes Management Plan",
-      client: "John Kamau",
-      type: "Medical",
-      status: "Active",
-      duration: "4 weeks",
-      calories: "1800 kcal/day",
-      created: "2024-01-15",
-      lastModified: "2024-01-18",
-      foods: ["Ugali", "Sukuma Wiki", "Beans", "Fish"],
-    },
-    {
-      id: 2,
-      name: "Weight Loss Program",
-      client: "Grace Mwangi",
+      title: "Weight Loss Plan - Sarah",
+      client: "Sarah Johnson",
+      clientAvatar: "/placeholder-user.jpg",
       type: "Weight Loss",
-      status: "Active",
       duration: "8 weeks",
-      calories: "1500 kcal/day",
-      created: "2024-01-10",
-      lastModified: "2024-01-17",
-      foods: ["Githeri", "Terere", "Chicken", "Sweet Potato"],
-    },
-    {
-      id: 3,
-      name: "Muscle Building Plan",
-      client: "Mary Wanjiku",
-      type: "Muscle Gain",
       status: "Active",
-      duration: "12 weeks",
-      calories: "2200 kcal/day",
-      created: "2024-01-05",
-      lastModified: "2024-01-16",
-      foods: ["Nyama Choma", "Mukimo", "Eggs", "Milk"],
-    },
-    {
-      id: 4,
-      name: "General Health Template",
-      client: null,
-      type: "Template",
-      status: "Template",
-      duration: "Flexible",
-      calories: "2000 kcal/day",
-      created: "2023-12-20",
-      lastModified: "2024-01-10",
-      foods: ["Chapati", "Cabbage", "Beef", "Rice"],
-    },
-    {
-      id: 5,
-      name: "Pregnancy Nutrition",
-      client: "Faith Akinyi",
-      type: "Medical",
-      status: "Completed",
-      duration: "6 weeks",
-      calories: "2100 kcal/day",
-      created: "2023-12-15",
-      lastModified: "2024-01-05",
-      foods: ["Millet Porridge", "Spinach", "Liver", "Fruits"],
-    },
-  ]
-
-  const templates = [
-    {
-      id: 1,
-      name: "Diabetes Management",
-      description: "Low glycemic index foods with balanced macros",
-      uses: 12,
-      category: "Medical",
+      startDate: "2024-01-15",
+      calories: "1,500 kcal/day",
+      meals: 4,
+      progress: 75,
     },
     {
       id: 2,
-      name: "Weight Loss Standard",
-      description: "Calorie-controlled plan with local foods",
-      uses: 25,
-      category: "Weight Loss",
+      title: "Muscle Building - Michael",
+      client: "Michael Chen",
+      clientAvatar: "/placeholder-user.jpg",
+      type: "Muscle Gain",
+      duration: "12 weeks",
+      status: "Active",
+      startDate: "2024-01-10",
+      calories: "2,800 kcal/day",
+      meals: 6,
+      progress: 60,
     },
     {
       id: 3,
-      name: "Muscle Building",
-      description: "High protein plan for muscle development",
-      uses: 8,
-      category: "Muscle Gain",
-    },
-    {
-      id: 4,
-      name: "Heart Healthy",
-      description: "Low sodium, high fiber cardiovascular plan",
-      uses: 15,
-      category: "Medical",
+      title: "Maintenance Plan - Emma",
+      client: "Emma Wilson",
+      clientAvatar: "/placeholder-user.jpg",
+      type: "Maintenance",
+      duration: "4 weeks",
+      status: "Completed",
+      startDate: "2023-12-20",
+      calories: "2,000 kcal/day",
+      meals: 3,
+      progress: 100,
     },
   ]
 
-  const filteredPlans = mealPlans.filter((plan) => {
-    const matchesSearch =
-      plan.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (plan.client && plan.client.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      plan.type.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredPlans = mealPlans.filter(
+    (plan) =>
+      plan.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      plan.client.toLowerCase().includes(searchTerm.toLowerCase()),
+  )
 
-    if (activeTab === "all") return matchesSearch
-    if (activeTab === "active") return matchesSearch && plan.status === "Active"
-    if (activeTab === "templates") return matchesSearch && plan.status === "Template"
-    if (activeTab === "completed") return matchesSearch && plan.status === "Completed"
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "Active":
+        return "default"
+      case "Completed":
+        return "secondary"
+      case "Paused":
+        return "destructive"
+      default:
+        return "secondary"
+    }
+  }
 
-    return matchesSearch
-  })
-
-  const stats = [
-    { label: "Total Plans", value: mealPlans.length, icon: ChefHat, color: "text-blue-600" },
-    {
-      label: "Active Plans",
-      value: mealPlans.filter((p) => p.status === "Active").length,
-      icon: TrendingUp,
-      color: "text-green-600",
-    },
-    { label: "Templates", value: templates.length, icon: Copy, color: "text-purple-600" },
-    { label: "This Month", value: "8", icon: Calendar, color: "text-orange-600" },
-  ]
+  const getTypeColor = (type: string) => {
+    switch (type) {
+      case "Weight Loss":
+        return "bg-red-50 text-red-700"
+      case "Muscle Gain":
+        return "bg-blue-50 text-blue-700"
+      case "Maintenance":
+        return "bg-green-50 text-green-700"
+      default:
+        return "bg-gray-50 text-gray-700"
+    }
+  }
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Meal Plans</h1>
-          <p className="text-gray-600 mt-1">Create and manage nutrition plans with local Kenyan foods</p>
+          <p className="text-gray-600 mt-2">Create and manage nutrition plans for your clients</p>
         </div>
-        <div className="flex gap-3">
-          <Link href="/dashboard/meal-plans/templates">
-            <Button
-              variant="outline"
-              className="border-[#1B5E20] text-[#1B5E20] hover:bg-[#1B5E20] hover:text-white bg-transparent"
-            >
-              <Copy className="w-4 h-4 mr-2" />
-              Use Template
-            </Button>
-          </Link>
-          <Link href="/dashboard/meal-plans/new">
-            <Button className="bg-[#1B5E20] hover:bg-[#2E7D32]">
-              <Plus className="w-4 h-4 mr-2" />
-              Create Plan
-            </Button>
-          </Link>
-        </div>
+        <Button className="bg-[#1B5E20] hover:bg-[#2E7D32]">
+          <Plus className="w-4 h-4 mr-2" />
+          Create Meal Plan
+        </Button>
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {stats.map((stat, index) => (
-          <Card key={index}>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">{stat.label}</p>
-                  <p className="text-2xl font-bold text-gray-900 mt-1">{stat.value}</p>
-                </div>
-                <div className={`p-3 rounded-full bg-gray-100 ${stat.color}`}>
-                  <stat.icon className="w-6 h-6" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      {/* Main Content */}
       <Card>
         <CardHeader>
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            <div>
-              <CardTitle>Meal Plans & Templates</CardTitle>
-              <CardDescription>Manage your nutrition plans and reusable templates</CardDescription>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                <Input
-                  placeholder="Search meal plans..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 w-64"
-                />
-              </div>
-              <Button variant="outline" size="sm">
-                <Filter className="w-4 h-4 mr-2" />
-                Filter
-              </Button>
+          <div className="flex items-center space-x-4">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <Input
+                placeholder="Search meal plans..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
             </div>
           </div>
         </CardHeader>
         <CardContent>
-          <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="all">All Plans</TabsTrigger>
-              <TabsTrigger value="active">Active</TabsTrigger>
-              <TabsTrigger value="templates">Templates</TabsTrigger>
-              <TabsTrigger value="completed">Completed</TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="all" className="mt-6">
-              <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Plan Name</TableHead>
-                      <TableHead>Client</TableHead>
-                      <TableHead>Type</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Duration</TableHead>
-                      <TableHead>Calories</TableHead>
-                      <TableHead>Key Foods</TableHead>
-                      <TableHead className="text-right">Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {filteredPlans.map((plan) => (
-                      <TableRow key={plan.id} className="hover:bg-gray-50">
-                        <TableCell>
-                          <div>
-                            <p className="font-medium text-gray-900">{plan.name}</p>
-                            <p className="text-sm text-gray-500">Created {plan.created}</p>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          {plan.client ? (
-                            <div className="flex items-center space-x-2">
-                              <div className="w-6 h-6 bg-[#1B5E20] rounded-full flex items-center justify-center text-white text-xs">
-                                {plan.client
-                                  .split(" ")
-                                  .map((n) => n[0])
-                                  .join("")}
-                              </div>
-                              <span className="text-sm">{plan.client}</span>
-                            </div>
-                          ) : (
-                            <span className="text-sm text-gray-400">Template</span>
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          <Badge variant="outline">{plan.type}</Badge>
-                        </TableCell>
-                        <TableCell>
-                          <Badge
-                            variant={
-                              plan.status === "Active"
-                                ? "default"
-                                : plan.status === "Template"
-                                  ? "secondary"
-                                  : "outline"
-                            }
-                          >
-                            {plan.status}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>
-                          <span className="text-sm text-gray-600">{plan.duration}</span>
-                        </TableCell>
-                        <TableCell>
-                          <span className="text-sm text-gray-600">{plan.calories}</span>
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex flex-wrap gap-1">
-                            {plan.foods.slice(0, 2).map((food, index) => (
-                              <Badge key={index} variant="outline" className="text-xs">
-                                {food}
-                              </Badge>
-                            ))}
-                            {plan.foods.length > 2 && (
-                              <Badge variant="outline" className="text-xs">
-                                +{plan.foods.length - 2}
-                              </Badge>
-                            )}
-                          </div>
-                        </TableCell>
-                        <TableCell className="text-right">
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button variant="ghost" className="h-8 w-8 p-0">
-                                <MoreHorizontal className="h-4 w-4" />
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                              <DropdownMenuItem>
-                                <Eye className="mr-2 h-4 w-4" />
-                                View Details
-                              </DropdownMenuItem>
-                              <DropdownMenuItem>
-                                <Edit className="mr-2 h-4 w-4" />
-                                Edit Plan
-                              </DropdownMenuItem>
-                              <DropdownMenuItem>
-                                <Copy className="mr-2 h-4 w-4" />
-                                Duplicate
-                              </DropdownMenuItem>
-                              <DropdownMenuItem>
-                                <Download className="mr-2 h-4 w-4" />
-                                Export PDF
-                              </DropdownMenuItem>
-                              <DropdownMenuSeparator />
-                              <DropdownMenuItem className="text-red-600">Delete Plan</DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-            </TabsContent>
-
-            <TabsContent value="active" className="mt-6">
-              <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Plan Name</TableHead>
-                      <TableHead>Client</TableHead>
-                      <TableHead>Progress</TableHead>
-                      <TableHead>Next Review</TableHead>
-                      <TableHead className="text-right">Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {filteredPlans
-                      .filter((p) => p.status === "Active")
-                      .map((plan) => (
-                        <TableRow key={plan.id} className="hover:bg-gray-50">
-                          <TableCell>
-                            <p className="font-medium text-gray-900">{plan.name}</p>
-                          </TableCell>
-                          <TableCell>{plan.client}</TableCell>
-                          <TableCell>
-                            <div className="flex items-center space-x-2">
-                              <div className="w-16 bg-gray-200 rounded-full h-2">
-                                <div className="bg-[#1B5E20] h-2 rounded-full" style={{ width: "65%" }}></div>
-                              </div>
-                              <span className="text-sm text-gray-600">65%</span>
-                            </div>
-                          </TableCell>
-                          <TableCell>
-                            <span className="text-sm text-gray-600">Jan 25, 2024</span>
-                          </TableCell>
-                          <TableCell className="text-right">
-                            <Button variant="outline" size="sm">
-                              Review
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                  </TableBody>
-                </Table>
-              </div>
-            </TabsContent>
-
-            <TabsContent value="templates" className="mt-6">
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {templates.map((template) => (
-                  <Card key={template.id} className="hover:shadow-md transition-shadow">
-                    <CardHeader>
-                      <div className="flex items-start justify-between">
-                        <div>
-                          <CardTitle className="text-lg">{template.name}</CardTitle>
-                          <Badge variant="outline" className="mt-1">
-                            {template.category}
-                          </Badge>
-                        </div>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="sm">
-                              <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem>Use Template</DropdownMenuItem>
-                            <DropdownMenuItem>Edit Template</DropdownMenuItem>
-                            <DropdownMenuItem>Duplicate</DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem className="text-red-600">Delete</DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm text-gray-600 mb-4">{template.description}</p>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm text-gray-500">Used {template.uses} times</span>
-                        <Button size="sm" className="bg-[#1B5E20] hover:bg-[#2E7D32]">
-                          Use Template
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredPlans.map((plan) => (
+              <Card key={plan.id} className="hover:shadow-md transition-shadow">
+                <CardHeader className="pb-3">
+                  <div className="flex items-center justify-between">
+                    <Badge variant="outline" className={getTypeColor(plan.type)}>
+                      {plan.type}
+                    </Badge>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="sm">
+                          <MoreHorizontal className="w-4 h-4" />
                         </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </TabsContent>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem>View Details</DropdownMenuItem>
+                        <DropdownMenuItem>Edit Plan</DropdownMenuItem>
+                        <DropdownMenuItem>Duplicate</DropdownMenuItem>
+                        <DropdownMenuItem>Archive</DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                  <CardTitle className="text-lg">{plan.title}</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center space-x-3">
+                    <Avatar className="w-8 h-8">
+                      <AvatarImage src={plan.clientAvatar || "/placeholder.svg"} />
+                      <AvatarFallback>
+                        {plan.client
+                          .split(" ")
+                          .map((n) => n[0])
+                          .join("")}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <p className="font-medium text-sm">{plan.client}</p>
+                      <p className="text-xs text-gray-500">Client</p>
+                    </div>
+                  </div>
 
-            <TabsContent value="completed" className="mt-6">
-              <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Plan Name</TableHead>
-                      <TableHead>Client</TableHead>
-                      <TableHead>Completed Date</TableHead>
-                      <TableHead>Outcome</TableHead>
-                      <TableHead className="text-right">Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {filteredPlans
-                      .filter((p) => p.status === "Completed")
-                      .map((plan) => (
-                        <TableRow key={plan.id} className="hover:bg-gray-50">
-                          <TableCell>
-                            <p className="font-medium text-gray-900">{plan.name}</p>
-                          </TableCell>
-                          <TableCell>{plan.client}</TableCell>
-                          <TableCell>
-                            <span className="text-sm text-gray-600">Jan 05, 2024</span>
-                          </TableCell>
-                          <TableCell>
-                            <Badge className="bg-green-100 text-green-800">Successful</Badge>
-                          </TableCell>
-                          <TableCell className="text-right">
-                            <Button variant="outline" size="sm">
-                              View Report
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                  </TableBody>
-                </Table>
-              </div>
-            </TabsContent>
-          </Tabs>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Duration:</span>
+                      <span className="font-medium">{plan.duration}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Daily Calories:</span>
+                      <span className="font-medium">{plan.calories}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Meals per day:</span>
+                      <span className="font-medium">{plan.meals}</span>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Progress:</span>
+                      <span className="font-medium">{plan.progress}%</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div
+                        className="bg-[#1B5E20] h-2 rounded-full transition-all duration-300"
+                        style={{ width: `${plan.progress}%` }}
+                      ></div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-2">
+                    <Badge variant={getStatusColor(plan.status) as any}>{plan.status}</Badge>
+                    <div className="flex items-center text-xs text-gray-500">
+                      <Calendar className="w-3 h-3 mr-1" />
+                      Started {new Date(plan.startDate).toLocaleDateString()}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </CardContent>
       </Card>
     </div>

@@ -122,18 +122,11 @@ export default function DashboardLayout({
           <header className="bg-white border-b border-gray-200 px-4 py-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
-                <Sheet>
-                  <SheetTrigger asChild>
-                    <Button variant="ghost" size="sm" className="lg:hidden">
-                      <Menu className="w-5 h-5" />
-                    </Button>
-                  </SheetTrigger>
-                  <SheetContent side="left" className="p-0 w-64">
-                    <div className="bg-white h-full">
-                      <Sidebar mobile />
-                    </div>
-                  </SheetContent>
-                </Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="ghost" size="sm" className="lg:hidden" onClick={() => setSidebarOpen(true)}>
+                    <Menu className="w-5 h-5" />
+                  </Button>
+                </SheetTrigger>
 
                 {/* Search */}
                 <div className="relative hidden sm:block">

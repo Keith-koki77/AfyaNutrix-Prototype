@@ -1,523 +1,298 @@
 "use client"
 
+import { Badge } from "@/components/ui/badge"
+
 import { useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
-import { Badge } from "@/components/ui/badge"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Textarea } from "@/components/ui/textarea"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import {
-  User,
-  Building,
-  Bell,
-  Shield,
-  CreditCard,
-  FileText,
-  Globe,
-  Smartphone,
-  Mail,
-  Eye,
-  EyeOff,
-  Save,
-  Download,
-  Trash2,
-  AlertTriangle,
-} from "lucide-react"
+import { User, Bell, Shield, CreditCard, Camera } from "lucide-react"
 
 export default function SettingsPage() {
-  const [activeTab, setActiveTab] = useState("profile")
-  const [showPassword, setShowPassword] = useState(false)
-  const [settings, setSettings] = useState({
-    // Profile
-    firstName: "Amina",
-    lastName: "Wanjiku",
-    email: "amina.wanjiku@email.com",
-    phone: "+254 700 123 456",
-    bio: "Registered Nutritionist with 8+ years experience in clinical nutrition and community health.",
-
-    // Practice
-    practiceName: "Amina Nutrition Clinic",
-    practiceType: "Solo Practitioner",
-    location: "Nairobi, Kenya",
-    license: "RN-2024-001234",
-
-    // Notifications
-    emailNotifications: true,
-    smsReminders: true,
-    whatsappIntegration: false,
-    appointmentReminders: true,
-    clientUpdates: true,
-    marketingEmails: false,
-
-    // Security
-    twoFactorAuth: false,
-    sessionTimeout: "30",
-    dataRetention: "7years",
-
-    // Language & Region
-    language: "english",
-    timezone: "Africa/Nairobi",
-    dateFormat: "dd/mm/yyyy",
-    currency: "KES",
+  const [notifications, setNotifications] = useState({
+    email: true,
+    sms: false,
+    push: true,
+    appointments: true,
+    messages: true,
+    marketing: false,
   })
-
-  const handleSettingChange = (key: string, value: any) => {
-    setSettings((prev) => ({ ...prev, [key]: value }))
-  }
-
-  const handleSave = () => {
-    // Handle saving settings
-    console.log("Settings saved:", settings)
-  }
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Settings</h1>
-          <p className="text-gray-600 mt-1">Manage your account and practice preferences</p>
-        </div>
-        <Button onClick={handleSave} className="bg-[#1B5E20] hover:bg-[#2E7D32]">
-          <Save className="w-4 h-4 mr-2" />
-          Save Changes
-        </Button>
+      <div>
+        <h1 className="text-3xl font-bold text-gray-900">Settings</h1>
+        <p className="text-gray-600 mt-2">Manage your account and preferences</p>
       </div>
 
-      {/* Settings Tabs */}
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-6">
+      <Tabs defaultValue="profile" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="profile">Profile</TabsTrigger>
-          <TabsTrigger value="practice">Practice</TabsTrigger>
           <TabsTrigger value="notifications">Notifications</TabsTrigger>
           <TabsTrigger value="security">Security</TabsTrigger>
           <TabsTrigger value="billing">Billing</TabsTrigger>
-          <TabsTrigger value="compliance">Compliance</TabsTrigger>
         </TabsList>
 
-        {/* Profile Tab */}
-        <TabsContent value="profile" className="space-y-6">
+        <TabsContent value="profile">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center">
-                <User className="w-5 h-5 mr-2 text-[#1B5E20]" />
-                Personal Information
+                <User className="w-5 h-5 mr-2" />
+                Profile Information
               </CardTitle>
-              <CardDescription>Update your personal details and profile information</CardDescription>
+              <CardDescription>Update your personal information and professional details</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="flex items-center space-x-6">
-                <Avatar className="w-20 h-20">
-                  <AvatarFallback className="bg-[#1B5E20] text-white text-2xl">
-                    {settings.firstName[0]}
-                    {settings.lastName[0]}
-                  </AvatarFallback>
+                <Avatar className="w-24 h-24">
+                  <AvatarImage src="/placeholder-user.jpg" />
+                  <AvatarFallback>AW</AvatarFallback>
                 </Avatar>
                 <div>
-                  <Button variant="outline">Change Photo</Button>
-                  <p className="text-sm text-gray-500 mt-1">JPG, PNG or GIF. Max size 2MB.</p>
+                  <Button variant="outline" className="mb-2 bg-transparent">
+                    <Camera className="w-4 h-4 mr-2" />
+                    Change Photo
+                  </Button>
+                  <p className="text-sm text-gray-500">JPG, GIF or PNG. 1MB max.</p>
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
                   <Label htmlFor="firstName">First Name</Label>
-                  <Input
-                    id="firstName"
-                    value={settings.firstName}
-                    onChange={(e) => handleSettingChange("firstName", e.target.value)}
-                  />
+                  <Input id="firstName" defaultValue="Amina" />
                 </div>
-                <div>
+                <div className="space-y-2">
                   <Label htmlFor="lastName">Last Name</Label>
-                  <Input
-                    id="lastName"
-                    value={settings.lastName}
-                    onChange={(e) => handleSettingChange("lastName", e.target.value)}
-                  />
+                  <Input id="lastName" defaultValue="Wanjiku" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="email">Email</Label>
+                  <Input id="email" type="email" defaultValue="amina.wanjiku@email.com" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="phone">Phone</Label>
+                  <Input id="phone" defaultValue="+254 712 345 678" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="specialization">Specialization</Label>
+                  <Select defaultValue="weight-management">
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="weight-management">Weight Management</SelectItem>
+                      <SelectItem value="sports-nutrition">Sports Nutrition</SelectItem>
+                      <SelectItem value="clinical-nutrition">Clinical Nutrition</SelectItem>
+                      <SelectItem value="pediatric-nutrition">Pediatric Nutrition</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="experience">Years of Experience</Label>
+                  <Input id="experience" defaultValue="5" />
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="email">Email Address</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={settings.email}
-                    onChange={(e) => handleSettingChange("email", e.target.value)}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="phone">Phone Number</Label>
-                  <Input
-                    id="phone"
-                    value={settings.phone}
-                    onChange={(e) => handleSettingChange("phone", e.target.value)}
-                  />
-                </div>
-              </div>
-
-              <div>
+              <div className="space-y-2">
                 <Label htmlFor="bio">Professional Bio</Label>
                 <Textarea
                   id="bio"
-                  value={settings.bio}
-                  onChange={(e) => handleSettingChange("bio", e.target.value)}
-                  rows={3}
+                  placeholder="Tell your clients about your background and expertise..."
+                  defaultValue="Certified nutritionist with 5 years of experience helping clients achieve their health goals through personalized nutrition plans."
                 />
               </div>
 
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="language">Preferred Language</Label>
-                  <Select value={settings.language} onValueChange={(value) => handleSettingChange("language", value)}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="english">English</SelectItem>
-                      <SelectItem value="swahili">Kiswahili</SelectItem>
-                      <SelectItem value="both">Both</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Label htmlFor="timezone">Timezone</Label>
-                  <Select value={settings.timezone} onValueChange={(value) => handleSettingChange("timezone", value)}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Africa/Nairobi">Africa/Nairobi (EAT)</SelectItem>
-                      <SelectItem value="Africa/Kampala">Africa/Kampala (EAT)</SelectItem>
-                      <SelectItem value="Africa/Dar_es_Salaam">Africa/Dar es Salaam (EAT)</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
+              <Button className="bg-[#1B5E20] hover:bg-[#2E7D32]">Save Changes</Button>
             </CardContent>
           </Card>
         </TabsContent>
 
-        {/* Practice Tab */}
-        <TabsContent value="practice" className="space-y-6">
+        <TabsContent value="notifications">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center">
-                <Building className="w-5 h-5 mr-2 text-[#1B5E20]" />
-                Practice Information
-              </CardTitle>
-              <CardDescription>Manage your practice details and professional credentials</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <Label htmlFor="practiceName">Practice/Clinic Name</Label>
-                <Input
-                  id="practiceName"
-                  value={settings.practiceName}
-                  onChange={(e) => handleSettingChange("practiceName", e.target.value)}
-                />
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="practiceType">Practice Type</Label>
-                  <Select
-                    value={settings.practiceType}
-                    onValueChange={(value) => handleSettingChange("practiceType", value)}
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Solo Practitioner">Solo Practitioner</SelectItem>
-                      <SelectItem value="Small Clinic">Small Clinic</SelectItem>
-                      <SelectItem value="Large Clinic">Large Clinic</SelectItem>
-                      <SelectItem value="Hospital">Hospital Department</SelectItem>
-                      <SelectItem value="NGO">NGO/Community Health</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Label htmlFor="location">Location</Label>
-                  <Input
-                    id="location"
-                    value={settings.location}
-                    onChange={(e) => handleSettingChange("location", e.target.value)}
-                  />
-                </div>
-              </div>
-
-              <div>
-                <Label htmlFor="license">Professional License Number</Label>
-                <Input
-                  id="license"
-                  value={settings.license}
-                  onChange={(e) => handleSettingChange("license", e.target.value)}
-                />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Regional Settings</CardTitle>
-              <CardDescription>Configure regional preferences for your practice</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="dateFormat">Date Format</Label>
-                  <Select
-                    value={settings.dateFormat}
-                    onValueChange={(value) => handleSettingChange("dateFormat", value)}
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="dd/mm/yyyy">DD/MM/YYYY</SelectItem>
-                      <SelectItem value="mm/dd/yyyy">MM/DD/YYYY</SelectItem>
-                      <SelectItem value="yyyy-mm-dd">YYYY-MM-DD</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Label htmlFor="currency">Currency</Label>
-                  <Select value={settings.currency} onValueChange={(value) => handleSettingChange("currency", value)}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="KES">KES (Kenyan Shilling)</SelectItem>
-                      <SelectItem value="USD">USD (US Dollar)</SelectItem>
-                      <SelectItem value="EUR">EUR (Euro)</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* Notifications Tab */}
-        <TabsContent value="notifications" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <Bell className="w-5 h-5 mr-2 text-[#1B5E20]" />
+                <Bell className="w-5 h-5 mr-2" />
                 Notification Preferences
               </CardTitle>
-              <CardDescription>Choose how you want to receive notifications</CardDescription>
+              <CardDescription>Choose how you want to be notified about important updates</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <Mail className="w-5 h-5 text-gray-400" />
-                    <div>
-                      <p className="font-medium">Email Notifications</p>
-                      <p className="text-sm text-gray-500">Receive notifications via email</p>
-                    </div>
+                  <div>
+                    <Label htmlFor="email-notifications">Email Notifications</Label>
+                    <p className="text-sm text-gray-500">Receive notifications via email</p>
                   </div>
                   <Switch
-                    checked={settings.emailNotifications}
-                    onCheckedChange={(checked) => handleSettingChange("emailNotifications", checked)}
+                    id="email-notifications"
+                    checked={notifications.email}
+                    onCheckedChange={(checked) => setNotifications({ ...notifications, email: checked })}
                   />
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <Smartphone className="w-5 h-5 text-gray-400" />
-                    <div>
-                      <p className="font-medium">SMS Reminders</p>
-                      <p className="text-sm text-gray-500">Send appointment reminders via SMS</p>
-                    </div>
+                  <div>
+                    <Label htmlFor="sms-notifications">SMS Notifications</Label>
+                    <p className="text-sm text-gray-500">Receive notifications via SMS</p>
                   </div>
                   <Switch
-                    checked={settings.smsReminders}
-                    onCheckedChange={(checked) => handleSettingChange("smsReminders", checked)}
+                    id="sms-notifications"
+                    checked={notifications.sms}
+                    onCheckedChange={(checked) => setNotifications({ ...notifications, sms: checked })}
                   />
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <Globe className="w-5 h-5 text-gray-400" />
-                    <div>
-                      <p className="font-medium">WhatsApp Integration</p>
-                      <p className="text-sm text-gray-500">Connect with clients via WhatsApp</p>
-                    </div>
+                  <div>
+                    <Label htmlFor="push-notifications">Push Notifications</Label>
+                    <p className="text-sm text-gray-500">Receive push notifications in your browser</p>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <Badge variant="secondary">Coming Soon</Badge>
+                  <Switch
+                    id="push-notifications"
+                    checked={notifications.push}
+                    onCheckedChange={(checked) => setNotifications({ ...notifications, push: checked })}
+                  />
+                </div>
+              </div>
+
+              <div className="border-t pt-6">
+                <h3 className="font-medium mb-4">Notification Types</h3>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label htmlFor="appointment-notifications">Appointment Reminders</Label>
+                      <p className="text-sm text-gray-500">Get notified about upcoming appointments</p>
+                    </div>
                     <Switch
-                      checked={settings.whatsappIntegration}
-                      onCheckedChange={(checked) => handleSettingChange("whatsappIntegration", checked)}
-                      disabled
+                      id="appointment-notifications"
+                      checked={notifications.appointments}
+                      onCheckedChange={(checked) => setNotifications({ ...notifications, appointments: checked })}
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label htmlFor="message-notifications">New Messages</Label>
+                      <p className="text-sm text-gray-500">Get notified when clients send messages</p>
+                    </div>
+                    <Switch
+                      id="message-notifications"
+                      checked={notifications.messages}
+                      onCheckedChange={(checked) => setNotifications({ ...notifications, messages: checked })}
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label htmlFor="marketing-notifications">Marketing Updates</Label>
+                      <p className="text-sm text-gray-500">Receive updates about new features and tips</p>
+                    </div>
+                    <Switch
+                      id="marketing-notifications"
+                      checked={notifications.marketing}
+                      onCheckedChange={(checked) => setNotifications({ ...notifications, marketing: checked })}
                     />
                   </div>
                 </div>
               </div>
 
-              <div className="border-t pt-4">
-                <h4 className="font-medium mb-4">Notification Types</h4>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Appointment Reminders</span>
-                    <Switch
-                      checked={settings.appointmentReminders}
-                      onCheckedChange={(checked) => handleSettingChange("appointmentReminders", checked)}
-                    />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Client Progress Updates</span>
-                    <Switch
-                      checked={settings.clientUpdates}
-                      onCheckedChange={(checked) => handleSettingChange("clientUpdates", checked)}
-                    />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Marketing & Feature Updates</span>
-                    <Switch
-                      checked={settings.marketingEmails}
-                      onCheckedChange={(checked) => handleSettingChange("marketingEmails", checked)}
-                    />
-                  </div>
-                </div>
-              </div>
+              <Button className="bg-[#1B5E20] hover:bg-[#2E7D32]">Save Preferences</Button>
             </CardContent>
           </Card>
         </TabsContent>
 
-        {/* Security Tab */}
-        <TabsContent value="security" className="space-y-6">
+        <TabsContent value="security">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center">
-                <Shield className="w-5 h-5 mr-2 text-[#1B5E20]" />
+                <Shield className="w-5 h-5 mr-2" />
                 Security Settings
               </CardTitle>
               <CardDescription>Manage your account security and privacy</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div>
-                <h4 className="font-medium mb-4">Password</h4>
-                <div className="space-y-4">
-                  <div>
-                    <Label htmlFor="currentPassword">Current Password</Label>
-                    <div className="relative">
-                      <Input
-                        id="currentPassword"
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Enter current password"
-                      />
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        className="absolute right-0 top-0 h-full px-3"
-                        onClick={() => setShowPassword(!showPassword)}
-                      >
-                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                      </Button>
-                    </div>
-                  </div>
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="newPassword">New Password</Label>
-                      <Input id="newPassword" type="password" placeholder="Enter new password" />
-                    </div>
-                    <div>
-                      <Label htmlFor="confirmPassword">Confirm Password</Label>
-                      <Input id="confirmPassword" type="password" placeholder="Confirm new password" />
-                    </div>
-                  </div>
-                  <Button variant="outline">Update Password</Button>
+              <div className="space-y-4">
+                <div>
+                  <Label htmlFor="current-password">Current Password</Label>
+                  <Input id="current-password" type="password" />
+                </div>
+                <div>
+                  <Label htmlFor="new-password">New Password</Label>
+                  <Input id="new-password" type="password" />
+                </div>
+                <div>
+                  <Label htmlFor="confirm-password">Confirm New Password</Label>
+                  <Input id="confirm-password" type="password" />
                 </div>
               </div>
 
+              <Button className="bg-[#1B5E20] hover:bg-[#2E7D32]">Update Password</Button>
+
               <div className="border-t pt-6">
-                <h4 className="font-medium mb-4">Two-Factor Authentication</h4>
-                <div className="flex items-center justify-between p-4 border rounded-lg">
+                <h3 className="font-medium mb-4">Two-Factor Authentication</h3>
+                <div className="flex items-center justify-between">
                   <div>
                     <p className="font-medium">Enable 2FA</p>
                     <p className="text-sm text-gray-500">Add an extra layer of security to your account</p>
                   </div>
-                  <Switch
-                    checked={settings.twoFactorAuth}
-                    onCheckedChange={(checked) => handleSettingChange("twoFactorAuth", checked)}
-                  />
+                  <Button variant="outline">Enable</Button>
                 </div>
               </div>
 
               <div className="border-t pt-6">
-                <h4 className="font-medium mb-4">Session Management</h4>
-                <div>
-                  <Label htmlFor="sessionTimeout">Session Timeout (minutes)</Label>
-                  <Select
-                    value={settings.sessionTimeout}
-                    onValueChange={(value) => handleSettingChange("sessionTimeout", value)}
-                  >
-                    <SelectTrigger className="w-48">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="15">15 minutes</SelectItem>
-                      <SelectItem value="30">30 minutes</SelectItem>
-                      <SelectItem value="60">1 hour</SelectItem>
-                      <SelectItem value="120">2 hours</SelectItem>
-                    </SelectContent>
-                  </Select>
+                <h3 className="font-medium mb-4">Active Sessions</h3>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between p-3 border rounded-lg">
+                    <div>
+                      <p className="font-medium">Current Session</p>
+                      <p className="text-sm text-gray-500">Chrome on MacOS • Nairobi, Kenya</p>
+                    </div>
+                    <Badge variant="secondary">Active</Badge>
+                  </div>
                 </div>
               </div>
             </CardContent>
           </Card>
         </TabsContent>
 
-        {/* Billing Tab */}
-        <TabsContent value="billing" className="space-y-6">
+        <TabsContent value="billing">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center">
-                <CreditCard className="w-5 h-5 mr-2 text-[#1B5E20]" />
-                Subscription & Billing
+                <CreditCard className="w-5 h-5 mr-2" />
+                Billing & Subscription
               </CardTitle>
               <CardDescription>Manage your subscription and payment methods</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+              <div className="p-4 border rounded-lg bg-green-50">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="font-medium text-green-800">Solo Practice Plan</p>
-                    <p className="text-sm text-green-600">Active until March 20, 2025</p>
+                    <h3 className="font-medium text-green-900">Professional Plan</h3>
+                    <p className="text-sm text-green-700">$29/month • Next billing: Feb 15, 2024</p>
                   </div>
                   <Badge className="bg-green-100 text-green-800">Active</Badge>
-                </div>
-                <div className="mt-3 flex items-center justify-between">
-                  <span className="text-2xl font-bold text-green-800">KES 2,500/month</span>
-                  <Button variant="outline" size="sm">
-                    Change Plan
-                  </Button>
                 </div>
               </div>
 
               <div>
-                <h4 className="font-medium mb-4">Payment Method</h4>
+                <h3 className="font-medium mb-4">Payment Method</h3>
                 <div className="p-4 border rounded-lg">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
-                      <div className="w-10 h-6 bg-blue-600 rounded flex items-center justify-center">
-                        <span className="text-white text-xs font-bold">VISA</span>
+                      <div className="w-8 h-6 bg-blue-600 rounded text-white text-xs flex items-center justify-center">
+                        VISA
                       </div>
                       <div>
                         <p className="font-medium">•••• •••• •••• 4242</p>
-                        <p className="text-sm text-gray-500">Expires 12/26</p>
+                        <p className="text-sm text-gray-500">Expires 12/25</p>
                       </div>
                     </div>
                     <Button variant="outline" size="sm">
@@ -528,107 +303,40 @@ export default function SettingsPage() {
               </div>
 
               <div>
-                <h4 className="font-medium mb-4">Billing History</h4>
+                <h3 className="font-medium mb-4">Billing History</h3>
                 <div className="space-y-3">
-                  {[
-                    { date: "Feb 20, 2025", amount: "KES 2,500", status: "Paid" },
-                    { date: "Jan 20, 2025", amount: "KES 2,500", status: "Paid" },
-                    { date: "Dec 20, 2024", amount: "KES 2,500", status: "Paid" },
-                  ].map((invoice, index) => (
-                    <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
-                      <div>
-                        <p className="font-medium">{invoice.date}</p>
-                        <p className="text-sm text-gray-500">{invoice.amount}</p>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Badge variant="outline">{invoice.status}</Badge>
-                        <Button variant="ghost" size="sm">
-                          <Download className="w-4 h-4" />
-                        </Button>
-                      </div>
+                  <div className="flex items-center justify-between p-3 border rounded-lg">
+                    <div>
+                      <p className="font-medium">January 2024</p>
+                      <p className="text-sm text-gray-500">Professional Plan</p>
                     </div>
-                  ))}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* Compliance Tab */}
-        <TabsContent value="compliance" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <FileText className="w-5 h-5 mr-2 text-[#1B5E20]" />
-                Data Compliance
-              </CardTitle>
-              <CardDescription>Manage data privacy and compliance settings</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
-                <div className="flex items-center space-x-2 mb-2">
-                  <Shield className="w-5 h-5 text-green-600" />
-                  <span className="font-medium text-green-800">DPA 2019 Compliant</span>
-                </div>
-                <p className="text-sm text-green-700">
-                  Your AfyaNutrix account is fully compliant with Kenya's Data Protection Act 2019.
-                </p>
-              </div>
-
-              <div>
-                <h4 className="font-medium mb-4">Data Retention</h4>
-                <div>
-                  <Label htmlFor="dataRetention">Client Data Retention Period</Label>
-                  <Select
-                    value={settings.dataRetention}
-                    onValueChange={(value) => handleSettingChange("dataRetention", value)}
-                  >
-                    <SelectTrigger className="w-48">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="1year">1 Year</SelectItem>
-                      <SelectItem value="3years">3 Years</SelectItem>
-                      <SelectItem value="5years">5 Years</SelectItem>
-                      <SelectItem value="7years">7 Years</SelectItem>
-                      <SelectItem value="indefinite">Indefinite</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <p className="text-sm text-gray-500 mt-1">How long to retain client data after account closure</p>
-                </div>
-              </div>
-
-              <div>
-                <h4 className="font-medium mb-4">Data Export & Deletion</h4>
-                <div className="space-y-3">
-                  <Button variant="outline" className="w-full justify-start bg-transparent">
-                    <Download className="w-4 h-4 mr-2" />
-                    Export All Client Data
-                  </Button>
-                  <Button variant="outline" className="w-full justify-start bg-transparent">
-                    <FileText className="w-4 h-4 mr-2" />
-                    Generate Compliance Report
-                  </Button>
-                </div>
-              </div>
-
-              <div className="border-t pt-6">
-                <h4 className="font-medium mb-4 text-red-600">Danger Zone</h4>
-                <div className="p-4 border border-red-200 rounded-lg bg-red-50">
-                  <div className="flex items-start space-x-3">
-                    <AlertTriangle className="w-5 h-5 text-red-600 mt-0.5" />
-                    <div className="flex-1">
-                      <p className="font-medium text-red-800">Delete Account</p>
-                      <p className="text-sm text-red-700 mb-3">
-                        Permanently delete your account and all associated data. This action cannot be undone.
-                      </p>
-                      <Button variant="destructive" size="sm">
-                        <Trash2 className="w-4 h-4 mr-2" />
-                        Delete Account
+                    <div className="text-right">
+                      <p className="font-medium">$29.00</p>
+                      <Button variant="ghost" size="sm" className="text-xs">
+                        Download
+                      </Button>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between p-3 border rounded-lg">
+                    <div>
+                      <p className="font-medium">December 2023</p>
+                      <p className="text-sm text-gray-500">Professional Plan</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-medium">$29.00</p>
+                      <Button variant="ghost" size="sm" className="text-xs">
+                        Download
                       </Button>
                     </div>
                   </div>
                 </div>
+              </div>
+
+              <div className="flex space-x-4">
+                <Button variant="outline">Change Plan</Button>
+                <Button variant="outline" className="text-red-600 hover:text-red-700 bg-transparent">
+                  Cancel Subscription
+                </Button>
               </div>
             </CardContent>
           </Card>

@@ -1,358 +1,183 @@
 "use client"
 
 import { useState } from "react"
-import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Calendar } from "@/components/ui/calendar"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import {
-  Plus,
-  CalendarIcon,
-  Clock,
-  MoreHorizontal,
-  Eye,
-  Edit,
-  MessageSquare,
-  Phone,
-  CheckCircle,
-  XCircle,
-  TrendingUp,
-} from "lucide-react"
-import Link from "next/link"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Calendar, Clock, Plus, Video, MapPin } from "lucide-react"
 
 export default function AppointmentsPage() {
-  const [date, setDate] = useState<Date | undefined>(new Date())
+  const [selectedDate, setSelectedDate] = useState(new Date())
 
   const appointments = [
     {
       id: 1,
+      clientName: "Sarah Johnson",
+      clientAvatar: "/placeholder-user.jpg",
+      date: "2024-01-22",
       time: "09:00 AM",
-      client: "Grace Mwangi",
-      type: "Follow-up Consultation",
-      status: "confirmed",
-      duration: "30 min",
-      notes: "Review weight loss progress",
-      phone: "+254 700 123 456",
-      date: "2024-01-20",
+      duration: "60 min",
+      type: "Initial Consultation",
+      status: "Confirmed",
+      location: "Video Call",
+      notes: "First session - discuss goals and dietary preferences",
     },
     {
       id: 2,
-      time: "10:30 AM",
-      client: "John Kamau",
-      type: "Initial Consultation",
-      status: "pending",
-      duration: "60 min",
-      notes: "Diabetes management consultation",
-      phone: "+254 700 234 567",
-      date: "2024-01-20",
+      clientName: "Michael Chen",
+      clientAvatar: "/placeholder-user.jpg",
+      date: "2024-01-22",
+      time: "11:00 AM",
+      duration: "45 min",
+      type: "Follow-up",
+      status: "Confirmed",
+      location: "In-Person",
+      notes: "Review progress and adjust meal plan",
     },
     {
       id: 3,
+      clientName: "Emma Wilson",
+      clientAvatar: "/placeholder-user.jpg",
+      date: "2024-01-22",
       time: "02:00 PM",
-      client: "Mary Wanjiku",
-      type: "Meal Plan Review",
-      status: "confirmed",
-      duration: "45 min",
-      notes: "Adjust muscle building plan",
-      phone: "+254 700 345 678",
-      date: "2024-01-20",
-    },
-    {
-      id: 4,
-      time: "04:30 PM",
-      client: "David Ochieng",
-      type: "Progress Check",
-      status: "cancelled",
       duration: "30 min",
-      notes: "Client requested reschedule",
-      phone: "+254 700 456 789",
-      date: "2024-01-20",
-    },
-    {
-      id: 5,
-      time: "11:00 AM",
-      client: "Faith Akinyi",
-      type: "Follow-up",
-      status: "confirmed",
-      duration: "30 min",
-      notes: "Pregnancy nutrition follow-up",
-      phone: "+254 700 567 890",
-      date: "2024-01-21",
+      type: "Check-in",
+      status: "Pending",
+      location: "Video Call",
+      notes: "Quick progress check and Q&A",
     },
   ]
 
-  const todayAppointments = appointments.filter((apt) => apt.date === "2024-01-20")
-  const upcomingAppointments = appointments.filter((apt) => apt.date > "2024-01-20")
-
-  const stats = [
-    {
-      label: "Today's Appointments",
-      value: todayAppointments.length,
-      icon: CalendarIcon,
-      color: "text-blue-600",
-    },
-    {
-      label: "Confirmed",
-      value: todayAppointments.filter((a) => a.status === "confirmed").length,
-      icon: CheckCircle,
-      color: "text-green-600",
-    },
-    {
-      label: "Pending",
-      value: todayAppointments.filter((a) => a.status === "pending").length,
-      icon: Clock,
-      color: "text-orange-600",
-    },
-    {
-      label: "This Week",
-      value: appointments.length,
-      icon: TrendingUp,
-      color: "text-purple-600",
-    },
-  ]
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "confirmed":
-        return "default"
-      case "pending":
-        return "secondary"
-      case "cancelled":
-        return "destructive"
-      case "completed":
-        return "outline"
-      default:
-        return "secondary"
-    }
-  }
+  const upcomingAppointments = appointments.filter((apt) => apt.status === "Confirmed")
+  const pendingAppointments = appointments.filter((apt) => apt.status === "Pending")
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Appointments</h1>
-          <p className="text-gray-600 mt-1">Manage your consultation schedule and client meetings</p>
+          <p className="text-gray-600 mt-2">Manage your client appointments</p>
         </div>
-        <Link href="/dashboard/appointments/new">
-          <Button className="bg-[#1B5E20] hover:bg-[#2E7D32]">
-            <Plus className="w-4 h-4 mr-2" />
-            Schedule Appointment
-          </Button>
-        </Link>
+        <Button className="bg-[#1B5E20] hover:bg-[#2E7D32]">
+          <Plus className="w-4 h-4 mr-2" />
+          Schedule Appointment
+        </Button>
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {stats.map((stat, index) => (
-          <Card key={index}>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">{stat.label}</p>
-                  <p className="text-2xl font-bold text-gray-900 mt-1">{stat.value}</p>
-                </div>
-                <div className={`p-3 rounded-full bg-gray-100 ${stat.color}`}>
-                  <stat.icon className="w-6 h-6" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      <div className="grid lg:grid-cols-3 gap-6">
-        {/* Calendar */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Calendar</CardTitle>
-            <CardDescription>Select a date to view appointments</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Calendar mode="single" selected={date} onSelect={setDate} className="rounded-md border" />
-          </CardContent>
-        </Card>
-
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Today's Schedule */}
-        <Card className="lg:col-span-2">
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <div>
-                <CardTitle>Today's Schedule</CardTitle>
-                <CardDescription>Saturday, January 20, 2024</CardDescription>
-              </div>
-              <Badge className="bg-[#1B5E20]">{todayAppointments.length} appointments</Badge>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {todayAppointments.map((appointment) => (
-                <div
-                  key={appointment.id}
-                  className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 transition-colors"
-                >
-                  <div className="flex items-center space-x-4">
-                    <div className="text-center">
-                      <p className="text-sm font-medium text-gray-900">{appointment.time}</p>
-                      <p className="text-xs text-gray-500">{appointment.duration}</p>
-                    </div>
-                    <div className="w-px h-12 bg-gray-200"></div>
-                    <div>
-                      <p className="font-medium text-gray-900">{appointment.client}</p>
-                      <p className="text-sm text-gray-600">{appointment.type}</p>
-                      <p className="text-xs text-gray-500">{appointment.notes}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Badge variant={getStatusColor(appointment.status)}>{appointment.status}</Badge>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="sm">
-                          <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem>
-                          <Eye className="mr-2 h-4 w-4" />
-                          View Details
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                          <Edit className="mr-2 h-4 w-4" />
-                          Edit Appointment
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                          <MessageSquare className="mr-2 h-4 w-4" />
-                          Send Message
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                          <Phone className="mr-2 h-4 w-4" />
-                          Call Client
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        {appointment.status === "pending" && (
-                          <DropdownMenuItem>
-                            <CheckCircle className="mr-2 h-4 w-4" />
-                            Confirm
-                          </DropdownMenuItem>
-                        )}
-                        <DropdownMenuItem className="text-red-600">
-                          <XCircle className="mr-2 h-4 w-4" />
-                          Cancel
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </div>
-                </div>
-              ))}
-              {todayAppointments.length === 0 && (
-                <div className="text-center py-8 text-gray-500">
-                  <CalendarIcon className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-                  <p>No appointments scheduled for today</p>
-                </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* All Appointments Table */}
-      <Card>
-        <CardHeader>
-          <CardTitle>All Appointments</CardTitle>
-          <CardDescription>Complete list of scheduled and past appointments</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Date & Time</TableHead>
-                  <TableHead>Client</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Duration</TableHead>
-                  <TableHead>Notes</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {appointments.map((appointment) => (
-                  <TableRow key={appointment.id} className="hover:bg-gray-50">
-                    <TableCell>
-                      <div>
-                        <p className="font-medium text-gray-900">{appointment.date}</p>
-                        <p className="text-sm text-gray-500">{appointment.time}</p>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center space-x-2">
-                        <div className="w-8 h-8 bg-[#1B5E20] rounded-full flex items-center justify-center text-white text-sm">
-                          {appointment.client
+        <div className="lg:col-span-2">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <Calendar className="w-5 h-5 mr-2" />
+                Today's Schedule
+              </CardTitle>
+              <CardDescription>Monday, January 22, 2024</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {upcomingAppointments.map((appointment) => (
+                  <div
+                    key={appointment.id}
+                    className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50"
+                  >
+                    <div className="flex items-center space-x-4">
+                      <Avatar>
+                        <AvatarImage src={appointment.clientAvatar || "/placeholder.svg"} />
+                        <AvatarFallback>
+                          {appointment.clientName
                             .split(" ")
                             .map((n) => n[0])
                             .join("")}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <h3 className="font-semibold text-gray-900">{appointment.clientName}</h3>
+                        <div className="flex items-center space-x-4 text-sm text-gray-500 mt-1">
+                          <div className="flex items-center">
+                            <Clock className="w-3 h-3 mr-1" />
+                            {appointment.time} ({appointment.duration})
+                          </div>
+                          <div className="flex items-center">
+                            {appointment.location === "Video Call" ? (
+                              <Video className="w-3 h-3 mr-1" />
+                            ) : (
+                              <MapPin className="w-3 h-3 mr-1" />
+                            )}
+                            {appointment.location}
+                          </div>
                         </div>
-                        <div>
-                          <p className="font-medium text-gray-900">{appointment.client}</p>
-                          <p className="text-xs text-gray-500">{appointment.phone}</p>
-                        </div>
+                        <p className="text-xs text-gray-500 mt-1">{appointment.notes}</p>
                       </div>
-                    </TableCell>
-                    <TableCell>
-                      <span className="text-sm text-gray-600">{appointment.type}</span>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant={getStatusColor(appointment.status)}>{appointment.status}</Badge>
-                    </TableCell>
-                    <TableCell>
-                      <span className="text-sm text-gray-600">{appointment.duration}</span>
-                    </TableCell>
-                    <TableCell>
-                      <span className="text-sm text-gray-600 max-w-xs truncate">{appointment.notes}</span>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" className="h-8 w-8 p-0">
-                            <MoreHorizontal className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                          <DropdownMenuItem>
-                            <Eye className="mr-2 h-4 w-4" />
-                            View Details
-                          </DropdownMenuItem>
-                          <DropdownMenuItem>
-                            <Edit className="mr-2 h-4 w-4" />
-                            Edit
-                          </DropdownMenuItem>
-                          <DropdownMenuItem>
-                            <MessageSquare className="mr-2 h-4 w-4" />
-                            Message Client
-                          </DropdownMenuItem>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem className="text-red-600">Cancel Appointment</DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
-                  </TableRow>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                      <Badge variant="outline">{appointment.type}</Badge>
+                      <Badge variant={appointment.status === "Confirmed" ? "default" : "secondary"}>
+                        {appointment.status}
+                      </Badge>
+                    </div>
+                  </div>
                 ))}
-              </TableBody>
-            </Table>
-          </div>
-        </CardContent>
-      </Card>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Quick Stats & Pending */}
+        <div className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Quick Stats</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-600">Today's Appointments</span>
+                <span className="font-semibold">{upcomingAppointments.length}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-600">This Week</span>
+                <span className="font-semibold">12</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-600">Pending Confirmations</span>
+                <span className="font-semibold text-orange-600">{pendingAppointments.length}</span>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Pending Confirmations</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {pendingAppointments.map((appointment) => (
+                  <div key={appointment.id} className="p-3 border rounded-lg">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="font-medium text-sm">{appointment.clientName}</p>
+                        <p className="text-xs text-gray-500">{appointment.time}</p>
+                      </div>
+                      <Badge variant="secondary">Pending</Badge>
+                    </div>
+                    <div className="flex space-x-2 mt-2">
+                      <Button size="sm" variant="outline" className="text-xs bg-transparent">
+                        Confirm
+                      </Button>
+                      <Button size="sm" variant="outline" className="text-xs bg-transparent">
+                        Reschedule
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
   )
 }
