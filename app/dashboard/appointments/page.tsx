@@ -3,181 +3,470 @@
 import { useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Calendar, Clock, Plus, Video, MapPin } from "lucide-react"
+import { Calendar } from "@/components/ui/calendar"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import {
+  CalendarIcon,
+  Plus,
+  Search,
+  Filter,
+  MoreHorizontal,
+  Clock,
+  User,
+  CheckCircle,
+  XCircle,
+  Edit,
+  Trash2,
+} from "lucide-react"
 
 export default function AppointmentsPage() {
-  const [selectedDate, setSelectedDate] = useState(new Date())
+  const [date, setDate] = useState<Date | undefined>(new Date())
+  const [searchTerm, setSearchTerm] = useState("")
+  const [selectedStatus, setSelectedStatus] = useState("all")
 
   const appointments = [
     {
       id: 1,
-      clientName: "Sarah Johnson",
+      client: "Sarah Johnson",
       clientAvatar: "/placeholder-user.jpg",
       date: "2024-01-22",
-      time: "09:00 AM",
-      duration: "60 min",
+      time: "10:00 AM",
+      duration: 60,
       type: "Initial Consultation",
-      status: "Confirmed",
-      location: "Video Call",
-      notes: "First session - discuss goals and dietary preferences",
+      status: "scheduled",
+      notes: "First time client, weight loss goals",
     },
     {
       id: 2,
-      clientName: "Michael Chen",
+      client: "Michael Chen",
       clientAvatar: "/placeholder-user.jpg",
       date: "2024-01-22",
-      time: "11:00 AM",
-      duration: "45 min",
+      time: "11:30 AM",
+      duration: 45,
       type: "Follow-up",
-      status: "Confirmed",
-      location: "In-Person",
-      notes: "Review progress and adjust meal plan",
+      status: "completed",
+      notes: "Progress review, adjust meal plan",
     },
     {
       id: 3,
-      clientName: "Emma Wilson",
+      client: "Emma Wilson",
       clientAvatar: "/placeholder-user.jpg",
       date: "2024-01-22",
-      time: "02:00 PM",
-      duration: "30 min",
-      type: "Check-in",
-      status: "Pending",
-      location: "Video Call",
-      notes: "Quick progress check and Q&A",
+      time: "2:00 PM",
+      duration: 60,
+      type: "Meal Plan Review",
+      status: "scheduled",
+      notes: "Review current meal plan effectiveness",
+    },
+    {
+      id: 4,
+      client: "David Brown",
+      clientAvatar: "/placeholder-user.jpg",
+      date: "2024-01-22",
+      time: "3:30 PM",
+      duration: 30,
+      type: "Progress Check",
+      status: "cancelled",
+      notes: "Client requested reschedule",
+    },
+    {
+      id: 5,
+      client: "Lisa Anderson",
+      clientAvatar: "/placeholder-user.jpg",
+      date: "2024-01-23",
+      time: "9:00 AM",
+      duration: 60,
+      type: "Initial Consultation",
+      status: "scheduled",
+      notes: "New client, muscle gain goals",
     },
   ]
 
-  const upcomingAppointments = appointments.filter((apt) => apt.status === "Confirmed")
-  const pendingAppointments = appointments.filter((apt) => apt.status === "Pending")
+  const filteredAppointments = appointments.filter((appointment) => {
+    const matchesSearch =
+      appointment.client.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      appointment.type.toLowerCase().includes(searchTerm.toLowerCase())
+    const matchesStatus = selectedStatus === "all" || appointment.status === selectedStatus
+    return matchesSearch && matchesStatus
+  })
+
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case "scheduled":
+        return <Badge className="bg-blue-100 text-blue-800">Scheduled</Badge>
+      case "completed":
+        return <Badge className="bg-green-100 text-green-800">Completed</Badge>
+      case "cancelled":
+        return <Badge className="bg-red-100 text-red-800">Cancelled</Badge>
+      case "no-show":
+        return <Badge className="bg-gray-100 text-gray-800">No Show</Badge>
+      default:
+        return <Badge variant="outline">{status}</Badge>
+    }
+  }
+
+  const todayAppointments = appointments.filter((apt) => apt.date === "2024-01-22")
+  const upcomingAppointments = appointments.filter((apt) => new Date(apt.date) > new Date("2024-01-22"))
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Appointments</h1>
-          <p className="text-gray-600 mt-2">Manage your client appointments</p>
+          <p className="text-gray-600 mt-1">Manage your consultation schedule and client meetings</p>
         </div>
-        <Button className="bg-[#1B5E20] hover:bg-[#2E7D32]">
-          <Plus className="w-4 h-4 mr-2" />
-          Schedule Appointment
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button>
+              <Plus className="w-4 h-4 mr-2" />
+              Schedule Appointment
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Schedule New Appointment</DialogTitle>
+              <DialogDescription>Book a new consultation session with a client.</DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="client" className="text-right">
+                  Client
+                </Label>
+                <Select>
+                  <SelectTrigger className="col-span-3">
+                    <SelectValue placeholder="Select client" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="sarah">Sarah Johnson</SelectItem>
+                    <SelectItem value="michael">Michael Chen</SelectItem>
+                    <SelectItem value="emma">Emma Wilson</SelectItem>
+                    <SelectItem value="david">David Brown</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="type" className="text-right">
+                  Type
+                </Label>
+                <Select>
+                  <SelectTrigger className="col-span-3">
+                    <SelectValue placeholder="Select type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="initial">Initial Consultation</SelectItem>
+                    <SelectItem value="followup">Follow-up</SelectItem>
+                    <SelectItem value="meal-plan">Meal Plan Review</SelectItem>
+                    <SelectItem value="progress">Progress Check</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="date" className="text-right">
+                  Date
+                </Label>
+                <Input id="date" type="date" className="col-span-3" />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="time" className="text-right">
+                  Time
+                </Label>
+                <Input id="time" type="time" className="col-span-3" />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="duration" className="text-right">
+                  Duration
+                </Label>
+                <Select>
+                  <SelectTrigger className="col-span-3">
+                    <SelectValue placeholder="Select duration" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="30">30 minutes</SelectItem>
+                    <SelectItem value="45">45 minutes</SelectItem>
+                    <SelectItem value="60">60 minutes</SelectItem>
+                    <SelectItem value="90">90 minutes</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="notes" className="text-right">
+                  Notes
+                </Label>
+                <Textarea id="notes" placeholder="Appointment notes..." className="col-span-3" />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button type="submit">Schedule Appointment</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </div>
+
+      {/* Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Today's Appointments</p>
+                <p className="text-2xl font-bold text-gray-900">{todayAppointments.length}</p>
+              </div>
+              <CalendarIcon className="w-8 h-8 text-blue-600" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Completed Today</p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {todayAppointments.filter((apt) => apt.status === "completed").length}
+                </p>
+              </div>
+              <CheckCircle className="w-8 h-8 text-green-600" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Upcoming</p>
+                <p className="text-2xl font-bold text-gray-900">{upcomingAppointments.length}</p>
+              </div>
+              <Clock className="w-8 h-8 text-orange-600" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Cancelled</p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {appointments.filter((apt) => apt.status === "cancelled").length}
+                </p>
+              </div>
+              <XCircle className="w-8 h-8 text-red-600" />
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Calendar */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Calendar</CardTitle>
+            <CardDescription>Select a date to view appointments</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Calendar mode="single" selected={date} onSelect={setDate} className="rounded-md border" />
+          </CardContent>
+        </Card>
+
+        {/* Today's Schedule */}
+        <Card className="lg:col-span-2">
+          <CardHeader>
+            <CardTitle>Today's Schedule</CardTitle>
+            <CardDescription>Your appointments for today</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {todayAppointments.map((appointment) => (
+                <div key={appointment.id} className="flex items-center space-x-4 p-4 rounded-lg border">
+                  <Avatar>
+                    <AvatarImage src={appointment.clientAvatar || "/placeholder.svg"} alt={appointment.client} />
+                    <AvatarFallback>
+                      {appointment.client
+                        .split(" ")
+                        .map((n) => n[0])
+                        .join("")}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-medium">{appointment.client}</h4>
+                      {getStatusBadge(appointment.status)}
+                    </div>
+                    <p className="text-sm text-gray-600">{appointment.type}</p>
+                    <div className="flex items-center space-x-4 mt-2 text-sm text-gray-500">
+                      <div className="flex items-center space-x-1">
+                        <Clock className="w-4 h-4" />
+                        <span>{appointment.time}</span>
+                      </div>
+                      <span>•</span>
+                      <span>{appointment.duration} min</span>
+                    </div>
+                  </div>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" className="h-8 w-8 p-0">
+                        <MoreHorizontal className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                      <DropdownMenuItem>
+                        <Edit className="mr-2 h-4 w-4" />
+                        Edit Appointment
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <CheckCircle className="mr-2 h-4 w-4" />
+                        Mark Complete
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem className="text-red-600">
+                        <Trash2 className="mr-2 h-4 w-4" />
+                        Cancel Appointment
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Filters and Search */}
+      <div className="flex items-center space-x-4">
+        <div className="relative flex-1 max-w-sm">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+          <Input
+            placeholder="Search appointments..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10"
+          />
+        </div>
+        <Select value={selectedStatus} onValueChange={setSelectedStatus}>
+          <SelectTrigger className="w-40">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Status</SelectItem>
+            <SelectItem value="scheduled">Scheduled</SelectItem>
+            <SelectItem value="completed">Completed</SelectItem>
+            <SelectItem value="cancelled">Cancelled</SelectItem>
+          </SelectContent>
+        </Select>
+        <Button variant="outline">
+          <Filter className="w-4 h-4 mr-2" />
+          More Filters
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Today's Schedule */}
-        <div className="lg:col-span-2">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <Calendar className="w-5 h-5 mr-2" />
-                Today's Schedule
-              </CardTitle>
-              <CardDescription>Monday, January 22, 2024</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {upcomingAppointments.map((appointment) => (
-                  <div
-                    key={appointment.id}
-                    className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50"
-                  >
-                    <div className="flex items-center space-x-4">
+      {/* All Appointments Table */}
+      <Card>
+        <CardHeader>
+          <CardTitle>All Appointments</CardTitle>
+          <CardDescription>
+            Showing {filteredAppointments.length} of {appointments.length} appointments
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Client</TableHead>
+                <TableHead>Date & Time</TableHead>
+                <TableHead>Type</TableHead>
+                <TableHead>Duration</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Notes</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {filteredAppointments.map((appointment) => (
+                <TableRow key={appointment.id}>
+                  <TableCell>
+                    <div className="flex items-center space-x-3">
                       <Avatar>
-                        <AvatarImage src={appointment.clientAvatar || "/placeholder.svg"} />
+                        <AvatarImage src={appointment.clientAvatar || "/placeholder.svg"} alt={appointment.client} />
                         <AvatarFallback>
-                          {appointment.clientName
+                          {appointment.client
                             .split(" ")
                             .map((n) => n[0])
                             .join("")}
                         </AvatarFallback>
                       </Avatar>
-                      <div>
-                        <h3 className="font-semibold text-gray-900">{appointment.clientName}</h3>
-                        <div className="flex items-center space-x-4 text-sm text-gray-500 mt-1">
-                          <div className="flex items-center">
-                            <Clock className="w-3 h-3 mr-1" />
-                            {appointment.time} ({appointment.duration})
-                          </div>
-                          <div className="flex items-center">
-                            {appointment.location === "Video Call" ? (
-                              <Video className="w-3 h-3 mr-1" />
-                            ) : (
-                              <MapPin className="w-3 h-3 mr-1" />
-                            )}
-                            {appointment.location}
-                          </div>
-                        </div>
-                        <p className="text-xs text-gray-500 mt-1">{appointment.notes}</p>
-                      </div>
+                      <span className="font-medium">{appointment.client}</span>
                     </div>
-
-                    <div className="flex items-center space-x-2">
-                      <Badge variant="outline">{appointment.type}</Badge>
-                      <Badge variant={appointment.status === "Confirmed" ? "default" : "secondary"}>
-                        {appointment.status}
-                      </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <div className="space-y-1">
+                      <p className="font-medium">{appointment.date}</p>
+                      <p className="text-sm text-gray-500">{appointment.time}</p>
                     </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Quick Stats & Pending */}
-        <div className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Quick Stats</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">Today's Appointments</span>
-                <span className="font-semibold">{upcomingAppointments.length}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">This Week</span>
-                <span className="font-semibold">12</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">Pending Confirmations</span>
-                <span className="font-semibold text-orange-600">{pendingAppointments.length}</span>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Pending Confirmations</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {pendingAppointments.map((appointment) => (
-                  <div key={appointment.id} className="p-3 border rounded-lg">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium text-sm">{appointment.clientName}</p>
-                        <p className="text-xs text-gray-500">{appointment.time}</p>
-                      </div>
-                      <Badge variant="secondary">Pending</Badge>
-                    </div>
-                    <div className="flex space-x-2 mt-2">
-                      <Button size="sm" variant="outline" className="text-xs bg-transparent">
-                        Confirm
-                      </Button>
-                      <Button size="sm" variant="outline" className="text-xs bg-transparent">
-                        Reschedule
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant="outline">{appointment.type}</Badge>
+                  </TableCell>
+                  <TableCell>{appointment.duration} min</TableCell>
+                  <TableCell>{getStatusBadge(appointment.status)}</TableCell>
+                  <TableCell className="max-w-xs truncate">{appointment.notes}</TableCell>
+                  <TableCell className="text-right">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" className="h-8 w-8 p-0">
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                        <DropdownMenuItem>
+                          <Edit className="mr-2 h-4 w-4" />
+                          Edit Appointment
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                          <CheckCircle className="mr-2 h-4 w-4" />
+                          Mark Complete
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                          <User className="mr-2 h-4 w-4" />
+                          View Client
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem className="text-red-600">
+                          <Trash2 className="mr-2 h-4 w-4" />
+                          Cancel Appointment
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
     </div>
   )
 }

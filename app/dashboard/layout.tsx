@@ -32,7 +32,6 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useSearchParams } from "next/navigation"
 import { Suspense } from "react"
 
 const navigation = [
@@ -45,13 +44,12 @@ const navigation = [
   { name: "Settings", href: "/dashboard/settings", icon: Settings },
 ]
 
-export default function DashboardLayout({
+function DashboardLayoutContent({
   children,
 }: {
   children: React.ReactNode
 }) {
   const pathname = usePathname()
-  const searchParams = useSearchParams()
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   const Sidebar = ({ mobile = false }) => (
@@ -98,92 +96,109 @@ export default function DashboardLayout({
   )
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <div className="min-h-screen bg-gray-50">
-        {/* Desktop Sidebar */}
-        <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col">
-          <div className="flex flex-col flex-grow bg-white border-r border-gray-200 overflow-y-auto">
-            <Sidebar />
-          </div>
+    <div className="min-h-screen bg-gray-50">
+      {/* Desktop Sidebar */}
+      <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col">
+        <div className="flex flex-col flex-grow bg-white border-r border-gray-200 overflow-y-auto">
+          <Sidebar />
         </div>
+      </div>
 
-        {/* Mobile Sidebar */}
-        <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
-          <SheetContent side="left" className="p-0 w-64">
-            <div className="bg-white h-full">
-              <Sidebar mobile />
-            </div>
-          </SheetContent>
-        </Sheet>
+      {/* Mobile Sidebar */}
+      <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
+        <SheetContent side="left" className="p-0 w-64">
+          <div className="bg-white h-full">
+            <Sidebar mobile />
+          </div>
+        </SheetContent>
+      </Sheet>
 
-        {/* Main Content */}
-        <div className="lg:pl-64 flex flex-col flex-1">
-          {/* Top Header */}
-          <header className="bg-white border-b border-gray-200 px-4 py-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-4">
+      {/* Main Content */}
+      <div className="lg:pl-64 flex flex-col flex-1">
+        {/* Top Header */}
+        <header className="bg-white border-b border-gray-200 px-4 py-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
                 <SheetTrigger asChild>
-                  <Button variant="ghost" size="sm" className="lg:hidden" onClick={() => setSidebarOpen(true)}>
+                  <Button variant="ghost" size="sm" className="lg:hidden">
                     <Menu className="w-5 h-5" />
                   </Button>
                 </SheetTrigger>
+                <SheetContent side="left" className="p-0 w-64">
+                  <div className="bg-white h-full">
+                    <Sidebar mobile />
+                  </div>
+                </SheetContent>
+              </Sheet>
 
-                {/* Search */}
-                <div className="relative hidden sm:block">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                  <Input placeholder="Search clients, appointments..." className="pl-10 w-64" />
-                </div>
-              </div>
-
-              <div className="flex items-center space-x-4">
-                {/* Notifications */}
-                <Button variant="ghost" size="sm" className="relative">
-                  <Bell className="w-5 h-5" />
-                  <Badge className="absolute -top-1 -right-1 w-5 h-5 p-0 flex items-center justify-center text-xs bg-red-500">
-                    3
-                  </Badge>
-                </Button>
-
-                {/* User Menu */}
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="flex items-center space-x-2">
-                      <div className="w-8 h-8 bg-[#1B5E20] rounded-full flex items-center justify-center text-white text-sm font-medium">
-                        A
-                      </div>
-                      <span className="hidden sm:block text-sm font-medium">Amina Wanjiku</span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-56">
-                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>
-                      <User className="mr-2 h-4 w-4" />
-                      <span>Profile</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Settings className="mr-2 h-4 w-4" />
-                      <span>Settings</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <HelpCircle className="mr-2 h-4 w-4" />
-                      <span>Help</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem className="text-red-600">
-                      <LogOut className="mr-2 h-4 w-4" />
-                      <span>Log out</span>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+              {/* Search */}
+              <div className="relative hidden sm:block">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <Input placeholder="Search clients, appointments..." className="pl-10 w-64" />
               </div>
             </div>
-          </header>
 
-          {/* Page Content */}
-          <main className="flex-1 p-4 sm:p-6 lg:p-8">{children}</main>
-        </div>
+            <div className="flex items-center space-x-4">
+              {/* Notifications */}
+              <Button variant="ghost" size="sm" className="relative">
+                <Bell className="w-5 h-5" />
+                <Badge className="absolute -top-1 -right-1 w-5 h-5 p-0 flex items-center justify-center text-xs bg-red-500">
+                  3
+                </Badge>
+              </Button>
+
+              {/* User Menu */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="flex items-center space-x-2">
+                    <div className="w-8 h-8 bg-[#1B5E20] rounded-full flex items-center justify-center text-white text-sm font-medium">
+                      A
+                    </div>
+                    <span className="hidden sm:block text-sm font-medium">Amina Wanjiku</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    <User className="mr-2 h-4 w-4" />
+                    <span>Profile</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Settings className="mr-2 h-4 w-4" />
+                    <span>Settings</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <HelpCircle className="mr-2 h-4 w-4" />
+                    <span>Help</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem className="text-red-600">
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Log out</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </div>
+        </header>
+
+        {/* Page Content */}
+        <main className="flex-1 p-4 sm:p-6 lg:p-8">{children}</main>
       </div>
+    </div>
+  )
+}
+
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <DashboardLayoutContent>{children}</DashboardLayoutContent>
     </Suspense>
   )
 }

@@ -1,199 +1,432 @@
 "use client"
 
 import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Plus, Search, MoreHorizontal, Calendar } from "lucide-react"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import {
+  ChefHat,
+  Plus,
+  Search,
+  Filter,
+  MoreHorizontal,
+  Calendar,
+  User,
+  Edit,
+  Copy,
+  Trash2,
+  Download,
+} from "lucide-react"
 
 export default function MealPlansPage() {
   const [searchTerm, setSearchTerm] = useState("")
+  const [selectedStatus, setSelectedStatus] = useState("all")
 
   const mealPlans = [
     {
       id: 1,
-      title: "Weight Loss Plan - Sarah",
+      name: "Weight Loss Plan - Sarah",
       client: "Sarah Johnson",
       clientAvatar: "/placeholder-user.jpg",
-      type: "Weight Loss",
-      duration: "8 weeks",
-      status: "Active",
-      startDate: "2024-01-15",
-      calories: "1,500 kcal/day",
-      meals: 4,
-      progress: 75,
+      goal: "Weight Loss",
+      calories: 1500,
+      status: "active",
+      createdDate: "2024-01-15",
+      lastUpdated: "2024-01-20",
+      duration: "4 weeks",
+      meals: 5,
     },
     {
       id: 2,
-      title: "Muscle Building - Michael",
+      name: "Muscle Gain Plan - Michael",
       client: "Michael Chen",
       clientAvatar: "/placeholder-user.jpg",
-      type: "Muscle Gain",
-      duration: "12 weeks",
-      status: "Active",
-      startDate: "2024-01-10",
-      calories: "2,800 kcal/day",
+      goal: "Muscle Gain",
+      calories: 2800,
+      status: "active",
+      createdDate: "2024-01-10",
+      lastUpdated: "2024-01-18",
+      duration: "6 weeks",
       meals: 6,
-      progress: 60,
     },
     {
       id: 3,
-      title: "Maintenance Plan - Emma",
+      name: "Maintenance Plan - Emma",
       client: "Emma Wilson",
       clientAvatar: "/placeholder-user.jpg",
-      type: "Maintenance",
-      duration: "4 weeks",
-      status: "Completed",
-      startDate: "2023-12-20",
-      calories: "2,000 kcal/day",
-      meals: 3,
-      progress: 100,
+      goal: "Maintenance",
+      calories: 2000,
+      status: "draft",
+      createdDate: "2024-01-12",
+      lastUpdated: "2024-01-12",
+      duration: "2 weeks",
+      meals: 4,
+    },
+    {
+      id: 4,
+      name: "Athletic Performance - David",
+      client: "David Brown",
+      clientAvatar: "/placeholder-user.jpg",
+      goal: "Athletic Performance",
+      calories: 3200,
+      status: "completed",
+      createdDate: "2023-12-01",
+      lastUpdated: "2024-01-01",
+      duration: "8 weeks",
+      meals: 7,
     },
   ]
 
-  const filteredPlans = mealPlans.filter(
-    (plan) =>
-      plan.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      plan.client.toLowerCase().includes(searchTerm.toLowerCase()),
-  )
+  const filteredMealPlans = mealPlans.filter((plan) => {
+    const matchesSearch =
+      plan.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      plan.client.toLowerCase().includes(searchTerm.toLowerCase())
+    const matchesStatus = selectedStatus === "all" || plan.status === selectedStatus
+    return matchesSearch && matchesStatus
+  })
 
-  const getStatusColor = (status: string) => {
+  const getStatusBadge = (status: string) => {
     switch (status) {
-      case "Active":
-        return "default"
-      case "Completed":
-        return "secondary"
-      case "Paused":
-        return "destructive"
+      case "active":
+        return <Badge className="bg-green-100 text-green-800">Active</Badge>
+      case "draft":
+        return <Badge className="bg-yellow-100 text-yellow-800">Draft</Badge>
+      case "completed":
+        return <Badge className="bg-blue-100 text-blue-800">Completed</Badge>
+      case "paused":
+        return <Badge variant="secondary">Paused</Badge>
       default:
-        return "secondary"
+        return <Badge variant="outline">{status}</Badge>
     }
   }
 
-  const getTypeColor = (type: string) => {
-    switch (type) {
+  const getGoalColor = (goal: string) => {
+    switch (goal) {
       case "Weight Loss":
-        return "bg-red-50 text-red-700"
+        return "bg-red-100 text-red-800"
       case "Muscle Gain":
-        return "bg-blue-50 text-blue-700"
+        return "bg-blue-100 text-blue-800"
       case "Maintenance":
-        return "bg-green-50 text-green-700"
+        return "bg-green-100 text-green-800"
+      case "Athletic Performance":
+        return "bg-purple-100 text-purple-800"
       default:
-        return "bg-gray-50 text-gray-700"
+        return "bg-gray-100 text-gray-800"
     }
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Meal Plans</h1>
-          <p className="text-gray-600 mt-2">Create and manage nutrition plans for your clients</p>
+          <p className="text-gray-600 mt-1">Create and manage personalized nutrition plans for your clients</p>
         </div>
-        <Button className="bg-[#1B5E20] hover:bg-[#2E7D32]">
-          <Plus className="w-4 h-4 mr-2" />
-          Create Meal Plan
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button>
+              <Plus className="w-4 h-4 mr-2" />
+              Create Meal Plan
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[500px]">
+            <DialogHeader>
+              <DialogTitle>Create New Meal Plan</DialogTitle>
+              <DialogDescription>Design a personalized nutrition plan for your client.</DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="client" className="text-right">
+                  Client
+                </Label>
+                <Select>
+                  <SelectTrigger className="col-span-3">
+                    <SelectValue placeholder="Select client" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="sarah">Sarah Johnson</SelectItem>
+                    <SelectItem value="michael">Michael Chen</SelectItem>
+                    <SelectItem value="emma">Emma Wilson</SelectItem>
+                    <SelectItem value="david">David Brown</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="name" className="text-right">
+                  Plan Name
+                </Label>
+                <Input id="name" placeholder="e.g., Weight Loss Plan" className="col-span-3" />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="goal" className="text-right">
+                  Goal
+                </Label>
+                <Select>
+                  <SelectTrigger className="col-span-3">
+                    <SelectValue placeholder="Select goal" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="weight-loss">Weight Loss</SelectItem>
+                    <SelectItem value="muscle-gain">Muscle Gain</SelectItem>
+                    <SelectItem value="maintenance">Maintenance</SelectItem>
+                    <SelectItem value="athletic-performance">Athletic Performance</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="calories" className="text-right">
+                  Daily Calories
+                </Label>
+                <Input id="calories" type="number" placeholder="2000" className="col-span-3" />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="duration" className="text-right">
+                  Duration
+                </Label>
+                <Select>
+                  <SelectTrigger className="col-span-3">
+                    <SelectValue placeholder="Select duration" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="2weeks">2 weeks</SelectItem>
+                    <SelectItem value="4weeks">4 weeks</SelectItem>
+                    <SelectItem value="6weeks">6 weeks</SelectItem>
+                    <SelectItem value="8weeks">8 weeks</SelectItem>
+                    <SelectItem value="12weeks">12 weeks</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="meals" className="text-right">
+                  Meals/Day
+                </Label>
+                <Select>
+                  <SelectTrigger className="col-span-3">
+                    <SelectValue placeholder="Select meals per day" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="3">3 meals</SelectItem>
+                    <SelectItem value="4">4 meals</SelectItem>
+                    <SelectItem value="5">5 meals</SelectItem>
+                    <SelectItem value="6">6 meals</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="notes" className="text-right">
+                  Notes
+                </Label>
+                <Textarea id="notes" placeholder="Special instructions..." className="col-span-3" />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button type="submit">Create Meal Plan</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </div>
+
+      {/* Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Total Plans</p>
+                <p className="text-2xl font-bold text-gray-900">{mealPlans.length}</p>
+              </div>
+              <ChefHat className="w-8 h-8 text-blue-600" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Active Plans</p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {mealPlans.filter((p) => p.status === "active").length}
+                </p>
+              </div>
+              <Calendar className="w-8 h-8 text-green-600" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Draft Plans</p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {mealPlans.filter((p) => p.status === "draft").length}
+                </p>
+              </div>
+              <Edit className="w-8 h-8 text-yellow-600" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Completed</p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {mealPlans.filter((p) => p.status === "completed").length}
+                </p>
+              </div>
+              <User className="w-8 h-8 text-purple-600" />
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Filters and Search */}
+      <div className="flex items-center space-x-4">
+        <div className="relative flex-1 max-w-sm">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+          <Input
+            placeholder="Search meal plans..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10"
+          />
+        </div>
+        <Select value={selectedStatus} onValueChange={setSelectedStatus}>
+          <SelectTrigger className="w-40">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Status</SelectItem>
+            <SelectItem value="active">Active</SelectItem>
+            <SelectItem value="draft">Draft</SelectItem>
+            <SelectItem value="completed">Completed</SelectItem>
+          </SelectContent>
+        </Select>
+        <Button variant="outline">
+          <Filter className="w-4 h-4 mr-2" />
+          More Filters
         </Button>
       </div>
 
+      {/* Meal Plans Table */}
       <Card>
         <CardHeader>
-          <div className="flex items-center space-x-4">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-              <Input
-                placeholder="Search meal plans..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
-              />
-            </div>
-          </div>
+          <CardTitle>Meal Plans</CardTitle>
+          <CardDescription>
+            Showing {filteredMealPlans.length} of {mealPlans.length} meal plans
+          </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredPlans.map((plan) => (
-              <Card key={plan.id} className="hover:shadow-md transition-shadow">
-                <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between">
-                    <Badge variant="outline" className={getTypeColor(plan.type)}>
-                      {plan.type}
-                    </Badge>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Plan & Client</TableHead>
+                <TableHead>Goal</TableHead>
+                <TableHead>Calories</TableHead>
+                <TableHead>Duration</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Last Updated</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {filteredMealPlans.map((plan) => (
+                <TableRow key={plan.id}>
+                  <TableCell>
+                    <div className="flex items-center space-x-3">
+                      <Avatar>
+                        <AvatarImage src={plan.clientAvatar || "/placeholder.svg"} alt={plan.client} />
+                        <AvatarFallback>
+                          {plan.client
+                            .split(" ")
+                            .map((n) => n[0])
+                            .join("")}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <p className="font-medium">{plan.name}</p>
+                        <p className="text-sm text-gray-500">{plan.client}</p>
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <Badge className={getGoalColor(plan.goal)}>{plan.goal}</Badge>
+                  </TableCell>
+                  <TableCell>
+                    <div className="text-center">
+                      <p className="font-medium">{plan.calories}</p>
+                      <p className="text-xs text-gray-500">kcal/day</p>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div>
+                      <p className="font-medium">{plan.duration}</p>
+                      <p className="text-xs text-gray-500">{plan.meals} meals/day</p>
+                    </div>
+                  </TableCell>
+                  <TableCell>{getStatusBadge(plan.status)}</TableCell>
+                  <TableCell>{plan.lastUpdated}</TableCell>
+                  <TableCell className="text-right">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="sm">
-                          <MoreHorizontal className="w-4 h-4" />
+                        <Button variant="ghost" className="h-8 w-8 p-0">
+                          <MoreHorizontal className="h-4 w-4" />
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem>View Details</DropdownMenuItem>
-                        <DropdownMenuItem>Edit Plan</DropdownMenuItem>
-                        <DropdownMenuItem>Duplicate</DropdownMenuItem>
-                        <DropdownMenuItem>Archive</DropdownMenuItem>
+                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                        <DropdownMenuItem>
+                          <Edit className="mr-2 h-4 w-4" />
+                          Edit Plan
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                          <Copy className="mr-2 h-4 w-4" />
+                          Duplicate Plan
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                          <Download className="mr-2 h-4 w-4" />
+                          Export PDF
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                          <User className="mr-2 h-4 w-4" />
+                          View Client
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem className="text-red-600">
+                          <Trash2 className="mr-2 h-4 w-4" />
+                          Delete Plan
+                        </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
-                  </div>
-                  <CardTitle className="text-lg">{plan.title}</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-center space-x-3">
-                    <Avatar className="w-8 h-8">
-                      <AvatarImage src={plan.clientAvatar || "/placeholder.svg"} />
-                      <AvatarFallback>
-                        {plan.client
-                          .split(" ")
-                          .map((n) => n[0])
-                          .join("")}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className="font-medium text-sm">{plan.client}</p>
-                      <p className="text-xs text-gray-500">Client</p>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">Duration:</span>
-                      <span className="font-medium">{plan.duration}</span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">Daily Calories:</span>
-                      <span className="font-medium">{plan.calories}</span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">Meals per day:</span>
-                      <span className="font-medium">{plan.meals}</span>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">Progress:</span>
-                      <span className="font-medium">{plan.progress}%</span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div
-                        className="bg-[#1B5E20] h-2 rounded-full transition-all duration-300"
-                        style={{ width: `${plan.progress}%` }}
-                      ></div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between pt-2">
-                    <Badge variant={getStatusColor(plan.status) as any}>{plan.status}</Badge>
-                    <div className="flex items-center text-xs text-gray-500">
-                      <Calendar className="w-3 h-3 mr-1" />
-                      Started {new Date(plan.startDate).toLocaleDateString()}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </CardContent>
       </Card>
     </div>

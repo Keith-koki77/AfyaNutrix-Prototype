@@ -1,390 +1,308 @@
 "use client"
 
-import { Suspense, useState } from "react"
+import { Suspense } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Progress } from "@/components/ui/progress"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import {
-  BarChart3,
-  TrendingUp,
-  Users,
-  Calendar,
-  Target,
-  Download,
-  Filter,
+  LineChart,
+  Line,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  ResponsiveContainer,
   PieChart,
-  Activity,
-  Heart,
-  Apple,
-} from "lucide-react"
+  Pie,
+  Cell,
+} from "recharts"
+import { TrendingUp, TrendingDown, Download, Filter } from "lucide-react"
 
 function AnalyticsContent() {
-  const [timeRange, setTimeRange] = useState("30d")
-  const [activeTab, setActiveTab] = useState("overview")
-
-  const stats = [
-    {
-      title: "Total Clients",
-      value: "24",
-      change: "+12%",
-      icon: Users,
-      trend: "up",
-    },
-    {
-      title: "Active Meal Plans",
-      value: "18",
-      change: "+8%",
-      icon: BarChart3,
-      trend: "up",
-    },
-    {
-      title: "Appointments This Week",
-      value: "12",
-      change: "+4%",
-      icon: Calendar,
-      trend: "up",
-    },
-    {
-      title: "Client Retention",
-      value: "92%",
-      change: "+2%",
-      icon: TrendingUp,
-      trend: "up",
-    },
+  const clientGrowthData = [
+    { month: "Jan", clients: 12, revenue: 2400 },
+    { month: "Feb", clients: 15, revenue: 3200 },
+    { month: "Mar", clients: 18, revenue: 3800 },
+    { month: "Apr", clients: 22, revenue: 4600 },
+    { month: "May", clients: 24, revenue: 5200 },
+    { month: "Jun", clients: 28, revenue: 5800 },
   ]
 
-  const clientProgress = [
-    { name: "Grace Mwangi", goal: "Weight Loss", progress: 85, target: "5kg", achieved: "4.2kg" },
-    { name: "John Kamau", goal: "Diabetes Management", progress: 92, target: "HbA1c < 7%", achieved: "6.8%" },
-    { name: "Mary Wanjiku", goal: "Muscle Gain", progress: 67, target: "3kg", achieved: "2kg" },
-    { name: "Faith Akinyi", goal: "Pregnancy Nutrition", progress: 88, target: "Healthy Weight", achieved: "On Track" },
-    { name: "David Ochieng", goal: "Heart Health", progress: 45, target: "Lower Cholesterol", achieved: "In Progress" },
+  const appointmentData = [
+    { day: "Mon", appointments: 8, completed: 7 },
+    { day: "Tue", appointments: 12, completed: 11 },
+    { day: "Wed", appointments: 6, completed: 6 },
+    { day: "Thu", appointments: 15, completed: 13 },
+    { day: "Fri", appointments: 10, completed: 9 },
+    { day: "Sat", appointments: 4, completed: 4 },
+    { day: "Sun", appointments: 2, completed: 2 },
   ]
 
-  const nutritionData = [
-    { nutrient: "Protein", recommended: 150, actual: 142, unit: "g/day", status: "good" },
-    { nutrient: "Carbohydrates", recommended: 300, actual: 285, unit: "g/day", status: "good" },
-    { nutrient: "Fats", recommended: 65, actual: 78, unit: "g/day", status: "high" },
-    { nutrient: "Fiber", recommended: 25, actual: 18, unit: "g/day", status: "low" },
-    { nutrient: "Iron", recommended: 18, actual: 16, unit: "mg/day", status: "low" },
-    { nutrient: "Calcium", recommended: 1000, actual: 950, unit: "mg/day", status: "good" },
+  const goalProgressData = [
+    { name: "Weight Loss", value: 65, color: "#1B5E20" },
+    { name: "Muscle Gain", value: 25, color: "#4CAF50" },
+    { name: "Maintenance", value: 10, color: "#8BC34A" },
   ]
 
-  const popularFoods = [
-    { food: "Ugali", frequency: 89, calories: 112, category: "Staples" },
-    { food: "Sukuma Wiki", frequency: 76, calories: 25, category: "Vegetables" },
-    { food: "Beans", frequency: 68, calories: 245, category: "Proteins" },
-    { food: "Chapati", frequency: 54, calories: 104, category: "Staples" },
-    { food: "Fish", frequency: 43, calories: 206, category: "Proteins" },
-    { food: "Sweet Potato", frequency: 38, calories: 86, category: "Carbs" },
+  const kpiData = [
+    {
+      title: "Client Retention Rate",
+      value: "94%",
+      change: "+2.5%",
+      trend: "up",
+      description: "Clients staying active for 3+ months",
+    },
+    {
+      title: "Average Session Rating",
+      value: "4.8",
+      change: "+0.2",
+      trend: "up",
+      description: "Based on client feedback",
+    },
+    {
+      title: "Goal Achievement Rate",
+      value: "78%",
+      change: "-3.2%",
+      trend: "down",
+      description: "Clients reaching their targets",
+    },
+    {
+      title: "Monthly Revenue",
+      value: "$5,800",
+      change: "+12.5%",
+      trend: "up",
+      description: "Total earnings this month",
+    },
   ]
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "good":
-        return "text-green-600 bg-green-100"
-      case "high":
-        return "text-red-600 bg-red-100"
-      case "low":
-        return "text-orange-600 bg-orange-100"
-      default:
-        return "text-gray-600 bg-gray-100"
-    }
-  }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Analytics</h1>
-          <p className="text-gray-600 mt-2">Track your nutrition practice performance</p>
+          <p className="text-gray-600 mt-1">Track your practice performance and client progress</p>
         </div>
-        <div className="flex items-center space-x-3">
-          <Select value={timeRange} onValueChange={setTimeRange}>
-            <SelectTrigger className="w-32">
+        <div className="flex space-x-3">
+          <Select defaultValue="30days">
+            <SelectTrigger className="w-40">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="7d">Last 7 days</SelectItem>
-              <SelectItem value="30d">Last 30 days</SelectItem>
-              <SelectItem value="90d">Last 3 months</SelectItem>
-              <SelectItem value="1y">Last year</SelectItem>
+              <SelectItem value="7days">Last 7 days</SelectItem>
+              <SelectItem value="30days">Last 30 days</SelectItem>
+              <SelectItem value="90days">Last 90 days</SelectItem>
+              <SelectItem value="1year">Last year</SelectItem>
             </SelectContent>
           </Select>
           <Button variant="outline">
             <Filter className="w-4 h-4 mr-2" />
             Filter
           </Button>
-          <Button className="bg-[#1B5E20] hover:bg-[#2E7D32]">
+          <Button>
             <Download className="w-4 h-4 mr-2" />
-            Export Report
+            Export
           </Button>
         </div>
       </div>
 
-      {/* Overview Stats */}
+      {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {stats.map((stat) => (
-          <Card key={stat.title} className="hover:shadow-md transition-shadow">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">{stat.title}</CardTitle>
-              <stat.icon className="h-4 w-4 text-gray-400" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-gray-900">{stat.value}</div>
-              <div className="flex items-center space-x-1 mt-1">
-                <Badge variant="secondary" className="text-green-600 bg-green-50">
-                  {stat.change}
-                </Badge>
-                <span className="text-xs text-gray-500">from last month</span>
+        {kpiData.map((kpi) => (
+          <Card key={kpi.title}>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">{kpi.title}</p>
+                  <p className="text-2xl font-bold text-gray-900 mt-1">{kpi.value}</p>
+                  <div className="flex items-center mt-2">
+                    {kpi.trend === "up" ? (
+                      <TrendingUp className="w-4 h-4 text-green-500 mr-1" />
+                    ) : (
+                      <TrendingDown className="w-4 h-4 text-red-500 mr-1" />
+                    )}
+                    <span className={`text-sm ${kpi.trend === "up" ? "text-green-600" : "text-red-600"}`}>
+                      {kpi.change}
+                    </span>
+                    <span className="text-sm text-gray-500 ml-1">vs last period</span>
+                  </div>
+                </div>
               </div>
+              <p className="text-xs text-gray-500 mt-3">{kpi.description}</p>
             </CardContent>
           </Card>
         ))}
       </div>
 
-      {/* Main Analytics Tabs */}
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="clients">Client Progress</TabsTrigger>
-          <TabsTrigger value="nutrition">Nutrition Analysis</TabsTrigger>
-          <TabsTrigger value="foods">Food Insights</TabsTrigger>
+      {/* Charts */}
+      <Tabs defaultValue="growth" className="space-y-6">
+        <TabsList>
+          <TabsTrigger value="growth">Client Growth</TabsTrigger>
+          <TabsTrigger value="appointments">Appointments</TabsTrigger>
+          <TabsTrigger value="goals">Goal Progress</TabsTrigger>
         </TabsList>
 
-        {/* Overview Tab */}
-        <TabsContent value="overview" className="space-y-6">
-          <div className="grid lg:grid-cols-2 gap-6">
-            {/* Practice Growth Chart */}
+        <TabsContent value="growth" className="space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center">
-                  <BarChart3 className="w-5 h-5 mr-2 text-[#1B5E20]" />
-                  Practice Growth
-                </CardTitle>
-                <CardDescription>Client acquisition and retention over time</CardDescription>
+                <CardTitle>Client Growth</CardTitle>
+                <CardDescription>Number of active clients over time</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="h-64 flex items-center justify-center bg-gray-50 rounded-lg">
-                  <div className="text-center">
-                    <BarChart3 className="w-12 h-12 text-gray-300 mx-auto mb-2" />
-                    <p className="text-gray-500">Chart visualization would appear here</p>
-                    <p className="text-sm text-gray-400">Showing client growth trends</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Appointment Success Rate */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <Target className="w-5 h-5 mr-2 text-[#1B5E20]" />
-                  Appointment Metrics
-                </CardTitle>
-                <CardDescription>Success rates and attendance patterns</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Attendance Rate</span>
-                    <span className="text-sm text-gray-600">92%</span>
-                  </div>
-                  <Progress value={92} className="h-2" />
-
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">On-time Rate</span>
-                    <span className="text-sm text-gray-600">87%</span>
-                  </div>
-                  <Progress value={87} className="h-2" />
-
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Completion Rate</span>
-                    <span className="text-sm text-gray-600">94%</span>
-                  </div>
-                  <Progress value={94} className="h-2" />
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Recent Activity */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <Activity className="w-5 h-5 mr-2 text-[#1B5E20]" />
-                Recent Activity
-              </CardTitle>
-              <CardDescription>Latest client interactions and milestones</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {[
-                  { action: "Grace Mwangi achieved weight loss goal", time: "2 hours ago", type: "success" },
-                  { action: "New meal plan created for John Kamau", time: "4 hours ago", type: "info" },
-                  { action: "Faith Akinyi logged daily meals", time: "6 hours ago", type: "info" },
-                  { action: "Mary Wanjiku missed appointment", time: "1 day ago", type: "warning" },
-                  { action: "David Ochieng started new program", time: "2 days ago", type: "success" },
-                ].map((activity, index) => (
-                  <div key={index} className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-                    <div
-                      className={`w-2 h-2 rounded-full ${
-                        activity.type === "success"
-                          ? "bg-green-500"
-                          : activity.type === "warning"
-                            ? "bg-orange-500"
-                            : "bg-blue-500"
-                      }`}
-                    ></div>
-                    <div className="flex-1">
-                      <p className="text-sm font-medium text-gray-900">{activity.action}</p>
-                      <p className="text-xs text-gray-500">{activity.time}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* Client Progress Tab */}
-        <TabsContent value="clients" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Client Progress Overview</CardTitle>
-              <CardDescription>Track individual client achievements and goals</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {clientProgress.map((client, index) => (
-                  <div key={index} className="p-4 border rounded-lg hover:bg-gray-50 transition-colors">
-                    <div className="flex items-center justify-between mb-3">
-                      <div>
-                        <p className="font-medium text-gray-900">{client.name}</p>
-                        <p className="text-sm text-gray-600">{client.goal}</p>
-                      </div>
-                      <Badge className="bg-[#1B5E20]">{client.progress}%</Badge>
-                    </div>
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span className="text-gray-600">Target: {client.target}</span>
-                        <span className="text-gray-900">Achieved: {client.achieved}</span>
-                      </div>
-                      <Progress value={client.progress} className="h-2" />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* Nutrition Analysis Tab */}
-        <TabsContent value="nutrition" className="space-y-6">
-          <div className="grid lg:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <Heart className="w-5 h-5 mr-2 text-[#1B5E20]" />
-                  Nutrient Analysis
-                </CardTitle>
-                <CardDescription>Average nutrient intake vs. recommendations</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {nutritionData.map((nutrient, index) => (
-                    <div key={index} className="space-y-2">
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium">{nutrient.nutrient}</span>
-                        <Badge className={getStatusColor(nutrient.status)}>{nutrient.status}</Badge>
-                      </div>
-                      <div className="flex justify-between text-sm text-gray-600">
-                        <span>
-                          {nutrient.actual} / {nutrient.recommended} {nutrient.unit}
-                        </span>
-                        <span>{Math.round((nutrient.actual / nutrient.recommended) * 100)}%</span>
-                      </div>
-                      <Progress value={(nutrient.actual / nutrient.recommended) * 100} className="h-2" />
-                    </div>
-                  ))}
-                </div>
+                <ChartContainer
+                  config={{
+                    clients: {
+                      label: "Clients",
+                      color: "#1B5E20",
+                    },
+                  }}
+                  className="h-[300px]"
+                >
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={clientGrowthData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="month" />
+                      <YAxis />
+                      <ChartTooltip content={<ChartTooltipContent />} />
+                      <Line
+                        type="monotone"
+                        dataKey="clients"
+                        stroke="var(--color-clients)"
+                        strokeWidth={2}
+                        dot={{ fill: "var(--color-clients)" }}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </ChartContainer>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center">
-                  <PieChart className="w-5 h-5 mr-2 text-[#1B5E20]" />
-                  Macronutrient Distribution
-                </CardTitle>
-                <CardDescription>Average macronutrient breakdown</CardDescription>
+                <CardTitle>Revenue Growth</CardTitle>
+                <CardDescription>Monthly revenue from consultations</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="h-64 flex items-center justify-center bg-gray-50 rounded-lg">
-                  <div className="text-center">
-                    <PieChart className="w-12 h-12 text-gray-300 mx-auto mb-2" />
-                    <p className="text-gray-500">Pie chart would appear here</p>
-                    <p className="text-sm text-gray-400">Showing macro distribution</p>
-                  </div>
-                </div>
-                <div className="grid grid-cols-3 gap-4 mt-4">
-                  <div className="text-center">
-                    <div className="w-4 h-4 bg-blue-500 rounded mx-auto mb-1"></div>
-                    <p className="text-xs text-gray-600">Carbs</p>
-                    <p className="text-sm font-medium">45%</p>
-                  </div>
-                  <div className="text-center">
-                    <div className="w-4 h-4 bg-green-500 rounded mx-auto mb-1"></div>
-                    <p className="text-xs text-gray-600">Protein</p>
-                    <p className="text-sm font-medium">25%</p>
-                  </div>
-                  <div className="text-center">
-                    <div className="w-4 h-4 bg-orange-500 rounded mx-auto mb-1"></div>
-                    <p className="text-xs text-gray-600">Fats</p>
-                    <p className="text-sm font-medium">30%</p>
-                  </div>
-                </div>
+                <ChartContainer
+                  config={{
+                    revenue: {
+                      label: "Revenue",
+                      color: "#4CAF50",
+                    },
+                  }}
+                  className="h-[300px]"
+                >
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={clientGrowthData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="month" />
+                      <YAxis />
+                      <ChartTooltip content={<ChartTooltipContent />} />
+                      <Bar dataKey="revenue" fill="var(--color-revenue)" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </ChartContainer>
               </CardContent>
             </Card>
           </div>
         </TabsContent>
 
-        {/* Food Insights Tab */}
-        <TabsContent value="foods" className="space-y-6">
+        <TabsContent value="appointments" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center">
-                <Apple className="w-5 h-5 mr-2 text-[#1B5E20]" />
-                Popular Kenyan Foods
-              </CardTitle>
-              <CardDescription>Most frequently used foods in meal plans</CardDescription>
+              <CardTitle>Weekly Appointments</CardTitle>
+              <CardDescription>Scheduled vs completed appointments this week</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                {popularFoods.map((food, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-[#1B5E20] rounded-full flex items-center justify-center text-white text-sm font-medium">
-                        {index + 1}
-                      </div>
-                      <div>
-                        <p className="font-medium text-gray-900">{food.food}</p>
-                        <p className="text-sm text-gray-600">{food.category}</p>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-sm font-medium">{food.frequency}% usage</p>
-                      <p className="text-xs text-gray-500">{food.calories} cal/100g</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <ChartContainer
+                config={{
+                  appointments: {
+                    label: "Scheduled",
+                    color: "#1B5E20",
+                  },
+                  completed: {
+                    label: "Completed",
+                    color: "#4CAF50",
+                  },
+                }}
+                className="h-[400px]"
+              >
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={appointmentData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="day" />
+                    <YAxis />
+                    <ChartTooltip content={<ChartTooltipContent />} />
+                    <Bar dataKey="appointments" fill="var(--color-appointments)" />
+                    <Bar dataKey="completed" fill="var(--color-completed)" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </ChartContainer>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="goals" className="space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Client Goals Distribution</CardTitle>
+                <CardDescription>Breakdown of client fitness goals</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ChartContainer
+                  config={{
+                    goals: {
+                      label: "Goals",
+                    },
+                  }}
+                  className="h-[300px]"
+                >
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={goalProgressData}
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={80}
+                        fill="#8884d8"
+                        dataKey="value"
+                        label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                      >
+                        {goalProgressData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} />
+                        ))}
+                      </Pie>
+                      <ChartTooltip content={<ChartTooltipContent />} />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </ChartContainer>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Goal Achievement Progress</CardTitle>
+                <CardDescription>How well clients are meeting their targets</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {goalProgressData.map((goal) => (
+                  <div key={goal.name} className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium">{goal.name}</span>
+                      <span className="text-sm text-gray-600">{goal.value}%</span>
+                    </div>
+                    <Progress value={goal.value} className="h-2" />
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          </div>
         </TabsContent>
       </Tabs>
     </div>
@@ -393,7 +311,7 @@ function AnalyticsContent() {
 
 export default function AnalyticsPage() {
   return (
-    <Suspense fallback={<div className="flex items-center justify-center h-64">Loading analytics...</div>}>
+    <Suspense fallback={<div>Loading analytics...</div>}>
       <AnalyticsContent />
     </Suspense>
   )
