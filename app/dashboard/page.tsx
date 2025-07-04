@@ -1,43 +1,39 @@
-"use client"
-
+import { Suspense } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Users, Calendar, ChefHat, MessageSquare, TrendingUp, Clock, Plus, ArrowRight } from "lucide-react"
+import { Users, Calendar, TrendingUp, DollarSign, Clock, CheckCircle, AlertCircle, Plus } from "lucide-react"
 
-export default function DashboardPage() {
+function DashboardContent() {
   const stats = [
     {
       title: "Total Clients",
-      value: "24",
+      value: "124",
       change: "+12%",
+      changeType: "positive" as const,
       icon: Users,
-      color: "text-blue-600",
-      bgColor: "bg-blue-100",
+    },
+    {
+      title: "This Month Revenue",
+      value: "$8,420",
+      change: "+23%",
+      changeType: "positive" as const,
+      icon: DollarSign,
     },
     {
       title: "Appointments Today",
       value: "8",
-      change: "+3",
+      change: "+2",
+      changeType: "positive" as const,
       icon: Calendar,
-      color: "text-green-600",
-      bgColor: "bg-green-100",
     },
     {
-      title: "Active Meal Plans",
-      value: "18",
-      change: "+5",
-      icon: ChefHat,
-      color: "text-orange-600",
-      bgColor: "bg-orange-100",
-    },
-    {
-      title: "Unread Messages",
-      value: "12",
-      change: "+7",
-      icon: MessageSquare,
-      color: "text-purple-600",
-      bgColor: "bg-purple-100",
+      title: "Success Rate",
+      value: "94%",
+      change: "+5%",
+      changeType: "positive" as const,
+      icon: TrendingUp,
     },
   ]
 
@@ -45,34 +41,38 @@ export default function DashboardPage() {
     {
       id: 1,
       client: "Sarah Johnson",
-      time: "10:00 AM",
+      time: "9:00 AM",
       type: "Initial Consultation",
+      status: "confirmed",
       avatar: "/placeholder-user.jpg",
     },
     {
       id: 2,
-      client: "Michael Chen",
-      time: "11:30 AM",
+      client: "Mike Chen",
+      time: "10:30 AM",
       type: "Follow-up",
+      status: "confirmed",
       avatar: "/placeholder-user.jpg",
     },
     {
       id: 3,
-      client: "Emma Wilson",
+      client: "Emma Davis",
       time: "2:00 PM",
       type: "Meal Plan Review",
+      status: "pending",
       avatar: "/placeholder-user.jpg",
     },
     {
       id: 4,
-      client: "David Brown",
+      client: "John Smith",
       time: "3:30 PM",
       type: "Progress Check",
+      status: "confirmed",
       avatar: "/placeholder-user.jpg",
     },
   ]
 
-  const recentActivity = [
+  const recentActivities = [
     {
       id: 1,
       action: "New client registered",
@@ -83,94 +83,75 @@ export default function DashboardPage() {
     {
       id: 2,
       action: "Meal plan updated",
-      client: "John Smith",
+      client: "David Wilson",
       time: "4 hours ago",
       type: "meal-plan",
     },
     {
       id: 3,
-      action: "Appointment scheduled",
+      action: "Appointment completed",
       client: "Maria Garcia",
       time: "6 hours ago",
       type: "appointment",
     },
     {
       id: 4,
-      action: "Progress photo uploaded",
-      client: "Robert Taylor",
-      time: "8 hours ago",
-      type: "progress",
+      action: "Payment received",
+      client: "Robert Brown",
+      time: "1 day ago",
+      type: "payment",
     },
   ]
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-          <p className="text-gray-600 mt-1">Welcome back, Amina! Here's what's happening today.</p>
+          <p className="text-gray-600 mt-1">Welcome back, Dr. Sarah! Here's what's happening today.</p>
         </div>
-        <div className="flex space-x-3">
-          <Button variant="outline">
-            <Calendar className="w-4 h-4 mr-2" />
-            Schedule Appointment
-          </Button>
-          <Button>
-            <Plus className="w-4 h-4 mr-2" />
-            Add Client
-          </Button>
-        </div>
+        <Button>
+          <Plus className="mr-2 h-4 w-4" />
+          New Appointment
+        </Button>
       </div>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat) => (
           <Card key={stat.title}>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">{stat.title}</p>
-                  <p className="text-2xl font-bold text-gray-900 mt-1">{stat.value}</p>
-                  <div className="flex items-center mt-2">
-                    <TrendingUp className="w-4 h-4 text-green-500 mr-1" />
-                    <span className="text-sm text-green-600">{stat.change}</span>
-                    <span className="text-sm text-gray-500 ml-1">from last month</span>
-                  </div>
-                </div>
-                <div className={`p-3 rounded-full ${stat.bgColor}`}>
-                  <stat.icon className={`w-6 h-6 ${stat.color}`} />
-                </div>
-              </div>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-gray-600">{stat.title}</CardTitle>
+              <stat.icon className="h-4 w-4 text-gray-400" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-gray-900">{stat.value}</div>
+              <p className="text-xs text-green-600 flex items-center mt-1">
+                <TrendingUp className="mr-1 h-3 w-3" />
+                {stat.change} from last month
+              </p>
             </CardContent>
           </Card>
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Today's Appointments */}
         <Card>
           <CardHeader>
-            <div className="flex items-center justify-between">
-              <div>
-                <CardTitle>Today's Appointments</CardTitle>
-                <CardDescription>You have {recentAppointments.length} appointments scheduled</CardDescription>
-              </div>
-              <Button variant="ghost" size="sm">
-                View All
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </div>
+            <CardTitle className="flex items-center">
+              <Calendar className="mr-2 h-5 w-5" />
+              Today's Appointments
+            </CardTitle>
+            <CardDescription>You have {recentAppointments.length} appointments scheduled for today</CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {recentAppointments.map((appointment) => (
-                <div
-                  key={appointment.id}
-                  className="flex items-center space-x-4 p-3 rounded-lg hover:bg-gray-50 transition-colors"
-                >
-                  <Avatar>
-                    <AvatarImage src={appointment.avatar || "/placeholder.svg"} alt={appointment.client} />
+          <CardContent className="space-y-4">
+            {recentAppointments.map((appointment) => (
+              <div key={appointment.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div className="flex items-center space-x-3">
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src={appointment.avatar || "/placeholder.svg"} />
                     <AvatarFallback>
                       {appointment.client
                         .split(" ")
@@ -178,96 +159,63 @@ export default function DashboardPage() {
                         .join("")}
                     </AvatarFallback>
                   </Avatar>
-                  <div className="flex-1">
+                  <div>
                     <p className="font-medium text-gray-900">{appointment.client}</p>
                     <p className="text-sm text-gray-600">{appointment.type}</p>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <Clock className="w-4 h-4 text-gray-400" />
-                    <span className="text-sm font-medium text-gray-900">{appointment.time}</span>
-                  </div>
                 </div>
-              ))}
-            </div>
+                <div className="text-right">
+                  <p className="text-sm font-medium text-gray-900">{appointment.time}</p>
+                  <Badge variant={appointment.status === "confirmed" ? "default" : "secondary"} className="text-xs">
+                    {appointment.status === "confirmed" ? (
+                      <CheckCircle className="mr-1 h-3 w-3" />
+                    ) : (
+                      <Clock className="mr-1 h-3 w-3" />
+                    )}
+                    {appointment.status}
+                  </Badge>
+                </div>
+              </div>
+            ))}
           </CardContent>
         </Card>
 
         {/* Recent Activity */}
         <Card>
           <CardHeader>
-            <div className="flex items-center justify-between">
-              <div>
-                <CardTitle>Recent Activity</CardTitle>
-                <CardDescription>Latest updates from your practice</CardDescription>
-              </div>
-              <Button variant="ghost" size="sm">
-                View All
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </div>
+            <CardTitle className="flex items-center">
+              <AlertCircle className="mr-2 h-5 w-5" />
+              Recent Activity
+            </CardTitle>
+            <CardDescription>Latest updates from your practice</CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {recentActivity.map((activity) => (
-                <div
-                  key={activity.id}
-                  className="flex items-start space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors"
-                >
-                  <div className="flex-shrink-0">
-                    <div
-                      className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                        activity.type === "client"
-                          ? "bg-blue-100"
-                          : activity.type === "meal-plan"
-                            ? "bg-orange-100"
-                            : activity.type === "appointment"
-                              ? "bg-green-100"
-                              : "bg-purple-100"
-                      }`}
-                    >
-                      {activity.type === "client" && <Users className="w-4 h-4 text-blue-600" />}
-                      {activity.type === "meal-plan" && <ChefHat className="w-4 h-4 text-orange-600" />}
-                      {activity.type === "appointment" && <Calendar className="w-4 h-4 text-green-600" />}
-                      {activity.type === "progress" && <TrendingUp className="w-4 h-4 text-purple-600" />}
-                    </div>
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-sm text-gray-900">
-                      <span className="font-medium">{activity.action}</span> for{" "}
-                      <span className="font-medium text-[#1B5E20]">{activity.client}</span>
-                    </p>
-                    <p className="text-xs text-gray-500 mt-1">{activity.time}</p>
-                  </div>
+          <CardContent className="space-y-4">
+            {recentActivities.map((activity) => (
+              <div key={activity.id} className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
+                <div className="flex-shrink-0">
+                  {activity.type === "client" && <Users className="h-4 w-4 text-blue-500 mt-0.5" />}
+                  {activity.type === "meal-plan" && <TrendingUp className="h-4 w-4 text-green-500 mt-0.5" />}
+                  {activity.type === "appointment" && <Calendar className="h-4 w-4 text-purple-500 mt-0.5" />}
+                  {activity.type === "payment" && <DollarSign className="h-4 w-4 text-yellow-500 mt-0.5" />}
                 </div>
-              ))}
-            </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-gray-900">{activity.action}</p>
+                  <p className="text-sm text-gray-600">{activity.client}</p>
+                  <p className="text-xs text-gray-400 mt-1">{activity.time}</p>
+                </div>
+              </div>
+            ))}
           </CardContent>
         </Card>
       </div>
-
-      {/* Quick Actions */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Quick Actions</CardTitle>
-          <CardDescription>Common tasks to help you manage your practice</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Button variant="outline" className="h-20 flex-col space-y-2 bg-transparent">
-              <Users className="w-6 h-6" />
-              <span>Add New Client</span>
-            </Button>
-            <Button variant="outline" className="h-20 flex-col space-y-2 bg-transparent">
-              <ChefHat className="w-6 h-6" />
-              <span>Create Meal Plan</span>
-            </Button>
-            <Button variant="outline" className="h-20 flex-col space-y-2 bg-transparent">
-              <Calendar className="w-6 h-6" />
-              <span>Schedule Appointment</span>
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
     </div>
+  )
+}
+
+export default function DashboardPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <DashboardContent />
+    </Suspense>
   )
 }
