@@ -5,53 +5,53 @@ export type Database = {
     Tables: {
       appointments: {
         Row: {
-          appointment_date: string
-          client_id: string | null
-          created_at: string | null
-          description: string | null
-          duration_minutes: number | null
           id: string
+          client_id: string
+          nutritionist_id: string
+          title: string
+          description: string | null
+          scheduled_at: string
+          duration_minutes: number
+          status: "scheduled" | "completed" | "cancelled" | "no_show"
           meeting_link: string | null
           notes: string | null
-          nutritionist_id: string | null
-          status: Database["public"]["Enums"]["appointment_status"] | null
-          title: string
-          updated_at: string | null
+          created_at: string
+          updated_at: string
         }
         Insert: {
-          appointment_date: string
-          client_id?: string | null
-          created_at?: string | null
-          description?: string | null
-          duration_minutes?: number | null
           id?: string
+          client_id: string
+          nutritionist_id: string
+          title: string
+          description?: string | null
+          scheduled_at: string
+          duration_minutes?: number
+          status?: "scheduled" | "completed" | "cancelled" | "no_show"
           meeting_link?: string | null
           notes?: string | null
-          nutritionist_id?: string | null
-          status?: Database["public"]["Enums"]["appointment_status"] | null
-          title: string
-          updated_at?: string | null
+          created_at?: string
+          updated_at?: string
         }
         Update: {
-          appointment_date?: string
-          client_id?: string | null
-          created_at?: string | null
-          description?: string | null
-          duration_minutes?: number | null
           id?: string
+          client_id?: string
+          nutritionist_id?: string
+          title?: string
+          description?: string | null
+          scheduled_at?: string
+          duration_minutes?: number
+          status?: "scheduled" | "completed" | "cancelled" | "no_show"
           meeting_link?: string | null
           notes?: string | null
-          nutritionist_id?: string | null
-          status?: Database["public"]["Enums"]["appointment_status"] | null
-          title?: string
-          updated_at?: string | null
+          created_at?: string
+          updated_at?: string
         }
         Relationships: [
           {
             foreignKeyName: "appointments_client_id_fkey"
             columns: ["client_id"]
             isOneToOne: false
-            referencedRelation: "clients"
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
           {
@@ -63,231 +63,55 @@ export type Database = {
           },
         ]
       }
-      clients: {
-        Row: {
-          activity_level: string | null
-          allergies: string[] | null
-          created_at: string | null
-          dietary_preferences: string[] | null
-          emergency_contact_name: string | null
-          emergency_contact_phone: string | null
-          goals: string[] | null
-          health_conditions: string[] | null
-          height: number | null
-          id: string
-          nutritionist_id: string | null
-          updated_at: string | null
-          user_id: string | null
-          weight: number | null
-        }
-        Insert: {
-          activity_level?: string | null
-          allergies?: string[] | null
-          created_at?: string | null
-          dietary_preferences?: string[] | null
-          emergency_contact_name?: string | null
-          emergency_contact_phone?: string | null
-          goals?: string[] | null
-          health_conditions?: string[] | null
-          height?: number | null
-          id?: string
-          nutritionist_id?: string | null
-          updated_at?: string | null
-          user_id?: string | null
-          weight?: number | null
-        }
-        Update: {
-          activity_level?: string | null
-          allergies?: string[] | null
-          created_at?: string | null
-          dietary_preferences?: string[] | null
-          emergency_contact_name?: string | null
-          emergency_contact_phone?: string | null
-          goals?: string[] | null
-          health_conditions?: string[] | null
-          height?: number | null
-          id?: string
-          nutritionist_id?: string | null
-          updated_at?: string | null
-          user_id?: string | null
-          weight?: number | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "clients_nutritionist_id_fkey"
-            columns: ["nutritionist_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "clients_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      kenyan_foods: {
-        Row: {
-          calories_per_100g: number | null
-          carbs_per_100g: number | null
-          category: string
-          common_serving_size: string | null
-          created_at: string | null
-          description: string | null
-          fats_per_100g: number | null
-          fiber_per_100g: number | null
-          id: string
-          name: string
-          protein_per_100g: number | null
-        }
-        Insert: {
-          calories_per_100g?: number | null
-          carbs_per_100g?: number | null
-          category: string
-          common_serving_size?: string | null
-          created_at?: string | null
-          description?: string | null
-          fats_per_100g?: number | null
-          fiber_per_100g?: number | null
-          id?: string
-          name: string
-          protein_per_100g?: number | null
-        }
-        Update: {
-          calories_per_100g?: number | null
-          carbs_per_100g?: number | null
-          category?: string
-          common_serving_size?: string | null
-          created_at?: string | null
-          description?: string | null
-          fats_per_100g?: number | null
-          fiber_per_100g?: number | null
-          id?: string
-          name?: string
-          protein_per_100g?: number | null
-        }
-        Relationships: []
-      }
-      meal_plan_items: {
-        Row: {
-          calories: number | null
-          carbs: number | null
-          created_at: string | null
-          day_of_week: number
-          fats: number | null
-          fiber: number | null
-          food_name: string
-          id: string
-          instructions: string | null
-          meal_plan_id: string | null
-          meal_type: string
-          protein: number | null
-          quantity: number | null
-          unit: string | null
-        }
-        Insert: {
-          calories?: number | null
-          carbs?: number | null
-          created_at?: string | null
-          day_of_week: number
-          fats?: number | null
-          fiber?: number | null
-          food_name: string
-          id?: string
-          instructions?: string | null
-          meal_plan_id?: string | null
-          meal_type: string
-          protein?: number | null
-          quantity?: number | null
-          unit?: string | null
-        }
-        Update: {
-          calories?: number | null
-          carbs?: number | null
-          created_at?: string | null
-          day_of_week?: number
-          fats?: number | null
-          fiber?: number | null
-          food_name?: string
-          id?: string
-          instructions?: string | null
-          meal_plan_id?: string | null
-          meal_type?: string
-          protein?: number | null
-          quantity?: number | null
-          unit?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "meal_plan_items_meal_plan_id_fkey"
-            columns: ["meal_plan_id"]
-            isOneToOne: false
-            referencedRelation: "meal_plans"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       meal_plans: {
         Row: {
-          client_id: string | null
-          created_at: string | null
-          daily_calories: number | null
-          daily_carbs: number | null
-          daily_fats: number | null
-          daily_protein: number | null
-          description: string | null
-          end_date: string | null
           id: string
-          notes: string | null
-          nutritionist_id: string | null
-          start_date: string
-          status: Database["public"]["Enums"]["meal_plan_status"] | null
+          client_id: string
+          nutritionist_id: string
           title: string
-          updated_at: string | null
+          description: string | null
+          start_date: string
+          end_date: string
+          status: "draft" | "active" | "completed" | "archived"
+          meals: Json
+          notes: string | null
+          created_at: string
+          updated_at: string
         }
         Insert: {
-          client_id?: string | null
-          created_at?: string | null
-          daily_calories?: number | null
-          daily_carbs?: number | null
-          daily_fats?: number | null
-          daily_protein?: number | null
-          description?: string | null
-          end_date?: string | null
           id?: string
-          notes?: string | null
-          nutritionist_id?: string | null
-          start_date: string
-          status?: Database["public"]["Enums"]["meal_plan_status"] | null
+          client_id: string
+          nutritionist_id: string
           title: string
-          updated_at?: string | null
+          description?: string | null
+          start_date: string
+          end_date: string
+          status?: "draft" | "active" | "completed" | "archived"
+          meals?: Json
+          notes?: string | null
+          created_at?: string
+          updated_at?: string
         }
         Update: {
-          client_id?: string | null
-          created_at?: string | null
-          daily_calories?: number | null
-          daily_carbs?: number | null
-          daily_fats?: number | null
-          daily_protein?: number | null
-          description?: string | null
-          end_date?: string | null
           id?: string
-          notes?: string | null
-          nutritionist_id?: string | null
-          start_date?: string
-          status?: Database["public"]["Enums"]["meal_plan_status"] | null
+          client_id?: string
+          nutritionist_id?: string
           title?: string
-          updated_at?: string | null
+          description?: string | null
+          start_date?: string
+          end_date?: string
+          status?: "draft" | "active" | "completed" | "archived"
+          meals?: Json
+          notes?: string | null
+          created_at?: string
+          updated_at?: string
         }
         Relationships: [
           {
             foreignKeyName: "meal_plans_client_id_fkey"
             columns: ["client_id"]
             isOneToOne: false
-            referencedRelation: "clients"
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
           {
@@ -301,34 +125,37 @@ export type Database = {
       }
       messages: {
         Row: {
-          attachment_url: string | null
-          content: string
-          created_at: string | null
           id: string
+          sender_id: string
+          recipient_id: string
+          content: string
+          message_type: "text" | "image" | "file"
+          file_url: string | null
           read_at: string | null
-          recipient_id: string | null
-          sender_id: string | null
-          status: Database["public"]["Enums"]["message_status"] | null
+          created_at: string
+          updated_at: string
         }
         Insert: {
-          attachment_url?: string | null
-          content: string
-          created_at?: string | null
           id?: string
+          sender_id: string
+          recipient_id: string
+          content: string
+          message_type?: "text" | "image" | "file"
+          file_url?: string | null
           read_at?: string | null
-          recipient_id?: string | null
-          sender_id?: string | null
-          status?: Database["public"]["Enums"]["message_status"] | null
+          created_at?: string
+          updated_at?: string
         }
         Update: {
-          attachment_url?: string | null
-          content?: string
-          created_at?: string | null
           id?: string
+          sender_id?: string
+          recipient_id?: string
+          content?: string
+          message_type?: "text" | "image" | "file"
+          file_url?: string | null
           read_at?: string | null
-          recipient_id?: string | null
-          sender_id?: string | null
-          status?: Database["public"]["Enums"]["message_status"] | null
+          created_at?: string
+          updated_at?: string
         }
         Relationships: [
           {
@@ -349,104 +176,66 @@ export type Database = {
       }
       profiles: {
         Row: {
-          avatar_url: string | null
-          bio: string | null
-          consultation_fee: number | null
-          created_at: string | null
-          date_of_birth: string | null
-          email: string
-          full_name: string
-          gender: string | null
           id: string
-          license_number: string | null
+          email: string
+          full_name: string | null
+          avatar_url: string | null
+          role: "nutritionist" | "client"
           phone: string | null
-          role: Database["public"]["Enums"]["user_role"]
-          specializations: string[] | null
-          updated_at: string | null
-          years_experience: number | null
+          date_of_birth: string | null
+          gender: "male" | "female" | "other" | null
+          height: number | null
+          weight: number | null
+          activity_level: "sedentary" | "lightly_active" | "moderately_active" | "very_active" | "extra_active" | null
+          health_conditions: string[] | null
+          dietary_preferences: string[] | null
+          allergies: string[] | null
+          goals: string[] | null
+          emergency_contact: Json | null
+          created_at: string
+          updated_at: string
         }
         Insert: {
-          avatar_url?: string | null
-          bio?: string | null
-          consultation_fee?: number | null
-          created_at?: string | null
-          date_of_birth?: string | null
-          email: string
-          full_name: string
-          gender?: string | null
           id: string
-          license_number?: string | null
+          email: string
+          full_name?: string | null
+          avatar_url?: string | null
+          role?: "nutritionist" | "client"
           phone?: string | null
-          role?: Database["public"]["Enums"]["user_role"]
-          specializations?: string[] | null
-          updated_at?: string | null
-          years_experience?: number | null
+          date_of_birth?: string | null
+          gender?: "male" | "female" | "other" | null
+          height?: number | null
+          weight?: number | null
+          activity_level?: "sedentary" | "lightly_active" | "moderately_active" | "very_active" | "extra_active" | null
+          health_conditions?: string[] | null
+          dietary_preferences?: string[] | null
+          allergies?: string[] | null
+          goals?: string[] | null
+          emergency_contact?: Json | null
+          created_at?: string
+          updated_at?: string
         }
         Update: {
-          avatar_url?: string | null
-          bio?: string | null
-          consultation_fee?: number | null
-          created_at?: string | null
-          date_of_birth?: string | null
-          email?: string
-          full_name?: string
-          gender?: string | null
           id?: string
-          license_number?: string | null
+          email?: string
+          full_name?: string | null
+          avatar_url?: string | null
+          role?: "nutritionist" | "client"
           phone?: string | null
-          role?: Database["public"]["Enums"]["user_role"]
-          specializations?: string[] | null
-          updated_at?: string | null
-          years_experience?: number | null
+          date_of_birth?: string | null
+          gender?: "male" | "female" | "other" | null
+          height?: number | null
+          weight?: number | null
+          activity_level?: "sedentary" | "lightly_active" | "moderately_active" | "very_active" | "extra_active" | null
+          health_conditions?: string[] | null
+          dietary_preferences?: string[] | null
+          allergies?: string[] | null
+          goals?: string[] | null
+          emergency_contact?: Json | null
+          created_at?: string
+          updated_at?: string
         }
         Relationships: []
-      }
-      progress_entries: {
-        Row: {
-          body_fat_percentage: number | null
-          client_id: string | null
-          created_at: string | null
-          id: string
-          measurements: Json | null
-          muscle_mass: number | null
-          notes: string | null
-          photos: string[] | null
-          recorded_date: string
-          weight: number | null
-        }
-        Insert: {
-          body_fat_percentage?: number | null
-          client_id?: string | null
-          created_at?: string | null
-          id?: string
-          measurements?: Json | null
-          muscle_mass?: number | null
-          notes?: string | null
-          photos?: string[] | null
-          recorded_date: string
-          weight?: number | null
-        }
-        Update: {
-          body_fat_percentage?: number | null
-          client_id?: string | null
-          created_at?: string | null
-          id?: string
-          measurements?: Json | null
-          muscle_mass?: number | null
-          notes?: string | null
-          photos?: string[] | null
-          recorded_date?: string
-          weight?: number | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "progress_entries_client_id_fkey"
-            columns: ["client_id"]
-            isOneToOne: false
-            referencedRelation: "clients"
-            referencedColumns: ["id"]
-          },
-        ]
       }
     }
     Views: {
@@ -456,10 +245,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      appointment_status: "scheduled" | "completed" | "cancelled" | "no_show"
-      meal_plan_status: "active" | "completed" | "paused"
-      message_status: "sent" | "delivered" | "read"
-      user_role: "nutritionist" | "client"
+      [_ in never]: never
     }
     CompositeTypes: {
       [_ in never]: never
@@ -467,10 +253,10 @@ export type Database = {
   }
 }
 
-type PublicSchema = Database[Extract<keyof Database, "public">]
-
 export type Tables<
-  PublicTableNameOrOptions extends keyof (PublicSchema["Tables"] & PublicSchema["Views"]) | { schema: keyof Database },
+  PublicTableNameOrOptions extends
+    | keyof (Database["public"]["Tables"] & Database["public"]["Views"])
+    | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
     ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
         Database[PublicTableNameOrOptions["schema"]]["Views"])
@@ -482,8 +268,8 @@ export type Tables<
     }
     ? R
     : never
-  : PublicTableNameOrOptions extends keyof (PublicSchema["Tables"] & PublicSchema["Views"])
-    ? (PublicSchema["Tables"] & PublicSchema["Views"])[PublicTableNameOrOptions] extends {
+  : PublicTableNameOrOptions extends keyof (Database["public"]["Tables"] & Database["public"]["Views"])
+    ? (Database["public"]["Tables"] & Database["public"]["Views"])[PublicTableNameOrOptions] extends {
         Row: infer R
       }
       ? R
@@ -491,7 +277,7 @@ export type Tables<
     : never
 
 export type TablesInsert<
-  PublicTableNameOrOptions extends keyof PublicSchema["Tables"] | { schema: keyof Database },
+  PublicTableNameOrOptions extends keyof Database["public"]["Tables"] | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
     ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
     : never = never,
@@ -501,8 +287,8 @@ export type TablesInsert<
     }
     ? I
     : never
-  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
-    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+  : PublicTableNameOrOptions extends keyof Database["public"]["Tables"]
+    ? Database["public"]["Tables"][PublicTableNameOrOptions] extends {
         Insert: infer I
       }
       ? I
@@ -510,7 +296,7 @@ export type TablesInsert<
     : never
 
 export type TablesUpdate<
-  PublicTableNameOrOptions extends keyof PublicSchema["Tables"] | { schema: keyof Database },
+  PublicTableNameOrOptions extends keyof Database["public"]["Tables"] | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
     ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
     : never = never,
@@ -520,8 +306,8 @@ export type TablesUpdate<
     }
     ? U
     : never
-  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
-    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+  : PublicTableNameOrOptions extends keyof Database["public"]["Tables"]
+    ? Database["public"]["Tables"][PublicTableNameOrOptions] extends {
         Update: infer U
       }
       ? U
@@ -529,12 +315,12 @@ export type TablesUpdate<
     : never
 
 export type Enums<
-  PublicEnumNameOrOptions extends keyof PublicSchema["Enums"] | { schema: keyof Database },
+  PublicEnumNameOrOptions extends keyof Database["public"]["Enums"] | { schema: keyof Database },
   EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database }
     ? keyof Database[PublicEnumNameOrOptions["schema"]]["Enums"]
     : never = never,
 > = PublicEnumNameOrOptions extends { schema: keyof Database }
   ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
-  : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
-    ? PublicSchema["Enums"][PublicEnumNameOrOptions]
+  : PublicEnumNameOrOptions extends keyof Database["public"]["Enums"]
+    ? Database["public"]["Enums"][PublicEnumNameOrOptions]
     : never

@@ -1,4 +1,4 @@
-import { createClient } from "@supabase/supabase-js"
+import { createBrowserClient } from "@supabase/ssr"
 import type { Database } from "./database.types"
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -13,11 +13,11 @@ if (!supabaseAnonKey) {
 }
 
 // Create a singleton client for client-side usage
-let supabaseClient: ReturnType<typeof createClient<Database>> | null = null
+let supabaseClient: ReturnType<typeof createBrowserClient<Database>> | null = null
 
-export function createSupabaseClient() {
+export function createClient() {
   if (!supabaseClient) {
-    supabaseClient = createClient<Database>(supabaseUrl, supabaseAnonKey, {
+    supabaseClient = createBrowserClient<Database>(supabaseUrl, supabaseAnonKey, {
       auth: {
         persistSession: true,
         autoRefreshToken: true,
@@ -27,4 +27,9 @@ export function createSupabaseClient() {
   return supabaseClient
 }
 
-export const supabase = createSupabaseClient()
+// Legacy function name for backward compatibility
+export function createSupabaseClient() {
+  return createClient()
+}
+
+export const supabase = createClient()
