@@ -1,72 +1,71 @@
-import { createServerClient, type CookieOptions } from "@supabase/ssr"
+import { createServerClient } from "@supabase/ssr"
 import { NextResponse, type NextRequest } from "next/server"
 
 export async function middleware(request: NextRequest) {
-  let response = NextResponse.next({
-    request: {
-      headers: request.headers,
+  let supabaseResponse = NextResponse.next({
+    request,
+  })
+
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    console.warn("Missing Supabase environment variables")
+    return supabaseResponse
+  }
+
+  const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
+    cookies: {
+      getAll() {
+        return request.cookies.getAll()
+      },
+      setAll(cookiesToSet) {
+        cookiesToSet.forEach(({ name, value, options }) => request.cookies.set(name, value))
+        supabaseResponse = NextResponse.next({
+          request,
+        })
+        cookiesToSet.forEach(({ name, value, options }) => supabaseResponse.cookies.set(name, value, options))
+      },
     },
   })
 
   try {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
 
-    if (!supabaseUrl || !supabaseAnonKey) {
-      console.warn("Missing Supabase environment variables in middleware")
-      return response
+    // Protected routes
+    const protectedRoutes = ["/dashboard", "/onboarding"]
+    const authRoutes = ["/login", "/register"]
+
+    const isProtectedRoute = protectedRoutes.some((route) => request.nextUrl.pathname.startsWith(route))
+    const isAuthRoute = authRoutes.some((route) => request.nextUrl.pathname.startsWith(route))
+
+    // Redirect unauthenticated users to login
+    if (isProtectedRoute && !user) {
+      return NextResponse.redirect(new URL("/login", request.url))
     }
 
-    const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
-      cookies: {
-        get(name: string) {
-          return request.cookies.get(name)?.value
-        },
-        set(name: string, value: string, options: CookieOptions) {
-          request.cookies.set({
-            name,
-            value,
-            ...options,
-          })
-          response = NextResponse.next({
-            request: {
-              headers: request.headers,
-            },
-          })
-          response.cookies.set({
-            name,
-            value,
-            ...options,
-          })
-        },
-        remove(name: string, options: CookieOptions) {
-          request.cookies.set({
-            name,
-            value: "",
-            ...options,
-          })
-          response = NextResponse.next({
-            request: {
-              headers: request.headers,
-            },
-          })
-          response.cookies.set({
-            name,
-            value: "",
-            ...options,
-          })
-        },
-      },
-    })
-
-    await supabase.auth.getUser()
+    // Redirect authenticated users away from auth pages
+    if (isAuthRoute && user) {
+      return NextResponse.redirect(new URL("/dashboard", request.url))
+    }
   } catch (error) {
-    console.error("Middleware error:", error)
+    console.error("Middleware auth error:", error)
   }
 
-  return response
+  return supabaseResponse
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"],
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * Feel free to modify this pattern to include more paths.
+     */
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+  ],
 }
