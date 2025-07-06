@@ -1,4 +1,4 @@
-import { createBrowserClient } from "@supabase/ssr"
+import { createClient } from "@supabase/supabase-js"
 
 export type Database = {
   public: {
@@ -33,15 +33,11 @@ export type Database = {
   }
 }
 
-let client: ReturnType<typeof createBrowserClient<Database>> | null = null
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co"
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder-key"
 
-export function createClient() {
-  if (client) return client
-
-  // Use placeholder values for development if environment variables are missing
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co"
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder-key"
-
-  client = createBrowserClient<Database>(supabaseUrl, supabaseAnonKey)
-  return client
+if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+  console.warn("Missing Supabase environment variables. Using placeholder values.")
 }
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey)
