@@ -5,48 +5,45 @@ export type Database = {
     Tables: {
       appointments: {
         Row: {
-          id: string
+          appointment_date: string
           client_id: string | null
-          nutritionist_id: string | null
-          title: string
-          description: string | null
-          scheduled_at: string
-          duration_minutes: number | null
-          status: Database["public"]["Enums"]["appointment_status"] | null
-          type: string | null
-          notes: string | null
-          meeting_link: string | null
           created_at: string | null
+          description: string | null
+          duration_minutes: number | null
+          id: string
+          meeting_link: string | null
+          notes: string | null
+          nutritionist_id: string | null
+          status: Database["public"]["Enums"]["appointment_status"] | null
+          title: string
           updated_at: string | null
         }
         Insert: {
-          id?: string
+          appointment_date: string
           client_id?: string | null
-          nutritionist_id?: string | null
-          title: string
-          description?: string | null
-          scheduled_at: string
-          duration_minutes?: number | null
-          status?: Database["public"]["Enums"]["appointment_status"] | null
-          type?: string | null
-          notes?: string | null
-          meeting_link?: string | null
           created_at?: string | null
+          description?: string | null
+          duration_minutes?: number | null
+          id?: string
+          meeting_link?: string | null
+          notes?: string | null
+          nutritionist_id?: string | null
+          status?: Database["public"]["Enums"]["appointment_status"] | null
+          title: string
           updated_at?: string | null
         }
         Update: {
-          id?: string
+          appointment_date?: string
           client_id?: string | null
-          nutritionist_id?: string | null
-          title?: string
-          description?: string | null
-          scheduled_at?: string
-          duration_minutes?: number | null
-          status?: Database["public"]["Enums"]["appointment_status"] | null
-          type?: string | null
-          notes?: string | null
-          meeting_link?: string | null
           created_at?: string | null
+          description?: string | null
+          duration_minutes?: number | null
+          id?: string
+          meeting_link?: string | null
+          notes?: string | null
+          nutritionist_id?: string | null
+          status?: Database["public"]["Enums"]["appointment_status"] | null
+          title?: string
           updated_at?: string | null
         }
         Relationships: [
@@ -54,7 +51,7 @@ export type Database = {
             foreignKeyName: "appointments_client_id_fkey"
             columns: ["client_id"]
             isOneToOne: false
-            referencedRelation: "profiles"
+            referencedRelation: "clients"
             referencedColumns: ["id"]
           },
           {
@@ -66,65 +63,65 @@ export type Database = {
           },
         ]
       }
-      client_profiles: {
+      clients: {
         Row: {
-          id: string
-          user_id: string | null
-          nutritionist_id: string | null
-          height: number | null
-          weight: number | null
           activity_level: string | null
-          health_conditions: string[] | null
           allergies: string[] | null
+          created_at: string | null
           dietary_preferences: string[] | null
-          goals: string[] | null
           emergency_contact_name: string | null
           emergency_contact_phone: string | null
-          created_at: string | null
+          goals: string[] | null
+          health_conditions: string[] | null
+          height: number | null
+          id: string
+          nutritionist_id: string | null
           updated_at: string | null
+          user_id: string | null
+          weight: number | null
         }
         Insert: {
-          id?: string
-          user_id?: string | null
-          nutritionist_id?: string | null
-          height?: number | null
-          weight?: number | null
           activity_level?: string | null
-          health_conditions?: string[] | null
           allergies?: string[] | null
+          created_at?: string | null
           dietary_preferences?: string[] | null
-          goals?: string[] | null
           emergency_contact_name?: string | null
           emergency_contact_phone?: string | null
-          created_at?: string | null
+          goals?: string[] | null
+          health_conditions?: string[] | null
+          height?: number | null
+          id?: string
+          nutritionist_id?: string | null
           updated_at?: string | null
+          user_id?: string | null
+          weight?: number | null
         }
         Update: {
-          id?: string
-          user_id?: string | null
-          nutritionist_id?: string | null
-          height?: number | null
-          weight?: number | null
           activity_level?: string | null
-          health_conditions?: string[] | null
           allergies?: string[] | null
+          created_at?: string | null
           dietary_preferences?: string[] | null
-          goals?: string[] | null
           emergency_contact_name?: string | null
           emergency_contact_phone?: string | null
-          created_at?: string | null
+          goals?: string[] | null
+          health_conditions?: string[] | null
+          height?: number | null
+          id?: string
+          nutritionist_id?: string | null
           updated_at?: string | null
+          user_id?: string | null
+          weight?: number | null
         }
         Relationships: [
           {
-            foreignKeyName: "client_profiles_nutritionist_id_fkey"
+            foreignKeyName: "clients_nutritionist_id_fkey"
             columns: ["nutritionist_id"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "client_profiles_user_id_fkey"
+            foreignKeyName: "clients_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
@@ -132,56 +129,157 @@ export type Database = {
           },
         ]
       }
+      kenyan_foods: {
+        Row: {
+          calories_per_100g: number | null
+          carbs_per_100g: number | null
+          category: string
+          common_serving_size: string | null
+          created_at: string | null
+          description: string | null
+          fats_per_100g: number | null
+          fiber_per_100g: number | null
+          id: string
+          name: string
+          protein_per_100g: number | null
+        }
+        Insert: {
+          calories_per_100g?: number | null
+          carbs_per_100g?: number | null
+          category: string
+          common_serving_size?: string | null
+          created_at?: string | null
+          description?: string | null
+          fats_per_100g?: number | null
+          fiber_per_100g?: number | null
+          id?: string
+          name: string
+          protein_per_100g?: number | null
+        }
+        Update: {
+          calories_per_100g?: number | null
+          carbs_per_100g?: number | null
+          category?: string
+          common_serving_size?: string | null
+          created_at?: string | null
+          description?: string | null
+          fats_per_100g?: number | null
+          fiber_per_100g?: number | null
+          id?: string
+          name?: string
+          protein_per_100g?: number | null
+        }
+        Relationships: []
+      }
+      meal_plan_items: {
+        Row: {
+          calories: number | null
+          carbs: number | null
+          created_at: string | null
+          day_of_week: number
+          fats: number | null
+          fiber: number | null
+          food_name: string
+          id: string
+          instructions: string | null
+          meal_plan_id: string | null
+          meal_type: string
+          protein: number | null
+          quantity: number | null
+          unit: string | null
+        }
+        Insert: {
+          calories?: number | null
+          carbs?: number | null
+          created_at?: string | null
+          day_of_week: number
+          fats?: number | null
+          fiber?: number | null
+          food_name: string
+          id?: string
+          instructions?: string | null
+          meal_plan_id?: string | null
+          meal_type: string
+          protein?: number | null
+          quantity?: number | null
+          unit?: string | null
+        }
+        Update: {
+          calories?: number | null
+          carbs?: number | null
+          created_at?: string | null
+          day_of_week?: number
+          fats?: number | null
+          fiber?: number | null
+          food_name?: string
+          id?: string
+          instructions?: string | null
+          meal_plan_id?: string | null
+          meal_type?: string
+          protein?: number | null
+          quantity?: number | null
+          unit?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "meal_plan_items_meal_plan_id_fkey"
+            columns: ["meal_plan_id"]
+            isOneToOne: false
+            referencedRelation: "meal_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       meal_plans: {
         Row: {
-          id: string
           client_id: string | null
-          nutritionist_id: string | null
-          title: string
-          description: string | null
-          start_date: string
-          end_date: string | null
-          status: Database["public"]["Enums"]["meal_plan_status"] | null
+          created_at: string | null
           daily_calories: number | null
-          daily_protein: number | null
           daily_carbs: number | null
           daily_fats: number | null
+          daily_protein: number | null
+          description: string | null
+          end_date: string | null
+          id: string
           notes: string | null
-          created_at: string | null
+          nutritionist_id: string | null
+          start_date: string
+          status: Database["public"]["Enums"]["meal_plan_status"] | null
+          title: string
           updated_at: string | null
         }
         Insert: {
-          id?: string
           client_id?: string | null
-          nutritionist_id?: string | null
-          title: string
-          description?: string | null
-          start_date: string
-          end_date?: string | null
-          status?: Database["public"]["Enums"]["meal_plan_status"] | null
+          created_at?: string | null
           daily_calories?: number | null
-          daily_protein?: number | null
           daily_carbs?: number | null
           daily_fats?: number | null
+          daily_protein?: number | null
+          description?: string | null
+          end_date?: string | null
+          id?: string
           notes?: string | null
-          created_at?: string | null
+          nutritionist_id?: string | null
+          start_date: string
+          status?: Database["public"]["Enums"]["meal_plan_status"] | null
+          title: string
           updated_at?: string | null
         }
         Update: {
-          id?: string
           client_id?: string | null
-          nutritionist_id?: string | null
-          title?: string
-          description?: string | null
-          start_date?: string
-          end_date?: string | null
-          status?: Database["public"]["Enums"]["meal_plan_status"] | null
+          created_at?: string | null
           daily_calories?: number | null
-          daily_protein?: number | null
           daily_carbs?: number | null
           daily_fats?: number | null
+          daily_protein?: number | null
+          description?: string | null
+          end_date?: string | null
+          id?: string
           notes?: string | null
-          created_at?: string | null
+          nutritionist_id?: string | null
+          start_date?: string
+          status?: Database["public"]["Enums"]["meal_plan_status"] | null
+          title?: string
           updated_at?: string | null
         }
         Relationships: [
@@ -189,7 +287,7 @@ export type Database = {
             foreignKeyName: "meal_plans_client_id_fkey"
             columns: ["client_id"]
             isOneToOne: false
-            referencedRelation: "profiles"
+            referencedRelation: "clients"
             referencedColumns: ["id"]
           },
           {
@@ -203,34 +301,34 @@ export type Database = {
       }
       messages: {
         Row: {
-          id: string
-          sender_id: string | null
-          recipient_id: string | null
-          content: string
-          status: Database["public"]["Enums"]["message_status"] | null
           attachment_url: string | null
+          content: string
           created_at: string | null
+          id: string
           read_at: string | null
+          recipient_id: string | null
+          sender_id: string | null
+          status: Database["public"]["Enums"]["message_status"] | null
         }
         Insert: {
-          id?: string
-          sender_id?: string | null
-          recipient_id?: string | null
-          content: string
-          status?: Database["public"]["Enums"]["message_status"] | null
           attachment_url?: string | null
+          content: string
           created_at?: string | null
+          id?: string
           read_at?: string | null
+          recipient_id?: string | null
+          sender_id?: string | null
+          status?: Database["public"]["Enums"]["message_status"] | null
         }
         Update: {
-          id?: string
-          sender_id?: string | null
-          recipient_id?: string | null
-          content?: string
-          status?: Database["public"]["Enums"]["message_status"] | null
           attachment_url?: string | null
+          content?: string
           created_at?: string | null
+          id?: string
           read_at?: string | null
+          recipient_id?: string | null
+          sender_id?: string | null
+          status?: Database["public"]["Enums"]["message_status"] | null
         }
         Relationships: [
           {
@@ -251,57 +349,104 @@ export type Database = {
       }
       profiles: {
         Row: {
-          id: string
-          email: string
-          full_name: string
-          role: Database["public"]["Enums"]["user_role"]
-          phone: string | null
-          date_of_birth: string | null
-          gender: string | null
           avatar_url: string | null
           bio: string | null
-          specializations: string[] | null
-          license_number: string | null
-          years_experience: number | null
           consultation_fee: number | null
           created_at: string | null
-          updated_at: string | null
-        }
-        Insert: {
-          id: string
+          date_of_birth: string | null
           email: string
           full_name: string
-          role?: Database["public"]["Enums"]["user_role"]
-          phone?: string | null
-          date_of_birth?: string | null
-          gender?: string | null
+          gender: string | null
+          id: string
+          license_number: string | null
+          phone: string | null
+          role: Database["public"]["Enums"]["user_role"]
+          specializations: string[] | null
+          updated_at: string | null
+          years_experience: number | null
+        }
+        Insert: {
           avatar_url?: string | null
           bio?: string | null
-          specializations?: string[] | null
-          license_number?: string | null
-          years_experience?: number | null
           consultation_fee?: number | null
           created_at?: string | null
+          date_of_birth?: string | null
+          email: string
+          full_name: string
+          gender?: string | null
+          id: string
+          license_number?: string | null
+          phone?: string | null
+          role?: Database["public"]["Enums"]["user_role"]
+          specializations?: string[] | null
           updated_at?: string | null
+          years_experience?: number | null
         }
         Update: {
-          id?: string
-          email?: string
-          full_name?: string
-          role?: Database["public"]["Enums"]["user_role"]
-          phone?: string | null
-          date_of_birth?: string | null
-          gender?: string | null
           avatar_url?: string | null
           bio?: string | null
-          specializations?: string[] | null
-          license_number?: string | null
-          years_experience?: number | null
           consultation_fee?: number | null
           created_at?: string | null
+          date_of_birth?: string | null
+          email?: string
+          full_name?: string
+          gender?: string | null
+          id?: string
+          license_number?: string | null
+          phone?: string | null
+          role?: Database["public"]["Enums"]["user_role"]
+          specializations?: string[] | null
           updated_at?: string | null
+          years_experience?: number | null
         }
         Relationships: []
+      }
+      progress_entries: {
+        Row: {
+          body_fat_percentage: number | null
+          client_id: string | null
+          created_at: string | null
+          id: string
+          measurements: Json | null
+          muscle_mass: number | null
+          notes: string | null
+          photos: string[] | null
+          recorded_date: string
+          weight: number | null
+        }
+        Insert: {
+          body_fat_percentage?: number | null
+          client_id?: string | null
+          created_at?: string | null
+          id?: string
+          measurements?: Json | null
+          muscle_mass?: number | null
+          notes?: string | null
+          photos?: string[] | null
+          recorded_date: string
+          weight?: number | null
+        }
+        Update: {
+          body_fat_percentage?: number | null
+          client_id?: string | null
+          created_at?: string | null
+          id?: string
+          measurements?: Json | null
+          muscle_mass?: number | null
+          notes?: string | null
+          photos?: string[] | null
+          recorded_date?: string
+          weight?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "progress_entries_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
@@ -312,7 +457,7 @@ export type Database = {
     }
     Enums: {
       appointment_status: "scheduled" | "completed" | "cancelled" | "no_show"
-      meal_plan_status: "draft" | "active" | "completed" | "paused"
+      meal_plan_status: "active" | "completed" | "paused"
       message_status: "sent" | "delivered" | "read"
       user_role: "nutritionist" | "client"
     }
