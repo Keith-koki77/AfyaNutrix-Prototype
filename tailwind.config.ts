@@ -12,6 +12,11 @@ const config: Config = {
   ],
   theme: {
   	extend: {
+		fontFamily: {
+			sans: ['var(--font-poppins)', 'sans-serif'],
+			// You can also define a specific 'poppins' key:
+			// poppins: ['var(--font-poppins)', 'sans-serif'],
+		},
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
