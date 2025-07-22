@@ -10,7 +10,11 @@ importers:
     dependencies:
       '@hookform/resolvers':
         specifier: ^3.9.1
+<<<<<<< HEAD
         version: 3.9.1(react-hook-form@7.54.1(react@19.0.0))
+=======
+        version: 3.9.1(react-hook-form@7.54.1(react@18.3.1))
+>>>>>>> d11f5aa (Sync pnpm-lock.yaml with package.json)
       '@radix-ui/react-accordion':
         specifier: 1.2.2
         version: 1.2.2(@types/react-dom@19.0.0)(@types/react@19.0.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -103,7 +107,14 @@ importers:
         version: 2.1.1
       cmdk:
         specifier: 1.0.4
+<<<<<<< HEAD
         version: 1.0.4(@types/react-dom@19.0.0)(@types/react@19.0.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+=======
+        version: 1.0.4(@types/react-dom@19.0.0)(@types/react@19.0.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      date-fns:
+        specifier: ^4.1.0
+        version: 4.1.0
+>>>>>>> d11f5aa (Sync pnpm-lock.yaml with package.json)
       embla-carousel-react:
         specifier: 8.5.1
         version: 8.5.1(react@19.0.0)
@@ -124,7 +135,11 @@ importers:
         version: 19.0.0
       react-day-picker:
         specifier: 8.10.1
+<<<<<<< HEAD
         version: 8.10.1(date-fns@4.1.0)(react@19.0.0)
+=======
+        version: 8.10.1(date-fns@4.1.0)(react@18.3.1)
+>>>>>>> d11f5aa (Sync pnpm-lock.yaml with package.json)
       react-dom:
         specifier: ^19
         version: 19.0.0(react@19.0.0)
@@ -3214,10 +3229,17 @@ snapshots:
 
   queue-microtask@1.2.3: {}
 
+<<<<<<< HEAD
   react-day-picker@8.10.1(date-fns@4.1.0)(react@19.0.0):
     dependencies:
       date-fns: 4.1.0
       react: 19.0.0
+=======
+  react-day-picker@8.10.1(date-fns@4.1.0)(react@18.3.1):
+    dependencies:
+      date-fns: 4.1.0
+      react: 18.3.1
+>>>>>>> d11f5aa (Sync pnpm-lock.yaml with package.json)
 
   react-dom@19.0.0(react@19.0.0):
     dependencies:
