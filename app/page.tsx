@@ -347,7 +347,7 @@ export default function LandingPage() {
      {/* Features Section */}
      <section
        id="features"
-       className="py-24 px-4 bg-gradient-to-b from-slate-50 to-teal-100"
+       className="py-24 px-4 bg-gradient-to-b from-slate-50 to-[#AED581]-500"
      >
        <div className="container mx-auto max-w-7xl">
          {/* Header */}
