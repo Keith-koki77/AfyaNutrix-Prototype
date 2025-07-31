@@ -170,15 +170,15 @@ export default function RegisterPage() {
          <Link href="/privacy" className="text-[#1B5E20] hover:underline">
           Privacy Policy
          </Link>
-         . I understand my data will be processed in compliance with Kenya's DPA
-         2019.
+         . I understand my data will be processed in compliance with
+         Kenya&apos;s DPA 2019.
         </Label>
        </div>
        <div className="flex items-start space-x-2">
         <Checkbox id="marketing" name="marketing" />
         <Label htmlFor="marketing" className="text-sm">
-         I'd like to receive updates about new features and nutrition practice
-         tips
+         I&apos;d like to receive updates about new features and nutrition
+         practice tips
         </Label>
        </div>
       </div>
@@ -194,7 +194,7 @@ export default function RegisterPage() {
       <div className="bg-green-50 border border-green-200 rounded-lg p-4">
        <h4 className="font-medium text-green-800 mb-2 flex items-center">
         <CheckCircle className="w-4 h-4 mr-2" />
-        What's included in your free trial:
+        What&apos;s included in your free trial:
        </h4>
        <ul className="text-sm text-green-700 space-y-1">
         <li>• 14 days full access to all features</li>

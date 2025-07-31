@@ -20,6 +20,7 @@ const signupSchema = z.object({
 
 export type SignupFormData = z.infer<typeof signupSchema>;
 
+//eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function signup(initialState: any, formData: FormData) {
  const validatedFields = signupSchema.safeParse({
   firstName: formData.get("firstName"),
