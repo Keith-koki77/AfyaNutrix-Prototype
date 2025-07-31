@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 
 import { createClient } from "@/utils/supabase/server";
 
+//eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function login(initialState: any, formData: FormData) {
  const supabase = await createClient();
 
