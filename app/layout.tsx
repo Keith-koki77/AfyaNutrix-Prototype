@@ -1,6 +1,7 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import '../styles/globals.css'
 import { Poppins } from 'next/font/google';
+import Header from '@/components/Header';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -9,10 +10,17 @@ const poppins = Poppins({
   display: 'swap', // Ensures text remains visible during font loading
 });
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+}
+
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
-  generator: 'v0.dev',
+  title: 'AfyaNutrix - Professional Nutrition Management Platform',
+  description: 'Empower your nutrition practice with cutting-edge tools designed for modern healthcare professionals. Scale from individual practice to enterprise-level operations.',
+  generator: 'AfyaNutrix',
+  keywords: 'nutrition, healthcare, client management, meal planning, nutritionist tools',
+  authors: [{ name: 'AfyaNutrix Team' }],
 }
 
 export default function RootLayout({
@@ -22,7 +30,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={poppins.className}>
-      <body>{children}</body>
+      <body className="min-h-screen bg-white">
+        <Header />
+        {/* Add padding-top to account for fixed header */}
+        <main className="pt-16">
+          {children}
+        </main>
+      </body>
     </html>
   )
 }

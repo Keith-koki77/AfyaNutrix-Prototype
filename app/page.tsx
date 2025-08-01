@@ -27,43 +27,43 @@ export default function LandingPage() {
      <header className="fixed top-0 left-0 w-full z-50 bg-white/90 backdrop-blur-md shadow-sm border-b border-gray-100 transition-all duration-300 ease-in-out">
        <div className="container mx-auto px-6 py-4 lg:px-8 flex items-center justify-between h-16">
          {/* Logo Section */}
-         <div className="flex items-center space-x-2">
+         <Link href="/" className="flex items-center space-x-2">
            <div className="w-9 h-9 bg-[#1B5E20] rounded-xl flex items-center justify-center shadow-md">
              <ChefHat className="w-5 h-5 text-white" />
            </div>
            <span className="text-2xl font-extrabold text-[#003B2C] tracking-tight">
              AfyaNutrix
            </span>
-         </div>
+         </Link>
 
          {/* Primary Navigation - Centered on larger screens */}
          <nav className="hidden md:flex flex-grow justify-center items-center space-x-8 lg:space-x-10">
            <Link
-             href="#features"
+             href="/#features"
              className="text-gray-700 text-lg font-medium hover:text-[#1B5E20] transition-colors duration-200 relative group"
            >
              Features
              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#1B5E20] transition-all duration-300 group-hover:w-full"></span>
            </Link>
            <Link
-             href="#pricing"
+             href="/pricing"
              className="text-gray-700 text-lg font-medium hover:text-[#1B5E20] transition-colors duration-200 relative group"
            >
              Pricing
              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#1B5E20] transition-all duration-300 group-hover:w-full"></span>
            </Link>
            <Link
-             href="#about"
+             href="/#about"
              className="text-gray-700 text-lg font-medium hover:text-[#1B5E20] transition-colors duration-200 relative group"
            >
-             About Us {/* Changed to About Us for more formality */}
+             About Us
              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#1B5E20] transition-all duration-300 group-hover:w-full"></span>
            </Link>
          </nav>
 
          {/* Action Buttons */}
          <div className="flex items-center space-x-3">
-           <Link href="/login" passHref>
+           <Link href="/login">
              <Button
                variant="ghost"
                className="text-[#003B2C] hover:bg-gray-100 text-base font-medium px-4 py-2 rounded-lg transition-colors duration-200"
@@ -71,15 +71,11 @@ export default function LandingPage() {
                Sign In
              </Button>
            </Link>
-           <Link href="/register" passHref>
+           <Link href="/register">
              <Button className="bg-[#003B2C] hover:bg-[#002B1F] text-white font-semibold text-base px-6 py-2 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 ease-in-out">
                Get Started
              </Button>
            </Link>
-           {/* Mobile Menu Button - You'll need to implement the actual mobile menu logic */}
-           {/* <button className="md:hidden p-2 text-gray-600 hover:text-[#1B5E20]">
-            <Menu className="w-6 h-6" />
-          </button> */}
          </div>
        </div>
      </header>
@@ -1203,7 +1199,7 @@ export default function LandingPage() {
            <div className="grid md:grid-cols-3 gap-6 mb-12">
              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
                <div className="w-12 h-12 bg-[#9CCC65] rounded-lg flex items-center justify-center mb-4">
-                 <Lock className="w-6 h-6 text-[#1B5E20]"/>
+                 <Lock className="w-6 h-6 text-[#1B5E20]" />
                </div>
                <h4 className="font-semibold text-gray-900 mb-3">
                  Will my clients' data be sold or shared?
