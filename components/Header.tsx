@@ -42,6 +42,13 @@ const Header = () => {
             About Us
             <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#1B5E20] transition-all duration-300 group-hover:w-full"></span>
           </Link>
+          <Link
+            href="/#faqs"
+            className="text-gray-700 text-lg font-medium hover:text-[#1B5E20] transition-colors duration-200 relative group"
+          >
+            FAQs
+            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#1B5E20] transition-all duration-300 group-hover:w-full"></span>
+          </Link>
         </nav>
 
         {/* Action Buttons */}

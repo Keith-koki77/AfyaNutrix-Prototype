@@ -5,9 +5,9 @@ import Header from '@/components/Header';
 
 const poppins = Poppins({
   subsets: ['latin'],
-  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'], // Include all weights you plan to use
-  variable: '--font-poppins', // Optional: Define a CSS variable for easier use with TailwindCSS
-  display: 'swap', // Ensures text remains visible during font loading
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+  variable: '--font-poppins',
+  display: 'swap', 
 });
 
 export const viewport: Viewport = {
