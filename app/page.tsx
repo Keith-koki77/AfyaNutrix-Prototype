@@ -1,26 +1,110 @@
+"use client";
 import { Button } from "@/components/ui/button";
+import React, { useState } from 'react';
 import {
- Card,
- CardContent,
- CardDescription,
- CardHeader,
- CardTitle,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
- CheckCircle,
- Users,
- Calendar,
- ChefHat,
- BarChart3,
- MessageSquare,
- Smartphone,
+  CheckCircle,
+  Users,
+  Calendar,
+  ChefHat,
+  BarChart3,
+  MessageSquare,
+  Smartphone,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { ChevronDown, Shield, Lock, MapPin, Download } from "lucide-react";
 
+type BillingPeriod = 'monthly' | 'quarterly' | 'yearly';
+
+const plans = [
+  {
+    title: "Starter",
+    price: { monthly: "KES 1,500", quarterly: "KES 1,275", yearly: "KES 1,125" },
+    originalPrice: { monthly: null, quarterly: "KES 1,500", yearly: "KES 1,500" },
+    desc: "Perfect for individual nutritionists",
+    features: [
+      "Up to 20 clients",
+      "Basic client profiles",
+      "Meal plan upload (PDF)",
+      "Manual client notes",
+      "Basic progress tracking",
+      "Email support",
+    ],
+    color: "gray",
+    recommended: false,
+  },
+  {
+    title: "Professional",
+    price: { monthly: "KES 2,500", quarterly: "KES 2,125", yearly: "KES 1,875" },
+    originalPrice: { monthly: null, quarterly: "KES 2,500", yearly: "KES 2,500" },
+    desc: "Ideal for growing practices",
+    features: [
+      "Up to 100 clients",
+      "Advanced client profiles",
+      "Meal plan builder",
+      "Secure client notes",
+      "Detailed progress tracking",
+      "Priority email support",
+      "Integrations (e.g., calendar)",
+    ],
+    color: "emerald",
+    recommended: true,
+  },
+  {
+    title: "Clinic",
+    price: { monthly: "KES 5,000", quarterly: "KES 4,250", yearly: "KES 3,750" },
+    originalPrice: { monthly: null, quarterly: "KES 5,000", yearly: "KES 5,000" },
+    desc: "For multi-practitioner clinics",
+    features: [
+      "Unlimited clients",
+      "Team management",
+      "Customizable branding",
+      "HIPAA/GDPR compliance",
+      "Dedicated account manager",
+      "API access",
+      "Onboarding and training",
+    ],
+    color: "blue",
+    recommended: false,
+  },
+  {
+    title: "Enterprise",
+    price: { monthly: "Custom", quarterly: "Custom", yearly: "Custom" },
+    originalPrice: { monthly: null, quarterly: null, yearly: null },
+    desc: "Tailored solutions for large organizations",
+    features: [
+      "Custom features",
+      "SLA & dedicated support",
+      "On-premise deployment",
+      "Single Sign-On (SSO)",
+      "Advanced analytics",
+      "Regulatory compliance",
+      "24/7 phone support",
+    ],
+    color: "purple",
+    recommended: false,
+  },
+];
+export function PricingSection() {
+  return null;
+}
+
 export default function LandingPage() {
+  const [billingPeriod, setBillingPeriod] = useState<BillingPeriod>('quarterly');
+
+  const getSavingsText = (period: BillingPeriod) => {
+    if (period === 'quarterly') return 'Save 15%';
+    if (period === 'yearly') return 'Save 25%';
+    return '';
+  };
  return (
    <div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
      {/* Header */}
@@ -57,6 +141,13 @@ export default function LandingPage() {
              className="text-gray-700 text-lg font-medium hover:text-[#1B5E20] transition-colors duration-200 relative group"
            >
              About Us
+             <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#1B5E20] transition-all duration-300 group-hover:w-full"></span>
+           </Link>
+           <Link
+             href="/faqs"
+             className="text-gray-700 text-lg font-medium hover:text-[#1B5E20] transition-colors duration-200 relative group"
+           >
+             FAQs
              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#1B5E20] transition-all duration-300 group-hover:w-full"></span>
            </Link>
          </nav>
@@ -679,469 +770,207 @@ export default function LandingPage() {
 
      {/* PRICING */}
      <section
-       id="pricing"
-       className="py-24 px-4 bg-gradient-to-br from-slate-50 via-white to-emerald-50/30 relative overflow-hidden"
-     >
-       {/* Background Elements */}
-       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-100/20 via-transparent to-transparent"></div>
-       <div className="absolute top-0 left-1/4 w-72 h-72 bg-emerald-100/20 rounded-full blur-3xl"></div>
-       <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-amber-100/20 rounded-full blur-3xl"></div>
+        id="pricing"
+        className="py-24 px-4 bg-gradient-to-br from-slate-50 via-white to-emerald-50/30 relative overflow-hidden"
+      >
+        {/* Background Elements */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-100/20 via-transparent to-transparent"></div>
+        <div className="absolute top-0 left-1/4 w-72 h-72 bg-emerald-100/20 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-amber-100/20 rounded-full blur-3xl"></div>
 
-       <div className="container mx-auto max-w-screen-xl text-center relative z-10">
-         {/* Header */}
-         <div className="max-w-3xl mx-auto mb-16">
-           <div className="inline-flex items-center px-4 py-2 bg-[#003B2C] text-[#9CCC65]  border border-[#AED581] rounded-full mb-6">
-             <span className="text-sm font-medium text-[#AED581] ">
-               💚 Transparent Pricing
-             </span>
-           </div>
-           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
-             Choose Your Perfect
-             <span className="text-transparent bg-clip-text bg-[#003B2C]">
-               {" "}
-               Growth Plan
-             </span>
-           </h2>
-           <p className="text-xl text-gray-600 leading-relaxed mb-8">
-             Scalable solutions designed for nutrition professionals at every
-             stage of their journey
-           </p>
+        <div className="container mx-auto max-w-screen-xl text-center relative z-10">
+          {/* Header */}
+          <div className="max-w-3xl mx-auto mb-16">
+            <div className="inline-flex items-center px-4 py-2 bg-[#003B2C] text-[#9CCC65] border border-[#AED581] rounded-full mb-6">
+              <span className="text-sm font-medium text-[#AED581]">
+                💚 Transparent Pricing
+              </span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+              Choose Your Perfect
+              <span className="text-transparent bg-clip-text bg-[#003B2C]">
+                {" "}
+                Growth Plan
+              </span>
+            </h2>
+            <p className="text-xl text-gray-600 leading-relaxed mb-8">
+              Scalable solutions designed for nutrition professionals at every stage of
+              their journey
+            </p>
 
-           {/* Billing Toggle */}
-           <div className="flex items-center justify-center mb-8">
-             <div className="bg-white/80 backdrop-blur-sm border border-gray-200 rounded-2xl p-2 shadow-lg">
-               <div className="flex items-center space-x-1">
-                 <button className="px-6 py-3 text-sm font-bold text-gray-600 hover:text-gray-900 transition-colors rounded-xl">
-                   Monthly
-                 </button>
-                 <button className="px-6 py-3 text-sm font-bold bg-[#003B2C] text-white rounded-xl shadow-md transition-all hover:shadow-lg">
-                   Quarterly
-                   <span className="ml-2 text-xs bg-white/20 px-2 py-1 rounded-full">
-                     Save 15%
-                   </span>
-                 </button>
-                 <button className="px-6 py-3 text-sm font-bold text-gray-600 hover:text-gray-900 transition-colors rounded-xl relative">
-                   Yearly
-                   <span className="absolute -top-1 -right-1 text-xs bg-[#9CCC65]  text-white px-2 py-1 rounded-full">
-                     Save 25%
-                   </span>
-                 </button>
-               </div>
-             </div>
-           </div>
-         </div>
+            {/* Billing Toggle */}
+            <div className="flex items-center justify-center mb-8">
+              <div className="bg-white/80 backdrop-blur-sm border border-gray-200 rounded-2xl p-2 shadow-lg">
+                <div className="flex items-center space-x-1">
+                  <button
+                    onClick={() => setBillingPeriod('monthly')}
+                    className={`px-6 py-3 text-sm font-bold rounded-xl transition-all ${
+                      billingPeriod === 'monthly'
+                        ? 'bg-[#003B2C] text-white shadow-md'
+                        : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    Monthly
+                  </button>
+                  <button
+                    onClick={() => setBillingPeriod('quarterly')}
+                    className={`px-6 py-3 text-sm font-bold rounded-xl transition-all relative ${
+                      billingPeriod === 'quarterly'
+                        ? 'bg-[#003B2C] text-white shadow-md'
+                        : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    Quarterly
+                    <span className="ml-2 text-xs bg-white/20 px-2 py-1 rounded-full">
+                      Save 15%
+                    </span>
+                  </button>
+                  <button
+                    onClick={() => setBillingPeriod('yearly')}
+                    className={`px-6 py-3 text-sm font-bold rounded-xl transition-all relative ${
+                      billingPeriod === 'yearly'
+                        ? 'bg-[#003B2C] text-white shadow-md'
+                        : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    Yearly
+                    <span className="absolute -top-1 -right-1 text-xs bg-[#9CCC65] text-white px-2 py-1 rounded-full">
+                      Save 25%
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
 
-         {/* Pricing Cards */}
-         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-           {[
-             {
-               title: "Starter",
-               price: {
-                 monthly: "KES 1,500",
-                 quarterly: "KES 1,275",
-                 yearly: "KES 1,125",
-               },
-               originalPrice: {
-                 monthly: null,
-                 quarterly: "KES 1,500",
-                 yearly: "KES 1,500",
-               },
-               desc: "Perfect for individual nutritionists",
-               features: [
-                 "Up to 20 clients",
-                 "Basic client profiles",
-                 "Meal plan upload (PDF)",
-                 "Manual client notes",
-                 "Basic progress tracking",
-                 "Email support",
-               ],
-               color: "gray",
-               recommended: false,
-             },
-             {
-               title: "Solo Plan",
-               price: {
-                 monthly: "KES 2,500",
-                 quarterly: "KES 2,125",
-                 yearly: "KES 1,875",
-               },
-               originalPrice: {
-                 monthly: null,
-                 quarterly: "KES 2,500",
-                 yearly: "KES 2,500",
-               },
-               desc: "Ideal for growing practices",
-               features: [
-                 "Up to 50 clients",
-                 "Automated reminders",
-                 "Track weight, goals & check-ins",
-                 "Basic analytics dashboard",
-                 "Exportable progress report (PDF)",
-                 "Remove AfyaNutrix branding",
-                 "In-app support",
-               ],
-               color: "amber",
-               recommended: false,
-             },
-             {
-               title: "Pro Plan",
-               price: {
-                 monthly: "KES 4,500",
-                 quarterly: "KES 3,825",
-                 yearly: "KES 3,375",
-               },
-               originalPrice: {
-                 monthly: null,
-                 quarterly: "KES 4,500",
-                 yearly: "KES 4,500",
-               },
-               desc: "For small clinics and multiple practitioners",
-               features: [
-                 "Up to 200 clients",
-                 "5 nutritionist accounts",
-                 "Advanced analytics",
-                 "WhatsApp integration",
-                 "Branded mini-client portal (mobile PWA)",
-                 "Customizable follow-up templates",
-                 "Client intake forms with logic",
-                 "Bulk SMS integration (optional add-on)",
-                 "Priority support",
-               ],
-               color: "amber",
-               recommended: true,
-             },
-             {
-               title: "Enterprise",
-               price: {
-                 monthly: "Custom",
-                 quarterly: "Custom",
-                 yearly: "Custom",
-               },
-               originalPrice: { monthly: null, quarterly: null, yearly: null },
-               desc: "For large clinics and organizations",
-               features: [
-                 "Unlimited clients",
-                 "Unlimited nutritionist accounts",
-                 "Advanced analytics & reporting",
-                 "WhatsApp integration",
-                 "Admin dashboard + reporting",
-                 "API access (for hospital integration)",
-                 "Secure data export / backups",
-                 "Onboarding & training support",
-                 "24/7 priority support",
-               ],
-               color: "slate",
-               recommended: false,
-             },
-           ].map((plan, idx) => (
-             <Card
-               key={idx}
-               className={`relative group transition-all duration-300 hover:-translate-y-2 ${
-                 plan.recommended
-                   ? "border-2 border-[#003B2C] shadow-2xl shadow-amber-100/50 scale-105"
-                   : "border border-gray-200 hover:border-[#9CCC65] hover:shadow-xl"
-               } bg-white/80 backdrop-blur-sm`}
-             >
-               {plan.recommended && (
-                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
-                   <div className="bg-gradient-to-r from-[#003B2C] to-[#003B2C] text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
-                     ⭐ Most Popular
-                   </div>
-                 </div>
-               )}
+          {/* Pricing Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+            {plans.map((plan, idx) => (
+              <Card
+                key={idx}
+                className={`relative group transition-all duration-300 hover:-translate-y-2 ${
+                  plan.recommended
+                    ? "border-2 border-[#003B2C] shadow-2xl shadow-amber-100/50 scale-105"
+                    : "border border-gray-200 hover:border-[#9CCC65] hover:shadow-xl"
+                } bg-white/80 backdrop-blur-sm`}
+              >
+                {plan.recommended && (
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
+                    <div className="bg-gradient-to-r from-[#003B2C] to-[#003B2C] text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
+                      ⭐ Most Popular
+                    </div>
+                  </div>
+                )}
 
-               {/* Card Header */}
-               <CardHeader className="pb-2">
-                 <div className="flex items-center justify-between mb-4">
-                   <CardTitle className="text-xl font-semibold text-gray-900">
-                     {plan.title}
-                   </CardTitle>
-                   <div
-                     className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-                       plan.color === "amber"
-                         ? "bg-[#9CCC65] "
-                         : plan.color === "emerald"
-                         ? "bg-[#9CCC65] "
-                         : plan.color === "slate"
-                         ? "bg-[#9CCC65]"
-                         : "bg-[#9CCC65]"
-                     }`}
-                   >
-                     {plan.color === "amber" && (
-                       <span className="text-[#003B2C] text-xl">🚀</span>
-                     )}
-                     {plan.color === "emerald" && (
-                       <span className="text-[#1B5E20] text-xl">🌱</span>
-                     )}
-                     {plan.color === "slate" && (
-                       <span className="text-slate-600 text-xl">🏢</span>
-                     )}
-                     {plan.color === "gray" && (
-                       <span className="text-gray-600 text-xl">⭐</span>
-                     )}
-                   </div>
-                 </div>
+                {/* Card Header */}
+                <CardHeader className="pb-2">
+                  <div className="flex items-center justify-between mb-4">
+                    <CardTitle className="text-xl font-semibold text-gray-900">
+                      {plan.title}
+                    </CardTitle>
+                    <div
+                      className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                        plan.color === "amber"
+                          ? "bg-[#9CCC65] "
+                          : plan.color === "emerald"
+                          ? "bg-[#9CCC65] "
+                          : plan.color === "slate"
+                          ? "bg-[#9CCC65]"
+                          : "bg-[#9CCC65]"
+                      }`}
+                    >
+                      {plan.color === "amber" && (
+                        <span className="text-[#003B2C] text-xl">🚀</span>
+                      )}
+                      {plan.color === "emerald" && (
+                        <span className="text-[#1B5E20] text-xl">🌱</span>
+                      )}
+                      {plan.color === "slate" && (
+                        <span className="text-slate-600 text-xl">🏢</span>
+                      )}
+                      {plan.color === "gray" && (
+                        <span className="text-gray-600 text-xl">⭐</span>
+                      )}
+                    </div>
+                  </div>
 
-                 <div className="text-left">
-                   <div className="flex items-baseline mb-2">
-                     <span className="text-4xl font-bold text-gray-900">
-                       {plan.price.quarterly === "Custom"
-                         ? "Custom"
-                         : plan.price.quarterly}
-                     </span>
-                     {plan.price.quarterly !== "Custom" && (
-                       <span className="text-gray-500 ml-2">/month</span>
-                     )}
-                   </div>
-                   {plan.originalPrice.quarterly && (
-                     <div className="flex items-center mb-2">
-                       <span className="text-lg text-gray-400 line-through mr-2">
-                         {plan.originalPrice.quarterly}
-                       </span>
-                       <span className="text-sm bg-[#9CCC65] text-[#003B2C] px-2 py-1 rounded-full font-medium">
-                         Save 15%
-                       </span>
-                     </div>
-                   )}
-                   <CardDescription className="text-gray-600 leading-relaxed">
-                     {plan.desc}
-                   </CardDescription>
-                 </div>
-               </CardHeader>
+                  <div className="text-left">
+                    <div className="flex items-baseline mb-2">
+                      <span className="text-4xl font-bold text-gray-900">
+                        {plan.price[billingPeriod]}
+                      </span>
+                      {plan.price[billingPeriod] !== "Custom" && (
+                        <span className="text-gray-500 ml-2">/month</span>
+                      )}
+                    </div>
+                    {plan.originalPrice[billingPeriod] && billingPeriod !== 'monthly' && (
+                      <div className="flex items-center mb-2">
+                        <span className="text-lg text-gray-400 line-through mr-2">
+                          {plan.originalPrice[billingPeriod]}
+                        </span>
+                        <span className="text-sm bg-[#9CCC65] text-[#003B2C] px-2 py-1 rounded-full font-medium">
+                          {getSavingsText(billingPeriod)}
+                        </span>
+                      </div>
+                    )}
+                    <CardDescription className="text-gray-600 leading-relaxed">
+                      {plan.desc}
+                    </CardDescription>
+                  </div>
+                </CardHeader>
 
-               {/* Card Content */}
-               <CardContent className="pt-6">
-                 <ul className="space-y-4 text-left mb-8">
-                   {plan.features.map((feature, featureIdx) => (
-                     <li
-                       key={featureIdx}
-                       className="flex items-start space-x-3"
-                     >
-                       <CheckCircle className="mt-0.5 w-5 h-5 text-[#003B2C]  flex-shrink-0" />
-                       <span className="text-sm text-gray-700 leading-relaxed">
-                         {feature}
-                       </span>
-                     </li>
-                   ))}
-                 </ul>
+                {/* Card Content */}
+                <CardContent className="pt-6">
+                  <ul className="space-y-4 text-left mb-8">
+                    {plan.features.map((feature, featureIdx) => (
+                      <li key={featureIdx} className="flex items-start space-x-3">
+                        <CheckCircle className="mt-0.5 w-5 h-5 text-[#003B2C] flex-shrink-0" />
+                        <span className="text-sm text-gray-700 leading-relaxed">
+                          {feature}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
 
-                 <Button
-                   className={`w-full py-3 font-bold transition-all duration-200 ${
-                     plan.recommended
-                       ? "bg-gradient-to-r from-[#003B2C] to-[#003B2C] hover:from-[#1B5E20] hover:to-[#1B5E20] text-white shadow-lg hover:shadow-xl"
-                       : "bg-white border-2 border-gray-200 text-[#003B2C] hover:bg-gray-50 hover:border-[#003B2C]"
-                   }`}
-                 >
-                   {plan.price.quarterly === "Custom"
-                     ? "Contact Sales"
-                     : "Start Free Trial"}
-                 </Button>
-               </CardContent>
-             </Card>
-           ))}
-         </div>
+                  <Button
+                    className={`w-full py-3 font-bold transition-all duration-200 ${
+                      plan.recommended
+                        ? "bg-gradient-to-r from-[#003B2C] to-[#003B2C] hover:from-[#1B5E20] hover:to-[#1B5E20] text-white shadow-lg hover:shadow-xl"
+                        : "bg-white border-2 border-gray-200 text-[#003B2C] hover:bg-gray-50 hover:border-[#003B2C]"
+                    }`}
+                  >
+                    {plan.price[billingPeriod] === "Custom"
+                      ? "Contact Sales"
+                      : "Start Free Trial"}
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
 
-         {/* Bottom CTA */}
-         <div className="mt-16 text-center">
-           <p className="text-gray-600 mb-4">
-             All plans include a 14-day free trial • No credit card required •
-             Cancel anytime
-           </p>
-           <div className="flex flex-col sm:flex-row items-center justify-center gap-6 text-sm text-gray-500">
-             <div className="flex items-center gap-2">
-               <span className="w-2 h-2 bg-[#003B2C] rounded-full"></span>
-               <span>99.9% uptime guarantee</span>
-             </div>
-             <div className="flex items-center gap-2">
-               <span className="w-2 h-2 bg-[#003B2C] rounded-full"></span>
-               <span>Bank-level security</span>
-             </div>
-             <div className="flex items-center gap-2">
-               <span className="w-2 h-2 bg-[#003B2C] rounded-full"></span>
-               <span>24/7 support</span>
-             </div>
-           </div>
-         </div>
-       </div>
-     </section>
-
-     {/* CTA Section */}
-     <section className="py-24 px-4 bg-gradient-to-br from-slate-900 via-emerald-900 to-teal-900 text-white relative overflow-hidden">
-       {/* Background Elements */}
-       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-emerald-600/20 via-transparent to-transparent"></div>
-       <div className="absolute top-0 left-1/4 w-96 h-96 bg-emerald-400/10 rounded-full blur-3xl animate-pulse"></div>
-       <div className="absolute bottom-0 right-1/3 w-80 h-80 bg-teal-400/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-       <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-emerald-500/5"></div>
-
-       {/* Decorative Grid */}
-       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.02)_1px,transparent_1px)] bg-[size:64px_64px]"></div>
-
-       <div className="container mx-auto max-w-6xl text-center relative z-10">
-         {/* Header */}
-         <div className="max-w-4xl mx-auto mb-12">
-           <div className="inline-flex items-center px-4 py-2 bg-[#003B2C] text-[#9CCC65]  border border-[#AED581] rounded-full mb-6">
-             <span className="text-sm font-medium text-[#AED581] ">
-               💚 Transform Your Practice Today
-             </span>
-           </div>
-
-           <h2 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-             Ready to
-             <span className="text-transparent bg-clip-text bg-[#9CCC65]">
-               {" "}
-               10x Your Impact
-             </span>
-             <br />
-             as a Nutritionist?
-           </h2>
-
-           <p className="text-xl md:text-2xl text-gray-300 leading-relaxed mb-8">
-             Join 2,000+ Kenyan nutritionists who've already transformed their
-             practice with AfyaNutrix
-           </p>
-
-           {/* Trust Indicators */}
-           <div className="flex flex-wrap items-center justify-center gap-8 mb-12 opacity-80">
-             <div className="flex items-center space-x-2 text-sm font-bold text-[#F4F5F6]">
-               <span className="w-2 h-2 bg-[#9CCC65] rounded-full"></span>
-               <span>⭐ 4.9/5 from 500+ reviews</span>
-             </div>
-             <div className="flex items-center space-x-2 text-sm font-bold text-[#F4F5F6]">
-               <span className="w-2 h-2 bg-emerald-400 rounded-full"></span>
-               <span>🔒 SOC 2 Type II Compliant</span>
-             </div>
-             <div className="flex items-center space-x-2 text-sm font-bold text-[#F4F5F6]">
-               <span className="w-2 h-2 bg-emerald-400 rounded-full"></span>
-               <span>📱 Works on all devices</span>
-             </div>
-           </div>
-         </div>
-
-         {/* CTA Buttons */}
-         <div className="max-w-2xl mx-auto mb-12">
-           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-             <Link href="/register" className="w-full sm:w-auto">
-               <Button
-                 size="lg"
-                 className="w-full sm:w-auto bg-[#9CCC65] hover:bg-[#1B5E20] text-white px-10 py-4 text-lg font-semibold shadow-2xl hover:shadow-emerald-500/25 transition-all duration-300 transform hover:-translate-y-1 border-0 rounded-xl"
-               >
-                 🚀 Start Your Free Trial
-                 <span className="ml-2 text-sm bg-[#003B2C] px-2 py-1 rounded-full">
-                   14 days free
-                 </span>
-               </Button>
-             </Link>
-
-             <div className="flex items-center text-gray-300 text-sm font-medium">
-               <span className="mx-4 hidden sm:block">or</span>
-             </div>
-
-             <Link href="/contact" className="w-full sm:w-auto">
-               <Button
-                 size="lg"
-                 className="w-full sm:w-auto bg-[#003B2C] hover:bg-white hover:text-emerald-900 text-white border-2 border-white/30 hover:border-white px-10 py-4 text-lg font-semibold backdrop-blur-sm transition-all duration-300 transform hover:-translate-y-1 rounded-xl"
-               >
-                 📞 Schedule Live Demo
-               </Button>
-             </Link>
-           </div>
-
-           {/* Secondary CTA */}
-           <div className="mt-8">
-             <p className="text-gray-400 font-bold mb-4 text-sm">
-               Not ready to start? See AfyaNutrix in action first
-             </p>
-             <Link href="#">
-               <button className="text-[#F4F5F6] hover:text-[#9CCC65] underline underline-offset-4 font-medium transition-colors">
-                 Watch 2-minute product tour →
-               </button>
-             </Link>
-           </div>
-         </div>
-
-         {/* Value Props Grid */}
-         <div className="grid md:grid-cols-3 gap-8 mb-16 max-w-5xl mx-auto">
-           <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all duration-300">
-             <div className="w-12 h-12 bg-emerald-400/20 rounded-xl flex items-center justify-center mb-4 mx-auto">
-               <span className="text-2xl">⏱️</span>
-             </div>
-             <h3 className="text-lg font-semibold text-white mb-2">
-               Save 10+ Hours/Week
-             </h3>
-             <p className="text-gray-300 text-sm">
-               Automate client management, meal planning, and progress tracking
-             </p>
-           </div>
-
-           <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all duration-300">
-             <div className="w-12 h-12 bg-teal-400/20 rounded-xl flex items-center justify-center mb-4 mx-auto">
-               <span className="text-2xl">📈</span>
-             </div>
-             <h3 className="text-lg font-semibold text-white mb-2">
-               Increase Revenue 35%
-             </h3>
-             <p className="text-gray-300 text-sm">
-               Better client retention and streamlined practice management
-             </p>
-           </div>
-
-           <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all duration-300">
-             <div className="w-12 h-12 bg-cyan-400/20 rounded-xl flex items-center justify-center mb-4 mx-auto">
-               <span className="text-2xl">😊</span>
-             </div>
-             <h3 className="text-lg font-semibold text-white mb-2">
-               4.9/5 Client Satisfaction
-             </h3>
-             <p className="text-gray-300 text-sm">
-               Clients love the personalized experience and local meal plans
-             </p>
-           </div>
-         </div>
-
-         {/* Bottom Trust Elements */}
-         <div className="border-t border-white/10 pt-12">
-           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
-             <div className="text-center">
-               <div className="text-2xl font-bold text-[#9CCC65] mb-1">
-                 14 Days
-               </div>
-               <div className="text-xs font-bold text-gray-400 uppercase tracking-wider">
-                 Free Trial
-               </div>
-             </div>
-             <div className="text-center">
-               <div className="text-2xl font-bold text-[#9CCC65] mb-1">
-                 No Setup
-               </div>
-               <div className="text-xs font-bold text-gray-400 uppercase tracking-wider">
-                 Fees
-               </div>
-             </div>
-             <div className="text-center">
-               <div className="text-2xl font-bold text-[#9CCC65] mb-1">
-                 Cancel
-               </div>
-               <div className="text-xs font-bold text-gray-400 uppercase tracking-wider">
-                 Anytime
-               </div>
-             </div>
-             <div className="text-center">
-               <div className="text-2xl font-bold text-[#9CCC65] mb-1">
-                 24/7
-               </div>
-               <div className="text-xs font-bold text-gray-400 uppercase tracking-wider">
-                 Support
-               </div>
-             </div>
-           </div>
-
-           <p className="text-gray-400 text-sm">
-             🔐 Your data is secure with bank-level encryption • 🇰🇪 Built for
-             Kenyan nutritionists
-           </p>
-         </div>
-       </div>
-     </section>
+          {/* Bottom CTA */}
+          <div className="mt-16 text-center">
+            <p className="text-gray-600 mb-4">
+              All plans include a 14-day free trial • No credit card required • Cancel
+              anytime
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 text-sm text-gray-500">
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 bg-[#003B2C] rounded-full"></span>
+                <span>99.9% uptime guarantee</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 bg-[#003B2C] rounded-full"></span>
+                <span>Bank-level security</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 bg-[#003B2C] rounded-full"></span>
+                <span>24/7 support</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
      {/* Professional FAQ Section */}
      <section className="py-20 px-4 bg-gradient-to-br from-[#AED581] via-white to-[#AED581] relative overflow-hidden">
@@ -1157,7 +986,7 @@ export default function LandingPage() {
        <div className="relative container mx-auto max-w-5xl">
          {/* Section Header */}
          <div className="text-center mb-16">
-           <div className="inline-flex items-center px-4 py-2 bg-[#003B2C] text-[#9CCC65]  border border-[#AED581] rounded-full mb-6">
+           <div className="inline-flex items-center px-4 py-2 bg-[#003B2C] text-[#9CCC65] border border-[#AED581] rounded-full mb-6">
              <span className="w-2 h-2 bg-[#9CCC65] rounded-full mr-2"></span>
              Questions & Answers
            </div>
@@ -1273,49 +1102,6 @@ export default function LandingPage() {
                question: "Is my client's data safe?",
                answer:
                  "Yes, completely secure. AfyaNutrix is designed with full compliance to Kenya's Data Protection Act (DPA 2019) and international standards. Your clients' data is end-to-end encrypted, stored securely in Africa-based servers, and never accessed, mined, or shared without explicit consent. You maintain full control, and every client retains complete rights over their personal data.",
-             },
-             {
-               category: "Ease of Use",
-               question: "What if I'm not tech-savvy?",
-               answer:
-                 "AfyaNutrix is designed for real-world nutritionists, not software engineers. No coding or complex configuration required. We provide intuitive guided onboarding, ready-made clinical templates, contextual help throughout the platform, and dedicated local support when you need assistance.",
-             },
-             {
-               category: "Mobile Access",
-               question: "Can I use AfyaNutrix on my phone?",
-               answer:
-                 "Yes, fully mobile-optimized. AfyaNutrix is responsive and optimized for smartphones and tablets. Whether you're in a clinic, conducting home visits, or running community outreach programs—you can securely access client records, create meal plans, and update progress from anywhere.",
-             },
-             {
-               category: "Data Export",
-               question: "Can I export or download my data?",
-               answer:
-                 "Absolutely. You maintain complete data ownership and can export client records (CSV, PDF formats), detailed session summaries, customized meal plans, and comprehensive progress reports. This ensures compliance flexibility, data portability, and complete professional control over your practice data.",
-             },
-             {
-               category: "Pricing",
-               question: "How much does it cost?",
-               answer:
-                 "AfyaNutrix offers flexible, transparent pricing: Free Tier (limited clients and core features for trial), Professional Plan (KES 2,000/month for full features), Clinic Plans (starting KES 5,000/month for multi-user access), and Custom Enterprise pricing for NGOs, academic institutions, and large healthcare organizations.",
-             },
-             {
-               category: "Connectivity",
-               question: "Do I need an internet connection to use it?",
-               answer:
-                 "Currently, yes. AfyaNutrix requires internet connectivity for real-time data synchronization and security. However, we're actively developing offline-first capabilities for rural and low-bandwidth environments, planned for our next major release to ensure accessibility across all practice settings.",
-             },
-             {
-               category: "Team Collaboration",
-               question: "Can I invite my team or interns?",
-               answer:
-                 "Yes, with professional-grade access controls. Our Professional and Clinic tiers support multi-user access with granular role-based permissions. You can safely delegate tasks, supervise interns, and collaborate with colleagues while maintaining strict client confidentiality and regulatory compliance.",
-             },
-             {
-               category: "Professional Recognition",
-               question:
-                 "Is this recognized by any nutrition body or university?",
-               answer:
-                 "We're actively partnering with professional nutrition associations, leading health training institutions, and regulatory bodies to align AfyaNutrix with Continuing Professional Development (CPD) requirements, academic curricula, and clinical deployment standards across Kenya and the broader East African healthcare ecosystem.",
              },
            ].map((faq, index) => (
              <div
