@@ -29,7 +29,7 @@ const plans = [
     title: "Starter",
     price: { monthly: "KES 1,500", quarterly: "KES 1,275", yearly: "KES 1,125" },
     originalPrice: { monthly: null, quarterly: "KES 1,500", yearly: "KES 1,500" },
-    desc: "Perfect for individual nutritionists",
+    desc: "Perfect for individual nutritionists starting their digital learning",
     features: [
       "Up to 20 clients",
       "Basic client profiles",
@@ -42,10 +42,10 @@ const plans = [
     recommended: false,
   },
   {
-    title: "Professional",
+    title: "Solo Plan",
     price: { monthly: "KES 2,500", quarterly: "KES 2,125", yearly: "KES 1,875" },
     originalPrice: { monthly: null, quarterly: "KES 2,500", yearly: "KES 2,500" },
-    desc: "Ideal for growing practices",
+    desc: "Ideal for established practitioners with growing client base",
     features: [
       "Up to 100 clients",
       "Advanced client profiles",
@@ -56,13 +56,13 @@ const plans = [
       "Integrations (e.g., calendar)",
     ],
     color: "emerald",
-    recommended: true,
+    recommended: false,
   },
   {
-    title: "Clinic",
+    title: "Pro Plan",
     price: { monthly: "KES 5,000", quarterly: "KES 4,250", yearly: "KES 3,750" },
     originalPrice: { monthly: null, quarterly: "KES 5,000", yearly: "KES 5,000" },
-    desc: "For multi-practitioner clinics",
+    desc: "Perfect for small clinics and team practices",
     features: [
       "Unlimited clients",
       "Team management",
@@ -73,13 +73,13 @@ const plans = [
       "Onboarding and training",
     ],
     color: "blue",
-    recommended: false,
+    recommended: true,
   },
   {
     title: "Enterprise",
     price: { monthly: "Custom", quarterly: "Custom", yearly: "Custom" },
     originalPrice: { monthly: null, quarterly: null, yearly: null },
-    desc: "Tailored solutions for large organizations",
+    desc: "Tailored solutions for large organizations and hospitals",
     features: [
       "Custom features",
       "SLA & dedicated support",
@@ -137,7 +137,7 @@ export default function LandingPage() {
              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#1B5E20] transition-all duration-300 group-hover:w-full"></span>
            </Link>
            <Link
-             href="/#about"
+             href="/aboutus"
              className="text-gray-700 text-lg font-medium hover:text-[#1B5E20] transition-colors duration-200 relative group"
            >
              About Us
@@ -1178,7 +1178,7 @@ export default function LandingPage() {
              <div className="lg:col-span-2 md:col-span-3">
                <div className="flex items-center space-x-3 mb-6">
                  <div className="relative">
-                   <div className="w-12 h-12 bg-gradient-to-br from-emerald-600 to-green-700 rounded-2xl flex items-center justify-center shadow-lg">
+                   <div className="w-12 h-12 bg-[#9CCC65] rounded-2xl flex items-center justify-center shadow-lg">
                      <ChefHat className="w-7 h-7 text-white" />
                    </div>
                    {/* Subtle glow effect */}
@@ -1188,7 +1188,7 @@ export default function LandingPage() {
                    <span className="text-2xl font-bold bg-gradient-to-r from-white to-gray-200 bg-clip-text text-transparent">
                      AfyaNutrix
                    </span>
-                   <div className="text-xs text-emerald-400 font-medium tracking-wider uppercase">
+                   <div className="text-xs text-[#9CCC65] font-medium tracking-wider uppercase">
                      Health Tech Platform
                    </div>
                  </div>
@@ -1233,7 +1233,7 @@ export default function LandingPage() {
                    <Link
                      key={index}
                      href={item.href}
-                     className="block text-gray-400 hover:text-emerald-400 transition-colors duration-200 hover:translate-x-1 transform"
+                     className="block text-gray-400 hover:text-[#9CCC65] transition-colors duration-200 hover:translate-x-1 transform"
                    >
                      {item.label}
                    </Link>
@@ -1258,7 +1258,7 @@ export default function LandingPage() {
                    <Link
                      key={index}
                      href={item.href}
-                     className="block text-gray-400 hover:text-emerald-400 transition-colors duration-200 hover:translate-x-1 transform"
+                     className="block text-gray-400 hover:text-[#9CCC65] transition-colors duration-200 hover:translate-x-1 transform"
                    >
                      {item.label}
                    </Link>
@@ -1283,7 +1283,7 @@ export default function LandingPage() {
                    <Link
                      key={index}
                      href={item.href}
-                     className="block text-gray-400 hover:text-emerald-400 transition-colors duration-200 hover:translate-x-1 transform"
+                     className="block text-gray-400 hover:text-[#9CCC65] transition-colors duration-200 hover:translate-x-1 transform"
                    >
                      {item.label}
                    </Link>
