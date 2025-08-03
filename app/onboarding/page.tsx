@@ -85,18 +85,18 @@ export default function OnboardingPage() {
  };
 
  return (
-  <div className="min-h-screen bg-gradient-to-br from-[#1B5E20] to-[#2E7D32] flex items-center justify-center p-4">
+  <div className="min-h-screen bg-[#003B2C] flex items-center justify-center p-4">
    <Card className="w-full max-w-2xl">
     <CardHeader className="text-center">
      <div className="flex items-center justify-center space-x-2 mb-4">
-      <div className="w-10 h-10 bg-[#1B5E20] rounded-lg flex items-center justify-center">
+      <div className="w-10 h-10 bg-[#003B2C] rounded-lg flex items-center justify-center">
        <ChefHat className="w-6 h-6 text-white" />
       </div>
       <span className="text-2xl font-bold text-[#1B5E20]">AfyaNutrix</span>
      </div>
      <CardTitle className="text-2xl">Welcome to AfyaNutrix!</CardTitle>
      <CardDescription>
-      Let&apos;s set up your practice in just a few steps
+      Let's set up your practice in just a few steps
      </CardDescription>
      <div className="mt-4">
       <Progress value={progress} className="w-full" />
@@ -433,7 +433,7 @@ export default function OnboardingPage() {
       </button>
       <button
        onClick={handleNext}
-       className="px-6 py-2 bg-[#1B5E20] text-white rounded-lg font-medium hover:bg-[#2E7D32]"
+       className="px-6 py-2 bg-[#003B2C] text-white rounded-lg font-medium hover:bg-[#1B5E20]"
       >
        {currentStep === totalSteps ? "Complete Setup" : "Next"}
       </button>
