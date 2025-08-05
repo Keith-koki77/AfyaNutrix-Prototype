@@ -232,7 +232,7 @@ export default function LandingPage() {
        <span className="block text-[#003B2C] mt-2">in Kenya</span>
       </h2>
       <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-       Modern solutions for the challenges facing today's nutrition
+       Modern solutions for the challenges facing today&apos;s nutrition
        professionals
       </p>
      </div>
@@ -582,7 +582,7 @@ export default function LandingPage() {
 
          {/* Quote Icon */}
          <div className="text-[#F4F5F6] text-6xl leading-none mb-4 font-serif">
-          "
+          &quot;
          </div>
 
          {/* Testimonial Text */}
@@ -990,7 +990,7 @@ export default function LandingPage() {
       </h2>
 
       <p className="text-xl md:text-2xl text-gray-300 leading-relaxed mb-8">
-       Join 2,000+ Kenyan nutritionists who've already transformed their
+       Join 2,000+ Kenyan nutritionists who&apos;ve already transformed their
        practice with AfyaNutrix
       </p>
 
