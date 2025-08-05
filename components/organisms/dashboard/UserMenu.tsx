@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
  DropdownMenu,
@@ -15,9 +17,17 @@ import {
  User as UserAccount,
 } from "lucide-react";
 import React from "react";
+import { createClient } from "@/utils/supabase/client";
+import { useRouter } from "next/navigation";
 
 export default function UserMenu({ user }: { user: User | null }) {
- console.log("user in UserMenu:", user);
+ const router = useRouter();
+
+ const handleSignOut = async () => {
+  const supabase = createClient();
+  await supabase.auth.signOut();
+  router.push("/login");
+ };
 
  return (
   <DropdownMenu>
@@ -26,9 +36,7 @@ export default function UserMenu({ user }: { user: User | null }) {
      <div className="w-8 h-8 bg-[#1B5E20] rounded-full flex items-center justify-center text-white text-sm font-medium">
       A
      </div>
-     <span className="hidden sm:block text-sm font-medium">
-      {"user here..."}
-     </span>
+     <span className="hidden sm:block text-sm font-medium">{user?.email}</span>
     </Button>
    </DropdownMenuTrigger>
    <DropdownMenuContent align="end" className="w-56">
@@ -47,7 +55,7 @@ export default function UserMenu({ user }: { user: User | null }) {
      <span>Help</span>
     </DropdownMenuItem>
     <DropdownMenuSeparator />
-    <DropdownMenuItem className="text-red-600">
+    <DropdownMenuItem className="text-red-600" onClick={handleSignOut}>
      <LogOut className="mr-2 h-4 w-4" />
      <span>Log out</span>
     </DropdownMenuItem>

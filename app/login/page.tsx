@@ -95,10 +95,7 @@ export default function LoginPage() {
        </Link>
       </div>
 
-      <div>
-       {state?.message && <p className="text-green-600">{state.message}</p>}
-       {state?.error && <p className="text-red-600">{state.error}</p>}
-      </div>
+      <div>{state?.error && <p className="text-red-600">{state.error}</p>}</div>
       <SubmitButton content="Login" />
      </form>
      <div className="mt-6 text-center">
