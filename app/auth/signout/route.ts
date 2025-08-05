@@ -4,6 +4,7 @@ import { type NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
  const supabase = await createClient();
+ console.log("signing out");
 
  // Check if a user's logged in
  const {

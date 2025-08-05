@@ -26,8 +26,6 @@ export async function login(initialState: any, formData: FormData) {
 
  revalidatePath("/", "layout");
 
- return {
-  message: "Login successful! Redirecting to your dashboard...",
-  error: "",
- };
+ // Redirect to dashboard after successful login
+ redirect("/dashboard");
 }
