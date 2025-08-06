@@ -10,7 +10,7 @@ import StatsGrid from "@/components/organisms/dashboard/components/StatsGrid";
 import useUser from "@/hooks/get-user";
 
 export default function DashboardPage() {
- const { user, profile } = useUser();
+ const { profile } = useUser();
 
  console.log(profile, "profile>>>");
 

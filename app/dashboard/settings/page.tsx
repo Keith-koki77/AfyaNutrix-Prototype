@@ -40,6 +40,7 @@ import {
  Trash2,
  AlertTriangle,
 } from "lucide-react";
+import ProfileSettings from "@/components/organisms/settings/ProfileSettings";
 
 export default function SettingsPage() {
  const [activeTab, setActiveTab] = useState("profile");
@@ -117,119 +118,7 @@ export default function SettingsPage() {
 
     {/* Profile Tab */}
     <TabsContent value="profile" className="space-y-6">
-     <Card>
-      <CardHeader>
-       <CardTitle className="flex items-center">
-        <User className="w-5 h-5 mr-2 text-[#1B5E20]" />
-        Personal Information
-       </CardTitle>
-       <CardDescription>
-        Update your personal details and profile information
-       </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-6">
-       <div className="flex items-center space-x-6">
-        <Avatar className="w-20 h-20">
-         <AvatarFallback className="bg-[#1B5E20] text-white text-2xl">
-          {settings.firstName[0]}
-          {settings.lastName[0]}
-         </AvatarFallback>
-        </Avatar>
-        <div>
-         <Button variant="outline">Change Photo</Button>
-         <p className="text-sm text-gray-500 mt-1">
-          JPG, PNG or GIF. Max size 2MB.
-         </p>
-        </div>
-       </div>
-
-       <div className="grid md:grid-cols-2 gap-4">
-        <div>
-         <Label htmlFor="firstName">First Name</Label>
-         <Input
-          id="firstName"
-          value={settings.firstName}
-          onChange={(e) => handleSettingChange("firstName", e.target.value)}
-         />
-        </div>
-        <div>
-         <Label htmlFor="lastName">Last Name</Label>
-         <Input
-          id="lastName"
-          value={settings.lastName}
-          onChange={(e) => handleSettingChange("lastName", e.target.value)}
-         />
-        </div>
-       </div>
-
-       <div className="grid md:grid-cols-2 gap-4">
-        <div>
-         <Label htmlFor="email">Email Address</Label>
-         <Input
-          id="email"
-          type="email"
-          value={settings.email}
-          onChange={(e) => handleSettingChange("email", e.target.value)}
-         />
-        </div>
-        <div>
-         <Label htmlFor="phone">Phone Number</Label>
-         <Input
-          id="phone"
-          value={settings.phone}
-          onChange={(e) => handleSettingChange("phone", e.target.value)}
-         />
-        </div>
-       </div>
-
-       <div>
-        <Label htmlFor="bio">Professional Bio</Label>
-        <Textarea
-         id="bio"
-         value={settings.bio}
-         onChange={(e) => handleSettingChange("bio", e.target.value)}
-         rows={3}
-        />
-       </div>
-
-       <div className="grid md:grid-cols-2 gap-4">
-        <div>
-         <Label htmlFor="language">Preferred Language</Label>
-         <Select
-          value={settings.language}
-          onValueChange={(value) => handleSettingChange("language", value)}
-         >
-          <SelectTrigger>
-           <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-           <SelectItem value="english">English</SelectItem>
-           <SelectItem value="swahili">Kiswahili</SelectItem>
-           <SelectItem value="both">Both</SelectItem>
-          </SelectContent>
-         </Select>
-        </div>
-        <div>
-         <Label htmlFor="timezone">Timezone</Label>
-         <Select
-          value={settings.timezone}
-          onValueChange={(value) => handleSettingChange("timezone", value)}
-         >
-          <SelectTrigger>
-           <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-           <SelectItem value="Africa/Nairobi">Africa/Nairobi (EAT)</SelectItem>
-           <SelectItem value="Africa/Kampala">Africa/Kampala (EAT)</SelectItem>
-           <SelectItem value="Africa/Dar_es_Salaam">
-            Africa/Dar es Salaam (EAT)
-           </SelectItem>
-          </SelectContent>
-         </Select>
-        </div>
-       </div>
-      </CardContent>
-     </Card>
+     <ProfileSettings />
     </TabsContent>
 
     {/* Practice Tab */}
