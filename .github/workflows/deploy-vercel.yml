@@ -6,15 +6,12 @@ on:
  push:
   branches:
    - main
-  paths:
-   - "afya-nutrix-frontend/**"
-
 jobs:
  Deploy-Production:
   runs-on: ubuntu-latest
   defaults:
    run:
-    working-directory: afya-nutrix-frontend
+    working-directory: afyanutrix
   steps:
    - uses: actions/checkout@v2
 
