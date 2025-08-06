@@ -10,6 +10,7 @@ import Notifications from "./Notifications";
 import UserMenu from "./UserMenu";
 
 import { createClient } from "@/utils/supabase/client";
+import useUser from "@/hooks/get-user";
 
 interface DashboardHeaderProps {
  sidebarOpen: boolean;
@@ -20,21 +21,7 @@ export default function DashboardHeader({
  sidebarOpen,
  setSidebarOpen,
 }: DashboardHeaderProps) {
- const [user, setUser] = useState<any>(null);
- const [loading, setLoading] = useState(true);
-
- useEffect(() => {
-  const getUser = async () => {
-   const supabase = createClient();
-   const {
-    data: { user },
-   } = await supabase.auth.getUser();
-   setUser(user);
-   setLoading(false);
-  };
-
-  getUser();
- }, []);
+ const { user, profile, loading } = useUser();
 
  if (loading) {
   return (
@@ -60,8 +47,6 @@ export default function DashboardHeader({
    </header>
   );
  }
-
- console.log(user);
 
  return (
   <header className="bg-white border-b border-gray-200 px-4 py-4 sm:px-6 lg:px-8">
