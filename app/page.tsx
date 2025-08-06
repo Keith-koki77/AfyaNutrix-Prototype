@@ -6,7 +6,6 @@ import {
  CardHeader,
  CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import {
  CheckCircle,
  Users,
@@ -1154,7 +1153,8 @@ export default function LandingPage() {
       </h2>
       <p className="text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto">
        Everything you need to know about AfyaNutrix - from security and
-       compliance to features and pricing. Can't find what you're looking for?
+       compliance to features and pricing. Can&apos;t find what you&apos;re
+       looking for?
        <a
         href="/contact"
         className="text-emerald-600 hover:text-emerald-700 font-medium ml-1"
@@ -1175,7 +1175,8 @@ export default function LandingPage() {
         <h3 className="text-2xl font-bold">Privacy & Data Security</h3>
        </div>
        <p className="text-white mb-6">
-        Your clients' trust is paramount. Here's how we protect their data.
+        Your clients&apos; trust is paramount. Here&apos;s how we protect their
+        data.
        </p>
       </div>
 
@@ -1185,12 +1186,12 @@ export default function LandingPage() {
          <Lock className="w-6 h-6 text-[#1B5E20]" />
         </div>
         <h4 className="font-semibold text-gray-900 mb-3">
-         Will my clients' data be sold or shared?
+         Will my clients&apos; data be sold or shared?
         </h4>
         <p className="text-gray-600 leading-relaxed">
          <strong>Never.</strong> Only you and your authorized team can access
-         client data. We don't sell, share, or mine your clients' information
-         under any circumstances.
+         client data. We don&apos;t sell, share, or mine your clients&apos;
+         information under any circumstances.
         </p>
        </div>
 
@@ -1203,8 +1204,8 @@ export default function LandingPage() {
         </h4>
         <p className="text-gray-600 leading-relaxed">
          In secure, encrypted servers located in <strong>Africa</strong>, fully
-         compliant with Kenya's Data Protection Act (DPA 2019) and international
-         security standards.
+         compliant with Kenya&apos;s Data Protection Act (DPA 2019) and
+         international security standards.
         </p>
        </div>
 
@@ -1213,12 +1214,12 @@ export default function LandingPage() {
          <Download className="w-6 h-6 text-[#1B5E20]" />
         </div>
         <h4 className="font-semibold text-gray-900 mb-3">
-         Can I delete a client's data if they ask?
+         Can I delete a client&apos;s data if they ask?
         </h4>
         <p className="text-gray-600 leading-relaxed">
          <strong>Yes, instantly.</strong> You can fully export or permanently
-         delete any client's data in just 2 clicks, ensuring complete GDPR and
-         DPA compliance.
+         delete any client&apos;s data in just 2 clicks, ensuring complete GDPR
+         and DPA compliance.
         </p>
        </div>
       </div>
