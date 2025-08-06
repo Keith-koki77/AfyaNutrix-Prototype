@@ -5,11 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, Search } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Notifications from "./Notifications";
 import UserMenu from "./UserMenu";
 
-import { createClient } from "@/utils/supabase/client";
 import useUser from "@/hooks/get-user";
 
 interface DashboardHeaderProps {
@@ -21,7 +20,7 @@ export default function DashboardHeader({
  sidebarOpen,
  setSidebarOpen,
 }: DashboardHeaderProps) {
- const { user, profile, loading } = useUser();
+ const { loading } = useUser();
 
  if (loading) {
   return (
@@ -82,7 +81,7 @@ export default function DashboardHeader({
     <div className="flex items-center space-x-4">
      <Notifications />
 
-     <UserMenu user={user} />
+     <UserMenu />
     </div>
    </div>
   </header>
