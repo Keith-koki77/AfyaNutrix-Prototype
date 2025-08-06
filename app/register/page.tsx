@@ -37,11 +37,11 @@ export default function RegisterPage() {
  const [state, formAction] = useActionState(signup, initialState);
 
  return (
-  <div className="min-h-screen bg-[#003B2C] flex items-center justify-center p-4">
+  <div className="min-h-screen bg-gradient-to-br from-[#1B5E20] to-[#2E7D32] flex items-center justify-center p-4">
    <Card className="w-full max-w-2xl">
     <CardHeader className="text-center">
      <div className="flex items-center justify-center space-x-2 mb-4">
-      <div className="w-10 h-10 bg-[#003B2C] rounded-lg flex items-center justify-center">
+      <div className="w-10 h-10 bg-[#1B5E20] rounded-lg flex items-center justify-center">
        <ChefHat className="w-6 h-6 text-white" />
       </div>
       <span className="text-2xl font-bold text-[#1B5E20]">AfyaNutrix</span>
@@ -52,27 +52,15 @@ export default function RegisterPage() {
      </CardDescription>
     </CardHeader>
     <CardContent>
-     <form onSubmit={handleSubmit} className="space-y-6">
+     <form action={formAction} className="space-y-6">
       <div className="grid md:grid-cols-2 gap-4">
        <div className="space-y-2">
         <Label htmlFor="firstName">First Name</Label>
-        <Input
-         id="firstName"
-         placeholder="Amina"
-         value={formData.firstName}
-         onChange={(e) => handleInputChange("firstName", e.target.value)}
-         required
-        />
+        <Input id="firstName" placeholder="Amina" name="firstName" required />
        </div>
        <div className="space-y-2">
         <Label htmlFor="lastName">Last Name</Label>
-        <Input
-         id="lastName"
-         placeholder="Wanjiku"
-         value={formData.lastName}
-         onChange={(e) => handleInputChange("lastName", e.target.value)}
-         required
-        />
+        <Input id="lastName" placeholder="Wanjiku" name="lastName" required />
        </div>
       </div>
 
@@ -195,22 +183,20 @@ export default function RegisterPage() {
        </div>
       </div>
 
-      <Button
-       type="submit"
-       className="w-full bg-[#003B2C] hover:bg-[#2E7D32]"
-       disabled={isLoading || !formData.agreeTerms}
-      >
-       {isLoading ? "Creating Account..." : "Start Free Trial"}
-      </Button>
+      <div>
+       {state?.message && <p className="text-green-600">{state.message}</p>}
+       {state?.error && <p className="text-red-600">{state.error}</p>}
+      </div>
+      <SubmitButton content="Register" />
      </form>
 
      <div className="mt-6">
       <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-       <h4 className="font-medium text-[#003B2C] mb-2 flex items-center">
+       <h4 className="font-medium text-green-800 mb-2 flex items-center">
         <CheckCircle className="w-4 h-4 mr-2" />
-        What's included in your free trial:
+        What&apos;s included in your free trial:
        </h4>
-       <ul className="text-sm text-[#003B2C] space-y-1">
+       <ul className="text-sm text-green-700 space-y-1">
         <li>• 14 days full access to all features</li>
         <li>• Up to 10 clients</li>
         <li>• Local Kenyan food database</li>
