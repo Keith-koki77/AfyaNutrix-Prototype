@@ -10,7 +10,9 @@ import StatsGrid from "@/components/organisms/dashboard/components/StatsGrid";
 import useUser from "@/hooks/get-user";
 
 export default function DashboardPage() {
- const user = useUser();
+ const { user, profile } = useUser();
+
+ console.log(profile, "profile>>>");
 
  return (
   <div className="space-y-6">
@@ -18,7 +20,7 @@ export default function DashboardPage() {
    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
     <div>
      <h1 className="text-3xl font-bold text-gray-900">
-      Good morning, {user?.email} 👋
+      Good morning, {profile?.first_name} 👋
      </h1>
      <p className="text-gray-600 mt-1">
       Here&apos;s what&apos;s happening with your practice today

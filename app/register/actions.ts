@@ -42,20 +42,24 @@ export async function signup(initialState: any, formData: FormData) {
  }
 
  const supabase = await createClient();
- // type-casting here for convenience
- // in practice, you should validate your inputs
- const data = {
+ const { error } = await supabase.auth.signUp({
   email: validatedFields.data.email,
   password: formData.get("password") as string,
-  first_name: validatedFields.data.firstName,
-  last_name: validatedFields.data.lastName,
-  phone: validatedFields.data.phone,
-  practice_type: validatedFields.data.practiceType,
- };
- const { error } = await supabase.auth.signUp(data);
+  options: {
+   data: {
+    first_name: validatedFields.data.firstName,
+    last_name: validatedFields.data.lastName,
+    phone: validatedFields.data.phone,
+    practice_type: validatedFields.data.practiceType,
+   },
+  },
+ });
+
  if (error) {
+  console.error(error);
   redirect("/error");
  }
+
  revalidatePath("/", "layout");
 
  return {
