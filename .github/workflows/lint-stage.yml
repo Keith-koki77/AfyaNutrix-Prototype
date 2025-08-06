@@ -1,0 +1,29 @@
+name: Lint AfyaNutrix Project
+
+on:
+ pull_request:
+  branches:
+   - main # Or your main development branch
+ push:
+  branches:
+   - main # Or your main development branch
+
+jobs:
+ lint:
+  runs-on: ubuntu-latest
+
+  steps:
+   - name: Checkout repository
+     uses: actions/checkout@v4
+
+   - name: Set up Node.js
+     uses: actions/setup-node@v4
+     with:
+      node-version: "20" # Or your preferred Node.js version
+      cache: "npm" # Or 'yarn' if you use Yarn
+
+   - name: Install dependencies
+     run: npm install --legacy-peer-deps # Or yarn install
+
+   - name: Run Next.js Lint
+     run: npm run lint # Or yarn lint, assuming you have a "lint" script in package.json
