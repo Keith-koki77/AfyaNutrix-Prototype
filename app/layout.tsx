@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "../styles/globals.css";
 import { Poppins } from "next/font/google";
 import Header from "@/components/Header";
+import { Toaster } from "@/components/ui/toaster";
 
 const poppins = Poppins({
  subsets: ["latin"],
@@ -34,6 +35,7 @@ export default function RootLayout({
   <html lang="en" className={poppins.className}>
    <body className="min-h-screen bg-white">
     <main>{children}</main>
+    <Toaster />
    </body>
   </html>
  );
