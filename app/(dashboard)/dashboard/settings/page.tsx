@@ -41,6 +41,7 @@ import {
  AlertTriangle,
 } from "lucide-react";
 import ProfileSettings from "@/components/organisms/settings/ProfileSettings";
+import PracticeSettings from "@/components/organisms/settings/PracticeSettings";
 
 export default function SettingsPage() {
  const [activeTab, setActiveTab] = useState("profile");
@@ -116,117 +117,12 @@ export default function SettingsPage() {
      <TabsTrigger value="compliance">Compliance</TabsTrigger>
     </TabsList>
 
-    {/* Profile Tab */}
     <TabsContent value="profile" className="space-y-6">
      <ProfileSettings />
     </TabsContent>
 
-    {/* Practice Tab */}
     <TabsContent value="practice" className="space-y-6">
-     <Card>
-      <CardHeader>
-       <CardTitle className="flex items-center">
-        <Building className="w-5 h-5 mr-2 text-[#1B5E20]" />
-        Practice Information
-       </CardTitle>
-       <CardDescription>
-        Manage your practice details and professional credentials
-       </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
-       <div>
-        <Label htmlFor="practiceName">Practice/Clinic Name</Label>
-        <Input
-         id="practiceName"
-         value={settings.practiceName}
-         onChange={(e) => handleSettingChange("practiceName", e.target.value)}
-        />
-       </div>
-
-       <div className="grid md:grid-cols-2 gap-4">
-        <div>
-         <Label htmlFor="practiceType">Practice Type</Label>
-         <Select
-          value={settings.practiceType}
-          onValueChange={(value) => handleSettingChange("practiceType", value)}
-         >
-          <SelectTrigger>
-           <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-           <SelectItem value="Solo Practitioner">Solo Practitioner</SelectItem>
-           <SelectItem value="Small Clinic">Small Clinic</SelectItem>
-           <SelectItem value="Large Clinic">Large Clinic</SelectItem>
-           <SelectItem value="Hospital">Hospital Department</SelectItem>
-           <SelectItem value="NGO">NGO/Community Health</SelectItem>
-          </SelectContent>
-         </Select>
-        </div>
-        <div>
-         <Label htmlFor="location">Location</Label>
-         <Input
-          id="location"
-          value={settings.location}
-          onChange={(e) => handleSettingChange("location", e.target.value)}
-         />
-        </div>
-       </div>
-
-       <div>
-        <Label htmlFor="license">Professional License Number</Label>
-        <Input
-         id="license"
-         value={settings.license}
-         onChange={(e) => handleSettingChange("license", e.target.value)}
-        />
-       </div>
-      </CardContent>
-     </Card>
-
-     <Card>
-      <CardHeader>
-       <CardTitle>Regional Settings</CardTitle>
-       <CardDescription>
-        Configure regional preferences for your practice
-       </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
-       <div className="grid md:grid-cols-2 gap-4">
-        <div>
-         <Label htmlFor="dateFormat">Date Format</Label>
-         <Select
-          value={settings.dateFormat}
-          onValueChange={(value) => handleSettingChange("dateFormat", value)}
-         >
-          <SelectTrigger>
-           <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-           <SelectItem value="dd/mm/yyyy">DD/MM/YYYY</SelectItem>
-           <SelectItem value="mm/dd/yyyy">MM/DD/YYYY</SelectItem>
-           <SelectItem value="yyyy-mm-dd">YYYY-MM-DD</SelectItem>
-          </SelectContent>
-         </Select>
-        </div>
-        <div>
-         <Label htmlFor="currency">Currency</Label>
-         <Select
-          value={settings.currency}
-          onValueChange={(value) => handleSettingChange("currency", value)}
-         >
-          <SelectTrigger>
-           <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-           <SelectItem value="KES">KES (Kenyan Shilling)</SelectItem>
-           <SelectItem value="USD">USD (US Dollar)</SelectItem>
-           <SelectItem value="EUR">EUR (Euro)</SelectItem>
-          </SelectContent>
-         </Select>
-        </div>
-       </div>
-      </CardContent>
-     </Card>
+     <PracticeSettings />
     </TabsContent>
 
     {/* Notifications Tab */}
