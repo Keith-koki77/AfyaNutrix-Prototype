@@ -13,6 +13,7 @@ const profileSchema = z.object({
  practice_type: z.string().min(1),
 });
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function updateProfile(prevState: any, formData: FormData) {
  const supabase = await createClient();
  const {
@@ -69,6 +70,7 @@ const practiceSchema = z.object({
  license_number: z.string().min(1, "License number is required"),
 });
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function updatePractice(prevState: any, formData: FormData) {
  const supabase = await createClient();
  const {

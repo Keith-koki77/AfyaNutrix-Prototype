@@ -989,7 +989,8 @@ export default function LandingPage() {
       </h2>
       <p className="text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto">
        Everything you need to know about AfyaNutrix - from security and
-       compliance to features and pricing. Can't find what you're looking for?
+       compliance to features and pricing. Can&apos;t find what you&apos;re
+       looking for?
        <a
         href="/contact"
         className="text-emerald-600 hover:text-emerald-700 font-medium ml-1"
@@ -1021,12 +1022,12 @@ export default function LandingPage() {
          <Lock className="w-6 h-6 text-[#1B5E20]" />
         </div>
         <h4 className="font-semibold text-gray-900 mb-3">
-         Will my clients' data be sold or shared?
+         Will my clients&apos; data be sold or shared?
         </h4>
         <p className="text-gray-600 leading-relaxed">
          <strong>Never.</strong> Only you and your authorized team can access
-         client data. We don't sell, share, or mine your clients' information
-         under any circumstances.
+         client data. We don&apos;t sell, share, or mine your clients&apos;
+         information under any circumstances.
         </p>
        </div>
 
