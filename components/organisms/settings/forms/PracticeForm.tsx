@@ -15,6 +15,7 @@ import { useActionState } from "react";
 import { updatePractice } from "./actions";
 import SubmitButton from "@/components/molecules/SubmitButton";
 import { CheckCircle, AlertCircle } from "lucide-react";
+import { practiceTypes } from "@/lib/constants";
 
 const initialState = {
  error: "",
@@ -64,13 +65,11 @@ export default function PracticeForm() {
        <SelectValue placeholder="Select practice type" />
       </SelectTrigger>
       <SelectContent>
-       <SelectItem value="Solo Practitioner">Solo Practitioner</SelectItem>
-       <SelectItem value="Small Clinic">Small Clinic</SelectItem>
-       <SelectItem value="Large Clinic">Large Clinic</SelectItem>
-       <SelectItem value="Hospital Department">Hospital Department</SelectItem>
-       <SelectItem value="NGO/Community Health">
-        NGO/Community Health
-       </SelectItem>
+       {practiceTypes.map((type) => (
+        <SelectItem key={type.value} value={type.value}>
+         {type.label}
+        </SelectItem>
+       ))}
       </SelectContent>
      </Select>
     </div>
