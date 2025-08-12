@@ -14,8 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      practice: {
+        Row: {
+          clinic_name: string | null
+          created_at: string
+          id: string
+          license_number: string | null
+          location: string | null
+          type: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          clinic_name?: string | null
+          created_at?: string
+          id?: string
+          license_number?: string | null
+          location?: string | null
+          type?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          clinic_name?: string | null
+          created_at?: string
+          id?: string
+          license_number?: string | null
+          location?: string | null
+          type?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
+          bio: string | null
           created_at: string | null
           email: string
           first_name: string | null
@@ -26,20 +60,22 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          bio?: string | null
           created_at?: string | null
           email: string
           first_name?: string | null
-          id?: never
+          id?: number
           last_name?: string | null
           phone?: string | null
           practice_type?: string | null
           user_id?: string | null
         }
         Update: {
+          bio?: string | null
           created_at?: string | null
           email?: string
           first_name?: string | null
-          id?: never
+          id?: number
           last_name?: string | null
           phone?: string | null
           practice_type?: string | null

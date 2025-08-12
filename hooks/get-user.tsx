@@ -8,7 +8,7 @@ function useUser() {
  const supabase = createClient();
  const [user, setUser] = useState<User | null>(null);
  const [profile, setProfile] = useState<Tables<"profiles"> | null>(null);
-
+ const [practice, setPractice] = useState<Tables<"practice"> | null>(null);
  const [loading, setLoading] = useState(true);
 
  useEffect(() => {
@@ -18,26 +18,47 @@ function useUser() {
    } = await supabase.auth.getUser();
    setUser(user);
 
-   if (user) {
-    const profile = await supabase
-     .from("profiles")
-     .select("*")
-     .eq("user_id", user.id)
-     .single();
+   if (!user) {
+    setLoading(false);
+    setProfile(null);
+    setPractice(null);
+    console.error("No user found");
 
-    if (profile.error) {
-     console.error(profile.error);
-    }
-
-    setProfile(profile.data);
+    return;
    }
+
+   const profile = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("user_id", user.id)
+    .single();
+
+   if (profile.error) {
+    console.error(profile.error);
+   }
+
+   setProfile(profile.data);
+
+   const practice = await supabase
+    .from("practice")
+    .select("*")
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+   console.log(practice, "practice");
+
+   if (practice.error) {
+    console.error(practice.error);
+   }
+
+   setPractice(practice.data);
    setLoading(false);
   };
 
   getUser();
  }, []);
 
- return { user, profile, loading };
+ return { user, profile, practice, loading };
 }
 
 export default useUser;

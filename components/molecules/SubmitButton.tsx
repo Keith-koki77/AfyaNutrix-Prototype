@@ -9,7 +9,9 @@ export default function SubmitButton({ content }: { content?: string }) {
  return (
   <Button
    type="submit"
-   className="w-full bg-[#1B5E20] hover:bg-[#2E7D32]"
+   className={`w-full ${
+    pending ? "bg-[#2E7D32]" : "bg-[#1B5E20] hover:bg-[#2E7D32]"
+   }`}
    disabled={pending}
   >
    {pending ? "Submitting..." : content || "Submit"}

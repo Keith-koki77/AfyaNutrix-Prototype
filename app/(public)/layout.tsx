@@ -1,8 +1,7 @@
 import type { Metadata, Viewport } from "next";
-import "../styles/globals.css";
+import "../../styles/globals.css";
 import { Poppins } from "next/font/google";
 import Header from "@/components/Header";
-import { Toaster } from "@/components/ui/toaster";
 
 const poppins = Poppins({
  subsets: ["latin"],
@@ -26,7 +25,7 @@ export const metadata: Metadata = {
  authors: [{ name: "AfyaNutrix Team" }],
 };
 
-export default function RootLayout({
+export default function PublicLayout({
  children,
 }: Readonly<{
  children: React.ReactNode;
@@ -34,8 +33,9 @@ export default function RootLayout({
  return (
   <html lang="en" className={poppins.className}>
    <body className="min-h-screen bg-white">
-    <main>{children}</main>
-    <Toaster />
+    <Header />
+    {/* Add padding-top to account for fixed header */}
+    <main className="pt-16">{children}</main>
    </body>
   </html>
  );

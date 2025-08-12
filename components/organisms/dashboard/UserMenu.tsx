@@ -20,6 +20,7 @@ import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import useUser from "@/hooks/get-user";
 import Link from "next/link";
+import { toast } from "sonner";
 
 export default function UserMenu() {
  const router = useRouter();
@@ -28,7 +29,11 @@ export default function UserMenu() {
  const handleSignOut = async () => {
   const supabase = createClient();
   await supabase.auth.signOut();
+
+  toast.success("Logged out successfully");
+
   router.push("/login");
+  router.refresh();
  };
 
  return (
