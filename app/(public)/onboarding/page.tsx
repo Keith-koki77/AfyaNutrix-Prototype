@@ -96,7 +96,7 @@ export default function OnboardingPage() {
      </div>
      <CardTitle className="text-2xl">Welcome to AfyaNutrix!</CardTitle>
      <CardDescription>
-      Let's set up your practice in just a few steps
+      Let&apos;s set up your practice in just a few steps
      </CardDescription>
      <div className="mt-4">
       <Progress value={progress} className="w-full" />
@@ -182,7 +182,7 @@ export default function OnboardingPage() {
            <div key={spec} className="flex items-center space-x-2">
             <Checkbox
              id={spec}
-             checked={formData.specializations.includes(spec)}
+             checked={formData.specializations.includes(spec as string)}
              onCheckedChange={() => handleArrayToggle("specializations", spec)}
             />
             <Label htmlFor={spec} className="text-sm">
@@ -241,7 +241,7 @@ export default function OnboardingPage() {
            <div key={type} className="flex items-center space-x-2">
             <Checkbox
              id={type}
-             checked={formData.clientTypes.includes(type)}
+             checked={formData.clientTypes.includes(type as string)}
              onCheckedChange={() => handleArrayToggle("clientTypes", type)}
             />
             <Label htmlFor={type} className="text-sm">
@@ -266,7 +266,7 @@ export default function OnboardingPage() {
            <div key={goal} className="flex items-center space-x-2">
             <Checkbox
              id={goal}
-             checked={formData.commonGoals.includes(goal)}
+             checked={formData.commonGoals.includes(goal as string)}
              onCheckedChange={() => handleArrayToggle("commonGoals", goal)}
             />
             <Label htmlFor={goal} className="text-sm">
@@ -388,7 +388,7 @@ export default function OnboardingPage() {
            <div key={goal} className="flex items-center space-x-2">
             <Checkbox
              id={goal}
-             checked={formData.primaryGoals.includes(goal)}
+             checked={formData.primaryGoals.includes(goal as string)}
              onCheckedChange={() => handleArrayToggle("primaryGoals", goal)}
             />
             <Label htmlFor={goal} className="text-sm">
